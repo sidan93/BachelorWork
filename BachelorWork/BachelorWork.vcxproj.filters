@@ -21,6 +21,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Helpers.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib">
@@ -34,5 +37,22 @@
     <None Include="..\include\GL\glew32.dll">
       <Filter>Файлы ресурсов\GL</Filter>
     </None>
+    <None Include="Shader1.vert">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="Shader1.frag">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="Shader2.frag">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="Shader2.vert">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Helpers.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
