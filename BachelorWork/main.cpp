@@ -1,5 +1,9 @@
-#include <GL/glew.h>
+﻿#include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
 
 /************************************** Defined Constants ***************************************/
 
@@ -109,12 +113,19 @@ int main ( int argc, char *argv[] )
 	glClearDepth ( 1.0 ) ;
 
 	/* Initialize GLUT */
-	glutInitWindowSize ( 600, 600 ) ;
 	glutInit ( &pargc, argv ) ;
 	glutInitDisplayMode ( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH ) ;
+	glutInitContextVersion(4, 0); // Init GL 3.3 context
+	glutInitContextFlags(GLUT_CORE_PROFILE);
+    glutInitContextProfile(GLUT_CORE_PROFILE);
+	glutInitWindowSize ( 600, 600 ) ;
 
 	/* Create the window */
 	glutCreateWindow ( "Bachelor Work" ) ;
+
+	glewInit();
+    printf("OpenGL version supported by this platform (%s): \n", glGetString(GL_VERSION));
+
 	glutKeyboardFunc ( key_cb ) ;
 	glutMouseFunc ( mouse_cb ) ;
 	glutSpecialFunc ( special_cb ) ;

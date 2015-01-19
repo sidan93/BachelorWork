@@ -13,10 +13,26 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы ресурсов\GL">
+      <UniqueIdentifier>{ca96e6ec-7161-4489-8714-bc3b79935d1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\include\GL\freeglut.lib">
+      <Filter>Файлы ресурсов\GL</Filter>
+    </Library>
+    <Library Include="..\include\GL\glew32.lib">
+      <Filter>Файлы ресурсов\GL</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\GL\glew32.dll">
+      <Filter>Файлы ресурсов\GL</Filter>
+    </None>
   </ItemGroup>
 </Project>
