@@ -23,7 +23,7 @@ int animate = 1 ;                             /* 0 - stop, 1 = go, 2 = single-st
 
 #define INPUT_LINE_LENGTH 80
 
-void key_cb ( unsigned char key, int x, int y )
+void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 {
 	switch ( key )
 	{
@@ -33,7 +33,7 @@ void key_cb ( unsigned char key, int x, int y )
 	}
 }
 
-void special_cb ( int key, int x, int y )
+void SpecialKeyboardCallbackFunction ( int key, int x, int y )
 {
 	switch ( key )
 	{
@@ -44,33 +44,22 @@ void special_cb ( int key, int x, int y )
 	glutPostRedisplay () ;
 }
 
-void mouse_cb ( int button, int updown, int x, int y )
+void MouseCallbackFunction ( int button, int updown, int x, int y )
 {
 	if ( updown == GLUT_DOWN )
 	{
 	}
 }
 
-void display_cb ( void )
+void DisplayCallbackFunction ( void )
 {
 	glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ) ;
-
-	glColor3d ( 1.0, 1.0, 1.0 ) ;  /* White */
-
-	/* Draw some axes */
-	glBegin ( GL_LINES ) ;
-	glVertex3d ( 0.0, 0.0, 0.0 ) ;
-	glVertex3d ( 2.0, 0.0, 0.0 ) ;
-	glVertex3d ( 0.0, 0.0, 0.0 ) ;
-	glVertex3d ( 0.0, 1.0, 0.0 ) ;
-	glVertex3d ( 0.0, 0.0, 0.0 ) ;
-	glVertex3d ( 0.0, 0.0, 1.0 ) ;
-	glEnd () ;
+	glColor3d ( 1.0, 1.0, 1.0 );
 
 	glutSwapBuffers();
 }
 
-void reshape_cb ( int width, int height )
+void ReshapeCallbackFunction ( int width, int height )
 {
 	float ar;
 	glViewport ( 0, 0, width, height ) ;
@@ -87,9 +76,9 @@ void reshape_cb ( int width, int height )
 }
 
 
-void timer_cb ( int value )
+void TimerCallbackFunction ( int value )
 {
-	glutTimerFunc ( 30, timer_cb, 0 ) ;
+	glutTimerFunc ( 30, TimerCallbackFunction, 0 ) ;
 
 	// TODO
 
@@ -99,6 +88,10 @@ void timer_cb ( int value )
 
 
 /* The Main Program */
+
+void initResources()
+{
+}
 
 int main ( int argc, char *argv[] )
 {
@@ -115,7 +108,7 @@ int main ( int argc, char *argv[] )
 	/* Initialize GLUT */
 	glutInit ( &pargc, argv ) ;
 	glutInitDisplayMode ( GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH ) ;
-	glutInitContextVersion(4, 0); // Init GL 3.3 context
+	glutInitContextVersion(4, 0); // Init GL 4.0 context
 	glutInitContextFlags(GLUT_CORE_PROFILE);
     glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutInitWindowSize ( 600, 600 ) ;
@@ -126,12 +119,14 @@ int main ( int argc, char *argv[] )
 	glewInit();
     printf("OpenGL version supported by this platform (%s): \n", glGetString(GL_VERSION));
 
-	glutKeyboardFunc ( key_cb ) ;
-	glutMouseFunc ( mouse_cb ) ;
-	glutSpecialFunc ( special_cb ) ;
-	glutDisplayFunc ( display_cb ) ;
-	glutReshapeFunc ( reshape_cb ) ;
-	glutTimerFunc ( 30, timer_cb, 0 ) ;
+	glutKeyboardFunc ( KeyboardCallbackFunction ) ;
+	glutMouseFunc ( MouseCallbackFunction ) ;
+	glutSpecialFunc ( SpecialKeyboardCallbackFunction ) ;
+	glutDisplayFunc ( DisplayCallbackFunction ) ;
+	glutReshapeFunc ( ReshapeCallbackFunction ) ;
+	glutTimerFunc ( 30, TimerCallbackFunction, 0 ) ;
+
+	initResources();
 
 	/* Enter the GLUT main loop */
 	glutMainLoop () ;
