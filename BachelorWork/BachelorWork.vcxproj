@@ -69,6 +69,7 @@
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib" />
@@ -85,6 +86,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
