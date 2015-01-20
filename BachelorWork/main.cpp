@@ -8,7 +8,6 @@ using namespace std;
 
 /************************************** Defined Constants ***************************************/
 
-
 #define BUFFER_OFFSET(i) ((void*)(i))
 
 //Vertex, tex0
@@ -49,11 +48,6 @@ struct TVertex_VC
 
 /*************************************** Global Variables ***************************************/
 /* GLUT variables */
-double yaw = 0.0, pit = 0.0 ;                 /* Euler angles of the viewing rotation */
-double scale = 1.0 ;                          /* Scale factor */
-double xcen = 0.0, ycen = 0.0, zcen = 0.0 ;   /* Coordinates of the point looked at */
-
-int animate = 1 ;                             /* 0 - stop, 1 = go, 2 = single-step */
 
 /* Shaders variables */
 GLuint	ShaderProgram[2];
@@ -231,38 +225,7 @@ void CreateGeometry()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-
 /* GLUT callbacks */
-
-#define INPUT_LINE_LENGTH 80
-
-void KeyboardCallbackFunction ( unsigned char key, int x, int y )
-{
-	switch ( key )
-	{
-	case 27 :  /* Escape key */
-		glutLeaveMainLoop () ;
-		break ;
-	}
-}
-
-void SpecialKeyboardCallbackFunction ( int key, int x, int y )
-{
-	switch ( key )
-	{
-	case GLUT_KEY_UP :  /* Rotate up a little */
-		break ;
-	}
-
-	glutPostRedisplay () ;
-}
-
-void MouseCallbackFunction ( int button, int updown, int x, int y )
-{
-	if ( updown == GLUT_DOWN )
-	{
-	}
-}
 
 void DisplayCallbackFunction ( void )
 {
@@ -309,6 +272,43 @@ void DisplayCallbackFunction ( void )
 	glutSwapBuffers();
 }
 
+void TimerCallbackFunction ( int value )
+{
+	glutTimerFunc ( 30, TimerCallbackFunction, 0 ) ;
+
+	// TODO
+
+	glutPostRedisplay () ;
+}
+
+void KeyboardCallbackFunction ( unsigned char key, int x, int y )
+{
+	switch ( key )
+	{
+	case 27 :  /* Escape key */
+		glutLeaveMainLoop () ;
+		break ;
+	}
+}
+
+void SpecialKeyboardCallbackFunction ( int key, int x, int y )
+{
+	switch ( key )
+	{
+	case GLUT_KEY_UP :  /* Rotate up a little */
+		break ;
+	}
+
+	glutPostRedisplay () ;
+}
+
+void MouseCallbackFunction ( int button, int updown, int x, int y )
+{
+	if ( updown == GLUT_DOWN )
+	{
+	}
+}
+
 void ReshapeCallbackFunction ( int width, int height )
 {
 	float ar;
@@ -319,20 +319,9 @@ void ReshapeCallbackFunction ( int width, int height )
 	glFrustum ( -ar, ar, -1.0, 1.0, 10.0, 100.0 ) ;
 	glMatrixMode ( GL_MODELVIEW ) ;
 	glLoadIdentity () ;
-	xcen = 0.0 ;
-	ycen = 0.0 ;
-	zcen = 0.0 ;
-	glTranslated ( xcen, ycen, zcen - 50.0 ) ;
 }
 
-void TimerCallbackFunction ( int value )
-{
-	glutTimerFunc ( 30, TimerCallbackFunction, 0 ) ;
-
-	// TODO
-
-	glutPostRedisplay () ;
-}
+/* Init functions */
 
 void InitGLStates()
 {
@@ -359,7 +348,6 @@ void InitGLStates()
 	glActiveTexture(GL_TEXTURE0);
 }
 
-/* The Main Program */
 void InitShaders()
 {
 	if(LoadShader("Shader1.vert", "Shader1.frag", false, false, true, ShaderProgram[0], VertexShader[0], FragmentShader[0])==-1)
@@ -381,6 +369,7 @@ void InitShaders()
 	}
 }
 
+/* The Main Program */
 int main ( int argc, char *argv[] )
 {
 	/* Set up the OpenGL parameters */
@@ -399,15 +388,18 @@ int main ( int argc, char *argv[] )
 	/* Create the window */
 	glutCreateWindow ( "Bachelor Work" ) ;
 	
+	/* Initialize GLEW */
 	glewExperimental=TRUE;
 	glewInit();
 	printf("OpenGL version supported by this platform (%s): \n", glGetString(GL_VERSION));
 
+	/* Initialize all objects */
 	InitGLStates();
 	InitShaders();
 
 	CreateGeometry();
 
+	/* Initialize CALLBACK functions */
 	glutKeyboardFunc	( KeyboardCallbackFunction ) ;
 	glutMouseFunc		( MouseCallbackFunction ) ;
 	glutSpecialFunc		( SpecialKeyboardCallbackFunction ) ;
