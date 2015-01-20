@@ -8,7 +8,9 @@ class Camera
 {
 private:
 	Matrix _world;
+	Matrix _view;
 	Matrix _projection;
+
 public:
 	Camera(void);
 

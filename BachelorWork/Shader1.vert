@@ -14,4 +14,5 @@ void main()
 {
 	gl_Position = ProjectionModelviewMatrix * vec4(InVertex, 1.0);
 	Color = InColor;
+	Color = vec4(1,1,0,1);
 }
