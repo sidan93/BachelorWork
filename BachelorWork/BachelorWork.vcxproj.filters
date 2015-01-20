@@ -24,6 +24,12 @@
     <ClCompile Include="Helpers.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib">
@@ -52,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
