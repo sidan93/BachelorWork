@@ -68,8 +68,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib" />
@@ -79,14 +77,10 @@
     <None Include="..\include\GL\glew32.dll" />
     <None Include="Shader1.frag" />
     <None Include="Shader1.vert" />
-    <None Include="Shader2.frag" />
-    <None Include="Shader2.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Helpers.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

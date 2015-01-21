@@ -27,12 +27,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib">
@@ -52,24 +46,12 @@
     <None Include="Shader1.frag">
       <Filter>Заголовочные файлы</Filter>
     </None>
-    <None Include="Shader2.frag">
-      <Filter>Заголовочные файлы</Filter>
-    </None>
-    <None Include="Shader2.vert">
-      <Filter>Заголовочные файлы</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

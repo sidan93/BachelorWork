@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -21,3 +22,5 @@ int LoadShader(
 	GLuint &shaderProgram, 
 	GLuint &vertexShader, 
 	GLuint &fragmentShader);
+
+GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);

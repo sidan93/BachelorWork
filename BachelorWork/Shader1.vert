@@ -1,18 +1,12 @@
-//[VERTEX SHADER]
-#version 330
- 
-in vec3 InVertex;
-in vec4 InColor;
- 
- 
-smooth out vec4 Color;
- 
-uniform mat4 ProjectionModelviewMatrix;
- 
- 
-void main()
-{
-	gl_Position = ProjectionModelviewMatrix * vec4(InVertex, 1.0);
-	Color = InColor;
-	Color = vec4(1,1,0,1);
+#version 330 core
+
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
+
+void main(){
+
+    gl_Position.xyz = vertexPosition_modelspace;
+    gl_Position.w = 1.0;
+
 }
+
