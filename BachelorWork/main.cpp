@@ -22,7 +22,10 @@ GLuint shaderID;
 GLuint matrixID;
 GLuint vertexbuffer;
 GLuint vertexArrays;
-GLuint colorbuffer;
+GLuint uvbuffer;
+
+GLuint textureID;
+GLuint Texture;
 
 Camera *camera;
 /******************************************* Functions ******************************************/
@@ -68,8 +71,6 @@ void CreateGeometry()
 		1.0f,-1.0f, 1.0f
 	};
 
-
-	// Один цвет для каждой вершины
 	static const GLfloat g_color_buffer_data[] = {
 		0.583f,  0.771f,  0.014f,
 		0.609f,  0.115f,  0.436f,
@@ -108,6 +109,45 @@ void CreateGeometry()
 		0.820f,  0.883f,  0.371f,
 		0.982f,  0.099f,  0.879f
 	};
+	
+	static const GLfloat g_uv_buffer_data[] = { 
+		0.000059f, 1.0f-0.000004f, 
+		0.000103f, 1.0f-0.336048f, 
+		0.335973f, 1.0f-0.335903f, 
+		1.000023f, 1.0f-0.000013f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.999958f, 1.0f-0.336064f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.336024f, 1.0f-0.671877f, 
+		0.667969f, 1.0f-0.671889f, 
+		1.000023f, 1.0f-0.000013f, 
+		0.668104f, 1.0f-0.000013f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.000059f, 1.0f-0.000004f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.336098f, 1.0f-0.000071f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.336024f, 1.0f-0.671877f, 
+		1.000004f, 1.0f-0.671847f, 
+		0.999958f, 1.0f-0.336064f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.668104f, 1.0f-0.000013f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.667979f, 1.0f-0.335851f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.668104f, 1.0f-0.000013f, 
+		0.336098f, 1.0f-0.000071f, 
+		0.000103f, 1.0f-0.336048f, 
+		0.000004f, 1.0f-0.671870f, 
+		0.336024f, 1.0f-0.671877f, 
+		0.000103f, 1.0f-0.336048f, 
+		0.336024f, 1.0f-0.671877f, 
+		0.335973f, 1.0f-0.335903f, 
+		0.667969f, 1.0f-0.671889f, 
+		1.000004f, 1.0f-0.671847f, 
+		0.667979f, 1.0f-0.335851f
+	};
 
 	// Магия без которой не рисует
 	glGenVertexArrays(1, &vertexArrays);
@@ -117,12 +157,12 @@ void CreateGeometry()
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &colorbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-}
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 
-void CreateGeometrySphere() {}
+
+}
 
 /* GLUT callbacks */
 
@@ -134,8 +174,14 @@ void DisplayCallbackFunction ( void )
 
 	glUseProgram(shaderID);
 
-
+	glEnable(GL_TEXTURE0);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &camera->MVP[0][0]);
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	// Set our "myTextureSampler" sampler to user Texture Unit 0
+	glUniform1i(textureID, 0);
+
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -150,10 +196,10 @@ void DisplayCallbackFunction ( void )
 
 	// 2nd attribute buffer : colors
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glVertexAttribPointer(
 		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-		3,                                // size
+		2,                                // size
 		GL_FLOAT,                         // type
 		GL_FALSE,                         // normalized?
 		0,                                // stride
@@ -240,32 +286,28 @@ void InitGLStates()
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClearDepth(1.0);
 	glClearStencil(0);
-	glDisable(GL_BLEND);
-	glDisable(GL_ALPHA_TEST);
-	glDisable(GL_DITHER);
-	glActiveTexture(GL_TEXTURE0);
+	//glDisable(GL_BLEND);
+	//glDisable(GL_ALPHA_TEST);
+	//glDisable(GL_DITHER);
+	//glActiveTexture(GL_TEXTURE0);
 }
 
 void InitShaders()
 {
 	shaderID = LoadShaders("Shader1.vert", "Shader1.frag");
 	matrixID = glGetUniformLocation(shaderID, "MVP");
+	textureID  = glGetUniformLocation(shaderID, "myTextureSampler");
 }
 
 void InitOther()
 {
-	// Our ModelViewProjection : multiplication of our 3 matrices
 	camera = new Camera();
+	Texture = loadBMP_custom("uvtemplate.bmp");
 }
 
 /* The Main Program */
 int main ( int argc, char *argv[] )
 {
-	/* Set up the OpenGL parameters */
-	glEnable ( GL_DEPTH_TEST ) ;
-	glClearColor ( 0.0, 0.0, 0.0, 0.0 ) ;
-	glClearDepth ( 1.0 ) ;
-
 	/* Initialize GLUT */
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);

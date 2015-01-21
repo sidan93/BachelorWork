@@ -9,18 +9,6 @@
 
 using namespace std;
 
-string loadFile(const char *fname);
-
-void printShaderInfoLog(GLint shader);
-
-int LoadShader(
-	const char *pfilePath_vs, 
-	const char *pfilePath_fs, 
-	bool bindTexCoord0, 
-	bool bindNormal, 
-	bool bindColor, 
-	GLuint &shaderProgram, 
-	GLuint &vertexShader, 
-	GLuint &fragmentShader);
+GLuint loadBMP_custom(const char * imagepath);
 
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);

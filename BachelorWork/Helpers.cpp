@@ -1,160 +1,83 @@
 #include "Helpers.h"
 
-string loadFile(const char *fname)
+GLuint loadBMP_custom(const char * imagepath)
 {
-	ifstream file(fname);
-	if(!file.is_open())
-	{
-		cout << "Unable to open file " << fname << endl;
-		exit(1);
+
+	printf("Reading image %s\n", imagepath);
+
+	// Data read from the header of the BMP file
+	unsigned char header[54];
+	unsigned int dataPos;
+	unsigned int imageSize;
+	unsigned int width, height;
+	// Actual RGB data
+	unsigned char * data;
+
+	// Open the file
+	FILE * file = fopen(imagepath,"rb");
+	if (!file)							    {printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath); getchar(); return 0;}
+
+	// Read the header, i.e. the 54 first bytes
+
+	// If less than 54 bytes are read, problem
+	if ( fread(header, 1, 54, file)!=54 ){ 
+		printf("Not a correct BMP file\n");
+		return 0;
 	}
-
-	stringstream fileData;
-	fileData << file.rdbuf();
-	file.close();
-
-	return fileData.str();
-}
-
-
-// Display (hopefully) useful error messages if shader fails to compile
-void printShaderInfoLog(GLint shader)
-{
-	int infoLogLen = 0;
-	int charsWritten = 0;
-	GLchar *infoLog;
-
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogLen);
-
-	if (infoLogLen > 0)
-	{
-		infoLog = new GLchar[infoLogLen];
-		// error check for fail to allocate memory omitted
-		glGetShaderInfoLog(shader, infoLogLen, &charsWritten, infoLog);
-		cout << "InfoLog : " << endl << infoLog << endl;
-		delete [] infoLog;
+	// A BMP files always begins with "BM"
+	if ( header[0]!='B' || header[1]!='M' ){
+		printf("Not a correct BMP file\n");
+		return 0;
 	}
-}
+	// Make sure this is a 24bpp file
+	if ( *(int*)&(header[0x1E])!=0  )         {printf("Not a correct BMP file\n");    return 0;}
+	if ( *(int*)&(header[0x1C])!=24 )         {printf("Not a correct BMP file\n");    return 0;}
 
+	// Read the information about the image
+	dataPos    = *(int*)&(header[0x0A]);
+	imageSize  = *(int*)&(header[0x22]);
+	width      = *(int*)&(header[0x12]);
+	height     = *(int*)&(header[0x16]);
 
-int LoadShader(const char *pfilePath_vs, 
-			   const char *pfilePath_fs, 
-			   bool bindTexCoord0, 
-			   bool bindNormal, 
-			   bool bindColor, 
-			   GLuint &shaderProgram, 
-			   GLuint &vertexShader, 
-			   GLuint &fragmentShader)
-{
-	shaderProgram=0;
-	vertexShader=0;
-	fragmentShader=0;
+	// Some BMP files are misformatted, guess missing information
+	if (imageSize==0)    imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
+	if (dataPos==0)      dataPos=54; // The BMP header is done that way
 
-	// load shaders & get length of each
-	int vlen;
-	int flen;
-	string vertexShaderString = loadFile(pfilePath_vs);
-	string fragmentShaderString = loadFile(pfilePath_fs);
-	vlen = vertexShaderString.length();
-	flen = fragmentShaderString.length();
+	// Create a buffer
+	data = new unsigned char [imageSize];
 
-	if(vertexShaderString.empty())
-	{
-		return -1;
-	}
+	// Read the actual data from the file into the buffer
+	fread(data,1,imageSize,file);
 
-	if(fragmentShaderString.empty())
-	{
-		return -1;
-	}
+	// Everything is in memory now, the file wan be closed
+	fclose (file);
 
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);	
+	// Create one OpenGL texture
+	GLuint textureID;
+	glGenTextures(1, &textureID);
 
-	const char *vertexShaderCStr = vertexShaderString.c_str();
-	const char *fragmentShaderCStr = fragmentShaderString.c_str();
-	glShaderSource(vertexShader, 1, (const GLchar **)&vertexShaderCStr, &vlen);
-	glShaderSource(fragmentShader, 1, (const GLchar **)&fragmentShaderCStr, &flen);
+	// "Bind" the newly created texture : all future texture functions will modify this texture
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	GLint compiled;
+	// Give the image to OpenGL
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
-	glCompileShader(vertexShader);
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compiled);
-	if(compiled==FALSE)
-	{
-		cout << "Vertex shader not compiled." << endl;
-		printShaderInfoLog(vertexShader);
+	// OpenGL has now copied the data. Free our own version
+	delete [] data;
 
-		glDeleteShader(vertexShader);
-		vertexShader=0;
-		glDeleteShader(fragmentShader);
-		fragmentShader=0;
+	// Poor filtering, or ...
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
 
-		return -1;
-	}
+	// ... nice trilinear filtering.
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compiled);
-	if(compiled==FALSE)
-	{
-		cout << "Fragment shader not compiled." << endl;
-		printShaderInfoLog(fragmentShader);
-
-		glDeleteShader(vertexShader);
-		vertexShader=0;
-		glDeleteShader(fragmentShader);
-		fragmentShader=0;
-
-		return -1;
-	}
-
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-
-	glBindAttribLocation(shaderProgram, 0, "InVertex");
-
-	if(bindTexCoord0)
-		glBindAttribLocation(shaderProgram, 1, "InTexCoord0");
-
-	if(bindNormal)
-		glBindAttribLocation(shaderProgram, 2, "InNormal");
-
-	if(bindColor)
-		glBindAttribLocation(shaderProgram, 3, "InColor");
-
-	glLinkProgram(shaderProgram);
-
-	GLint IsLinked;
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, (GLint *)&IsLinked);
-	if(IsLinked==FALSE)
-	{
-		cout << "Failed to link shader." << endl;
-
-		GLint maxLength;
-		glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &maxLength);
-		if(maxLength>0)
-		{
-			char *pLinkInfoLog = new char[maxLength];
-			glGetProgramInfoLog(shaderProgram, maxLength, &maxLength, pLinkInfoLog);
-			cout << pLinkInfoLog << endl;
-			delete [] pLinkInfoLog;
-		}
-
-		glDetachShader(shaderProgram, vertexShader);
-		glDetachShader(shaderProgram, fragmentShader);
-		glDeleteShader(vertexShader);
-		vertexShader=0;
-		glDeleteShader(fragmentShader);
-		fragmentShader=0;
-		glDeleteProgram(shaderProgram);
-		shaderProgram=0;
-
-		return -1;
-	}
-
-	return 1;		//Success
+	// Return the ID of the texture we just created
+	return textureID;
 }
 
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
