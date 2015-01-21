@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "Helpers.h"
 #include "Camera.h"
+#include "Mesh.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ GLuint textureID;
 GLuint Texture;
 
 Camera *camera;
+Mesh *mesh;
 /******************************************* Functions ******************************************/
 
 void CreateGeometry()
@@ -155,13 +157,11 @@ void CreateGeometry()
 	
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, mesh->getSizePointList(), mesh->getPointList(), GL_STATIC_DRAW);
 
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
-
-
+	glBufferData(GL_ARRAY_BUFFER, mesh->getSizeMapCoordList(), mesh->getMapCoordList(), GL_STATIC_DRAW);
 }
 
 /* GLUT callbacks */
@@ -208,7 +208,7 @@ void DisplayCallbackFunction ( void )
 
 
 	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 12*3); // 3 indices starting at 0 -> 1 triangle
+	glDrawArrays(GL_TRIANGLES, 0, mesh->CountVertex()); 
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -299,10 +299,16 @@ void InitShaders()
 	textureID  = glGetUniformLocation(shaderID, "myTextureSampler");
 }
 
-void InitOther()
+bool InitOther()
 {
 	camera = new Camera();
-	Texture = loadBMP_custom("uvtemplate.bmp");
+	Texture = loadBMP_custom("sun_tex.bmp");
+
+	mesh = new Mesh();
+	bool load = mesh->Load3D("sun.3DS");
+	mesh->init();
+
+	return load;
 }
 
 /* The Main Program */
@@ -314,6 +320,8 @@ int main ( int argc, char *argv[] )
 	glutInitContextVersion(4, 0);
 	glutInitContextFlags(GLUT_CORE_PROFILE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+
+
 	glutInitWindowSize ( 600, 600 ) ;
 
 	/* Create the window */
@@ -327,9 +335,10 @@ int main ( int argc, char *argv[] )
 	/* Initialize all objects */
 	InitGLStates();
 	InitShaders();
-	InitOther();
-
-	CreateGeometry();
+	bool err = InitOther();
+	if (err == true) {
+		CreateGeometry();
+	}
 
 	/* Initialize CALLBACK functions */
 	glutKeyboardFunc	( KeyboardCallbackFunction ) ;

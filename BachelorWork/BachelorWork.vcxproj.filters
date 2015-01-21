@@ -27,6 +27,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib">
@@ -46,6 +49,15 @@
     <None Include="Shader1.vert">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="sun.3DS">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="apollon.3DS">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="table.3DS">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
@@ -54,9 +66,15 @@
     <ClInclude Include="Camera.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="uvtemplate.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="sun_tex.bmp">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

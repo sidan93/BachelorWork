@@ -68,6 +68,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib" />
@@ -75,14 +76,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll" />
+    <None Include="apollon.3DS" />
     <None Include="Shader1.frag" />
     <None Include="Shader1.vert" />
+    <None Include="sun.3DS" />
+    <None Include="table.3DS" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="sun_tex.bmp" />
     <Image Include="uvtemplate.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
