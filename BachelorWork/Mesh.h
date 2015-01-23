@@ -11,33 +11,52 @@ using namespace glm;
 
 class Mesh
 {
+
 private:
-	int MAX_VERTICES;
-	int MAX_POLYGONS;
+	// Our vertex type
+	struct vertex_type{
+		float x,y,z;
+	};
+
+	// The polygon (triangle), 3 numbers that aim 3 vertices
+	struct polygon_type{
+		int a,b,c;
+	};
+
+	// The mapcoord type, 2 texture coordinates for each vertex
+	struct mapcoord_type{
+		float u,v;
+	};
+
+private:
 
 	int _countVectices;
 	int _countPolygons;
 	int _countMapcoord;
 
-	vec3 *_vertex;
-	vec3 *_polygon;
-	vec2 *_mapcoord;
+	vertex_type *_vertex;
+	polygon_type *_polygon;
+	mapcoord_type *_mapcoord;
 
-	GLfloat **_vertexList;
-	GLfloat **_mapcoordList;
+	GLfloat *_vertexList;
+	GLfloat *_mapcoordList;
 
 	string name;
 
 	GLuint _texture;
 	GLuint _textureID;
+
+	GLuint vertexbuffer;
+	GLuint vertexArrays;
+	GLuint uvbuffer;
 public:
 	Mesh(void);
 
 	bool Load3D(const char * file);
 	bool LoadTexture(const char * file);
 
-	GLfloat** getPointList() const;
-	GLfloat** getMapCoordList() const;
+	GLfloat* getPointList() const;
+	GLfloat* getMapCoordList() const;
 
 	GLsizeiptr getSizePointList() const;
 	GLsizeiptr getSizeMapCoordList() const;
@@ -46,6 +65,8 @@ public:
 	int CountMapcoord() const;
 
 	void init();
+	void Draw();
+	void initGeometry();
 
 	~Mesh(void);
 };

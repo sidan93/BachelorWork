@@ -10,7 +10,6 @@ using namespace std;
 
 /************************************** Defined Constants ***************************************/
 
-
 /*************************************** Global Variables ***************************************/
 /* GLUT variables */
 
@@ -21,9 +20,6 @@ using namespace std;
 GLuint shaderID;
 
 GLuint matrixID;
-GLuint vertexbuffer;
-GLuint vertexArrays;
-GLuint uvbuffer;
 
 GLuint textureID;
 GLuint Texture;
@@ -151,17 +147,7 @@ void CreateGeometry()
 		0.667979f, 1.0f-0.335851f
 	};
 
-	// Магия без которой не рисует
-	glGenVertexArrays(1, &vertexArrays);
-	glBindVertexArray(vertexArrays);
-	
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, mesh->getSizePointList(), mesh->getPointList(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &uvbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, mesh->getSizeMapCoordList(), mesh->getMapCoordList(), GL_STATIC_DRAW);
+	mesh->initGeometry();
 }
 
 /* GLUT callbacks */
@@ -182,36 +168,7 @@ void DisplayCallbackFunction ( void )
 	// Set our "myTextureSampler" sampler to user Texture Unit 0
 	glUniform1i(textureID, 0);
 
-
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-		);
-
-	// 2nd attribute buffer : colors
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glVertexAttribPointer(
-		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-		2,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		(void*)0                          // array buffer offset
-		);
-
-
-	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, mesh->CountVertex()); 
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+	mesh->Draw();
 
 	glutSwapBuffers();
 }
@@ -248,8 +205,9 @@ void SpecialKeyboardCallbackFunction ( int key, int x, int y )
 
 void MouseCallbackFunction ( int button, int updown, int x, int y )
 {
-	if ( updown == GLUT_DOWN )
+	if ( updown == GLUT_UP )
 	{
+
 	}
 }
 
@@ -305,10 +263,10 @@ bool InitOther()
 	Texture = loadBMP_custom("sun_tex.bmp");
 
 	mesh = new Mesh();
-	bool load = mesh->Load3D("sun.3DS");
+	bool load = mesh->Load3D("apollon.3DS");
 	mesh->init();
 
-	return load;
+	return true;
 }
 
 /* The Main Program */
