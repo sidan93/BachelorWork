@@ -302,7 +302,7 @@ void Mesh::Draw()
 
 	// Draw the triangle !
 	//glDrawArrays(GL_TRIANGLES, 0, object.polygons_qty * 3); 
-	glDrawArrays(GL_TRIANGLES, 0, _countVertexList); 
+	glDrawArrays(GL_POINTS, 0, _countVertexList); 
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

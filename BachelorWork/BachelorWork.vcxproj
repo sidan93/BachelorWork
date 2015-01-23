@@ -77,7 +77,6 @@
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll" />
     <None Include="apollon.3DS" />
-    <None Include="e-boat.3DS" />
     <None Include="firtree.3ds" />
     <None Include="ruins.3ds" />
     <None Include="Shader1.frag" />
@@ -92,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="sun_tex.bmp" />
-    <Image Include="uvtemplate.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

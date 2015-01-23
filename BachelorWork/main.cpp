@@ -260,7 +260,7 @@ void InitGLStates()
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0,0,0,0);
 	glClearDepth(1.0);
 	glClearStencil(0);
 	//glDisable(GL_BLEND);
@@ -282,7 +282,7 @@ bool InitOther()
 	Texture = loadBMP_custom("sun_tex.bmp");
 
 	mesh = new Mesh();
-	bool load = mesh->Load3D("firtree.3DS");
+	bool load = mesh->Load3D("table.3DS");
 	mesh->init();
 
 	return true;

@@ -64,9 +64,6 @@
     <None Include="ruins.3ds">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="e-boat.3DS">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
@@ -80,9 +77,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="uvtemplate.bmp">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
     <Image Include="sun_tex.bmp">
       <Filter>Файлы ресурсов</Filter>
     </Image>
