@@ -5,16 +5,20 @@ Mesh::Mesh(void)
 {
 	name = "                                                     ";
 
-	_countVectices = 0;
-	_countPolygons = 0;
-	_countMapcoord = 0;
+	_countVectices = vector<int>();
+	_countPolygons = vector<int>();
+	_countMapcoord = vector<int>();
+
+	_vertex = vector<vertex_type*>();
+	_polygon = vector<polygon_type*>();
+	_mapcoord = vector<mapcoord_type*>();
 
 }
 
 bool Mesh::Load3D(const char * file)
 {
 	int i; //Index variable
-
+	int position;
 
 	FILE *l_file; //File pointer
 
@@ -87,19 +91,20 @@ bool Mesh::Load3D(const char * file)
 			//-------------------------------------------
 		case 0x4110: 
 			fread (&l_qty, sizeof (unsigned short), 1, l_file);
-			_countVectices = l_qty;
-			_vertex = new vertex_type[_countVectices];
+			_countVectices.push_back(l_qty);
+			position = _vertex.size();
+			_vertex.push_back(new vertex_type[l_qty]);
 			printf("Number of vertices: %d\n",l_qty);
 			for (i=0; i<l_qty; i++)
 			{
-				_vertex[i].x = 0;
-				_vertex[i].y = 0;
-				_vertex[i].z = 0;
-				fread(&_vertex[i].x, sizeof(float), 1, l_file);
+				_vertex[position][i].x = 0;
+				_vertex[position][i].y = 0;
+				_vertex[position][i].z = 0;
+				fread(&_vertex[position][i].x, sizeof(float), 1, l_file);
 				//printf("Vertices list x: %f\n",_vertex[i].x);
-				fread (&_vertex[i].y, sizeof(float), 1, l_file);
+				fread (&_vertex[position][i].y, sizeof(float), 1, l_file);
 				//printf("Vertices list y: %f\n",_vertex[i].y);
-				fread (&_vertex[i].z, sizeof(float), 1, l_file);
+				fread (&_vertex[position][i].z, sizeof(float), 1, l_file);
 				//printf("Vertices list z: %f\n",_vertex[i].z);
 			}
 			break;
@@ -113,20 +118,21 @@ bool Mesh::Load3D(const char * file)
 			//-------------------------------------------
 		case 0x4120:
 			fread (&l_qty, sizeof (unsigned short), 1, l_file);
-			_countPolygons = l_qty;
-			_polygon = new polygon_type[_countPolygons];
+			_countPolygons.push_back(l_qty);
+			position = _polygon.size();
+			_polygon.push_back(new polygon_type[l_qty]);
 			printf("Number of polygons: %d\n",l_qty); 
 			for (i=0; i<l_qty; i++)
 			{
-				_polygon[i].a = 0;
-				_polygon[i].b = 0;
-				_polygon[i].c = 0;
+				_polygon[position][i].a = 0;
+				_polygon[position][i].b = 0;
+				_polygon[position][i].c = 0;
 				int value;
-				fread (&_polygon[i].a, sizeof (unsigned short), 1, l_file);
+				fread (&_polygon[position][i].a, sizeof (unsigned short), 1, l_file);
 				//printf("Polygon point a: %d\n",_polygon[i].x);
-				fread (&_polygon[i].b, sizeof (unsigned short), 1, l_file);
+				fread (&_polygon[position][i].b, sizeof (unsigned short), 1, l_file);
 				//printf("Polygon point b: %d\n",_polygon[i].y);
-				fread (&_polygon[i].c, sizeof (unsigned short), 1, l_file);
+				fread (&_polygon[position][i].c, sizeof (unsigned short), 1, l_file);
 				//printf("Polygon point c: %d\n",_polygon[i].z);
 				fread (&l_face_flags, sizeof (unsigned short), 1, l_file);
 				//printf("Face flags: %x\n",l_face_flags);
@@ -142,15 +148,16 @@ bool Mesh::Load3D(const char * file)
 			//-------------------------------------------
 		case 0x4140:
 			fread (&l_qty, sizeof (unsigned short), 1, l_file);
-			_countMapcoord = l_qty;
-			_mapcoord = new mapcoord_type[_countMapcoord];
+			_countMapcoord.push_back(l_qty);
+			position = _mapcoord.size();
+			_mapcoord.push_back(new mapcoord_type[l_qty]);
 			for (i=0; i<l_qty; i++)
 			{
-				_mapcoord[i].u = 0;
-				_mapcoord[i].v = 0;
-				fread (&_mapcoord[i].u, sizeof (float), 1, l_file);
+				_mapcoord[position][i].u = 0;
+				_mapcoord[position][i].v = 0;
+				fread (&_mapcoord[position][i].u, sizeof (float), 1, l_file);
 				//printf("Mapping list u: %f\n",_mapcoord[i].x);
-				fread (&_mapcoord[i].v, sizeof (float), 1, l_file);
+				fread (&_mapcoord[position][i].v, sizeof (float), 1, l_file);
 				//printf("Mapping list v: %f\n",_mapcoord[i].y);
 			}
 			break;
@@ -174,60 +181,62 @@ bool Mesh::LoadTexture(const char * file)
 	return true;
 }
 
-GLfloat* Mesh::getPointList() const
-{
-	return _vertexList;
-}
-GLfloat* Mesh::getMapCoordList() const
-{
-	return _mapcoordList;
-}
-
 
 GLsizeiptr Mesh::getSizePointList() const
 {
-	return 4 * 9 * _countPolygons;
+	return 4 * _countVertexList;
 }
 GLsizeiptr Mesh::getSizeMapCoordList() const
 {
-	return 4 * 6 * _countPolygons;
+	return 4 * _countMapcoordList;
 }
 
 // Высчитываем массивы которые будут учавствовать в отрисовке
 void Mesh::init()
 {
-	_vertexList = new GLfloat[9 * _countPolygons];
-	_mapcoordList = new GLfloat[6 * _countPolygons];
+	_countVertexList = 0;
+	for (int i = 0; i < _countPolygons.size(); i++)
+		_countVertexList += _countPolygons[i];
+	
+	_countMapcoordList = _countVertexList * 6;
+	_countVertexList *= 9;
 
-	for (int i = 0; i < _countPolygons; i++)
+	_vertexList = new GLfloat[_countVertexList];
+	_mapcoordList = new GLfloat[_countMapcoordList];
+	int i = 0;
+	for (int position = 0; position < _countPolygons.size(); position++)
 	{
-		// Заполняем вершинны массив
-		_vertexList[i*9 + 0] = _vertex[_polygon[i].a].x;
-		_vertexList[i*9 + 1] = _vertex[_polygon[i].a].y;
-		_vertexList[i*9 + 2] = _vertex[_polygon[i].a].z;
-
-		_vertexList[i*9 + 3] = _vertex[_polygon[i].b].x;
-		_vertexList[i*9 + 4] = _vertex[_polygon[i].b].y;
-		_vertexList[i*9 + 5] = _vertex[_polygon[i].b].z;
-
-		_vertexList[i*9 + 6] = _vertex[_polygon[i].c].x;
-		_vertexList[i*9 + 7] = _vertex[_polygon[i].c].y;
-		_vertexList[i*9 + 8] = _vertex[_polygon[i].c].z;
-
-		if (_countMapcoord != 0) 
+		for (; i < _countPolygons[position]; i++)
 		{
-			// Заполняем текстурный массив
-			_mapcoordList[i*6 + 0] = _mapcoord[_polygon[i].a].u;
-			_mapcoordList[i*6 + 1] = _mapcoord[_polygon[i].a].v;
+			// Заполняем вершинны массив
+			_vertexList[i*9 + 0] = _vertex[position][_polygon[position][i].a].x;
+			_vertexList[i*9 + 1] = _vertex[position][_polygon[position][i].a].y;
+			_vertexList[i*9 + 2] = _vertex[position][_polygon[position][i].a].z;
 
-			_mapcoordList[i*6 + 2] = _mapcoord[_polygon[i].b].u;
-			_mapcoordList[i*6 + 3] = _mapcoord[_polygon[i].b].v;
+			_vertexList[i*9 + 3] = _vertex[position][_polygon[position][i].b].x;
+			_vertexList[i*9 + 4] = _vertex[position][_polygon[position][i].b].y;
+			_vertexList[i*9 + 5] = _vertex[position][_polygon[position][i].b].z;
 
-			_mapcoordList[i*6 + 4] = _mapcoord[_polygon[i].c].u;
-			_mapcoordList[i*6 + 5] = _mapcoord[_polygon[i].c].v;
+			_vertexList[i*9 + 6] = _vertex[position][_polygon[position][i].c].x;
+			_vertexList[i*9 + 7] = _vertex[position][_polygon[position][i].c].y;
+			_vertexList[i*9 + 8] = _vertex[position][_polygon[position][i].c].z;
+
+			if (_countMapcoord.size() > position && _countMapcoord[position] != 0) 
+			{
+				// Заполняем текстурный массив
+				_mapcoordList[i*6 + 0] = _mapcoord[position][_polygon[position][i].a].u;
+				_mapcoordList[i*6 + 1] = _mapcoord[position][_polygon[position][i].a].v;
+
+				_mapcoordList[i*6 + 2] = _mapcoord[position][_polygon[position][i].b].u;
+				_mapcoordList[i*6 + 3] = _mapcoord[position][_polygon[position][i].b].v;
+
+				_mapcoordList[i*6 + 4] = _mapcoord[position][_polygon[position][i].c].u;
+				_mapcoordList[i*6 + 5] = _mapcoord[position][_polygon[position][i].c].v;
+			}
 		}
-	}
 
+
+	}
 	/*
 	if (false)
 	{
@@ -293,21 +302,13 @@ void Mesh::Draw()
 
 	// Draw the triangle !
 	//glDrawArrays(GL_TRIANGLES, 0, object.polygons_qty * 3); 
-	glDrawArrays(GL_TRIANGLES, 0, _countPolygons * 3); 
+	glDrawArrays(GL_TRIANGLES, 0, _countVertexList); 
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 
 }
 
-int Mesh::CountVertex() const
-{
-	return 9 * _countPolygons;
-}
-int Mesh::CountMapcoord() const
-{
-	return 6 * _countPolygons;
-}
 Mesh::~Mesh(void)
 {
 }

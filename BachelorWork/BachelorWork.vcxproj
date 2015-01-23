@@ -77,6 +77,9 @@
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll" />
     <None Include="apollon.3DS" />
+    <None Include="e-boat.3DS" />
+    <None Include="firtree.3ds" />
+    <None Include="ruins.3ds" />
     <None Include="Shader1.frag" />
     <None Include="Shader1.vert" />
     <None Include="sun.3DS" />

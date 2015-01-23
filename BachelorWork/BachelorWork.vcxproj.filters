@@ -58,6 +58,15 @@
     <None Include="table.3DS">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="firtree.3ds">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="ruins.3ds">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="e-boat.3DS">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">

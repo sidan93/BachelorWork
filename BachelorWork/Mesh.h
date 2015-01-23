@@ -30,16 +30,18 @@ private:
 
 private:
 
-	int _countVectices;
-	int _countPolygons;
-	int _countMapcoord;
+	vector<int> _countVectices;
+	vector<int> _countPolygons;
+	vector<int> _countMapcoord;
 
-	vertex_type *_vertex;
-	polygon_type *_polygon;
-	mapcoord_type *_mapcoord;
+	vector<vertex_type*> _vertex;
+	vector<polygon_type*> _polygon;
+	vector<mapcoord_type*> _mapcoord;
 
-	GLfloat *_vertexList;
-	GLfloat *_mapcoordList;
+	GLfloat* _vertexList;
+	GLfloat* _mapcoordList;
+	int _countVertexList;
+	int _countMapcoordList;
 
 	string name;
 
@@ -55,14 +57,8 @@ public:
 	bool Load3D(const char * file);
 	bool LoadTexture(const char * file);
 
-	GLfloat* getPointList() const;
-	GLfloat* getMapCoordList() const;
-
 	GLsizeiptr getSizePointList() const;
 	GLsizeiptr getSizeMapCoordList() const;
-
-	int CountVertex() const;
-	int CountMapcoord() const;
 
 	void init();
 	void Draw();

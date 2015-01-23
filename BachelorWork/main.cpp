@@ -189,6 +189,25 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 	case 27 :  /* Escape key */
 		glutLeaveMainLoop () ;
 		break ;
+	case 'q':
+		camera->_position.x ++;
+		break;
+	case 'a':
+		camera->_position.x --;
+		break;
+	case 'w':
+		camera->_position.y ++;
+		break;
+	case 's':
+		camera->_position.y --;
+		break;
+	case 'e':
+		camera->_position.z ++;
+		break;
+	case 'd':
+		camera->_position.z --;
+		break;
+	camera->Update();
 	}
 }
 
@@ -263,7 +282,7 @@ bool InitOther()
 	Texture = loadBMP_custom("sun_tex.bmp");
 
 	mesh = new Mesh();
-	bool load = mesh->Load3D("apollon.3DS");
+	bool load = mesh->Load3D("firtree.3DS");
 	mesh->init();
 
 	return true;
