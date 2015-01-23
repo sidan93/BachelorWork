@@ -77,12 +77,14 @@
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll" />
     <None Include="apollon.3DS" />
+    <None Include="car.3ds" />
+    <None Include="ElephantBody.3ds" />
     <None Include="firtree.3ds" />
     <None Include="ruins.3ds" />
     <None Include="Shader1.frag" />
     <None Include="Shader1.vert" />
     <None Include="sun.3DS" />
-    <None Include="table.3DS" />
+    <None Include="Torus.3ds" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -91,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="sun_tex.bmp" />
+    <Image Include="texture01.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

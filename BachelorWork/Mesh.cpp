@@ -13,12 +13,15 @@ Mesh::Mesh(void)
 	_polygon = vector<polygon_type*>();
 	_mapcoord = vector<mapcoord_type*>();
 
+	_drawType= GL_POINTS;
 }
 
 bool Mesh::Load3D(const char * file)
 {
 	int i; //Index variable
 	int position;
+	unsigned short value;
+	int z = 0;
 
 	FILE *l_file; //File pointer
 
@@ -181,57 +184,45 @@ bool Mesh::LoadTexture(const char * file)
 	return true;
 }
 
-
-GLsizeiptr Mesh::getSizePointList() const
-{
-	return 4 * _countVertexList;
-}
-GLsizeiptr Mesh::getSizeMapCoordList() const
-{
-	return 4 * _countMapcoordList;
-}
-
 // Высчитываем массивы которые будут учавствовать в отрисовке
 void Mesh::init()
 {
-	_countVertexList = 0;
-	for (int i = 0; i < _countPolygons.size(); i++)
-		_countVertexList += _countPolygons[i];
-	
-	_countMapcoordList = _countVertexList * 6;
-	_countVertexList *= 9;
 
-	_vertexList = new GLfloat[_countVertexList];
-	_mapcoordList = new GLfloat[_countMapcoordList];
-	int i = 0;
+	_vertexList = vector<GLfloat*>();
+	_mapcoordList = vector<GLfloat*>();
+	_countVertexList = vector<int>();
+	_countMapcoordList = vector<int>();
+
 	for (int position = 0; position < _countPolygons.size(); position++)
 	{
-		for (; i < _countPolygons[position]; i++)
+		_vertexList.push_back(new GLfloat[_countPolygons[position] * 9]);
+		_mapcoordList.push_back(new GLfloat[_countPolygons[position] * 6]);
+		for (int i = 0; i < _countPolygons[position]; i++)
 		{
 			// Заполняем вершинны массив
-			_vertexList[i*9 + 0] = _vertex[position][_polygon[position][i].a].x;
-			_vertexList[i*9 + 1] = _vertex[position][_polygon[position][i].a].y;
-			_vertexList[i*9 + 2] = _vertex[position][_polygon[position][i].a].z;
+			_vertexList[position][i*9 + 0] = _vertex[position][_polygon[position][i].a].x;
+			_vertexList[position][i*9 + 1] = _vertex[position][_polygon[position][i].a].y;
+			_vertexList[position][i*9 + 2] = _vertex[position][_polygon[position][i].a].z;
 
-			_vertexList[i*9 + 3] = _vertex[position][_polygon[position][i].b].x;
-			_vertexList[i*9 + 4] = _vertex[position][_polygon[position][i].b].y;
-			_vertexList[i*9 + 5] = _vertex[position][_polygon[position][i].b].z;
+			_vertexList[position][i*9 + 3] = _vertex[position][_polygon[position][i].b].x;
+			_vertexList[position][i*9 + 4] = _vertex[position][_polygon[position][i].b].y;
+			_vertexList[position][i*9 + 5] = _vertex[position][_polygon[position][i].b].z;
 
-			_vertexList[i*9 + 6] = _vertex[position][_polygon[position][i].c].x;
-			_vertexList[i*9 + 7] = _vertex[position][_polygon[position][i].c].y;
-			_vertexList[i*9 + 8] = _vertex[position][_polygon[position][i].c].z;
+			_vertexList[position][i*9 + 6] = _vertex[position][_polygon[position][i].c].x;
+			_vertexList[position][i*9 + 7] = _vertex[position][_polygon[position][i].c].y;
+			_vertexList[position][i*9 + 8] = _vertex[position][_polygon[position][i].c].z;
 
 			if (_countMapcoord.size() > position && _countMapcoord[position] != 0) 
 			{
 				// Заполняем текстурный массив
-				_mapcoordList[i*6 + 0] = _mapcoord[position][_polygon[position][i].a].u;
-				_mapcoordList[i*6 + 1] = _mapcoord[position][_polygon[position][i].a].v;
+				_mapcoordList[position][i*6 + 0] = _mapcoord[position][_polygon[position][i].a].u;
+				_mapcoordList[position][i*6 + 1] = _mapcoord[position][_polygon[position][i].a].v;
 
-				_mapcoordList[i*6 + 2] = _mapcoord[position][_polygon[position][i].b].u;
-				_mapcoordList[i*6 + 3] = _mapcoord[position][_polygon[position][i].b].v;
+				_mapcoordList[position][i*6 + 2] = _mapcoord[position][_polygon[position][i].b].u;
+				_mapcoordList[position][i*6 + 3] = _mapcoord[position][_polygon[position][i].b].v;
 
-				_mapcoordList[i*6 + 4] = _mapcoord[position][_polygon[position][i].c].u;
-				_mapcoordList[i*6 + 5] = _mapcoord[position][_polygon[position][i].c].v;
+				_mapcoordList[position][i*6 + 4] = _mapcoord[position][_polygon[position][i].c].u;
+				_mapcoordList[position][i*6 + 5] = _mapcoord[position][_polygon[position][i].c].v;
 			}
 		}
 
@@ -260,7 +251,8 @@ void Mesh::init()
 	}
 	*/
 }
-void Mesh::initGeometry()
+
+void Mesh::initGeometry(int pos)
 {
 	// Магия без которой не рисует
 	glGenVertexArrays(1, &vertexArrays);
@@ -268,45 +260,57 @@ void Mesh::initGeometry()
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, getSizePointList(), _vertexList, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _countPolygons[pos] * 4 * 9, _vertexList[pos], GL_STATIC_DRAW);
 
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, getSizeMapCoordList(), _mapcoordList, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _countPolygons[pos] * 4 * 6, _mapcoordList[pos], GL_STATIC_DRAW);
 }
 void Mesh::Draw() 
 {
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-		);
+	for (int i = 0; i < _countPolygons.size(); i++)
+	{
+		initGeometry(i);
 
-	// 2nd attribute buffer : colors
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glVertexAttribPointer(
-		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-		2,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		(void*)0                          // array buffer offset
-		);
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+			);
+
+		// 2nd attribute buffer : colors
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+		glVertexAttribPointer(
+			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			2,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+			);
 
 
-	// Draw the triangle !
-	//glDrawArrays(GL_TRIANGLES, 0, object.polygons_qty * 3); 
-	glDrawArrays(GL_POINTS, 0, _countVertexList); 
+		// Draw the triangle !
+		//glDrawArrays(GL_TRIANGLES, 0, object.polygons_qty * 3); 
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
+		
 
+		glDrawArrays(_drawType, 0, _countPolygons[i] * 9 * 4); 
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+	}
+}
+
+void Mesh::setDrawType(int type)
+{
+	_drawType = type;
 }
 
 Mesh::~Mesh(void)

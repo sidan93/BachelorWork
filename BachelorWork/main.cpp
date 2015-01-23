@@ -21,11 +21,14 @@ GLuint shaderID;
 
 GLuint matrixID;
 
-GLuint textureID;
-GLuint Texture;
+GLuint textureID1;
+GLuint textureID2;
+GLuint Texture1;
+GLuint Texture2;
 
 Camera *camera;
 Mesh *mesh;
+
 /******************************************* Functions ******************************************/
 
 void CreateGeometry()
@@ -147,7 +150,7 @@ void CreateGeometry()
 		0.667979f, 1.0f-0.335851f
 	};
 
-	mesh->initGeometry();
+	//mesh->initGeometry();
 }
 
 /* GLUT callbacks */
@@ -156,18 +159,21 @@ void DisplayCallbackFunction ( void )
 {
 	//Clear all the buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 	camera->Update();
 
 	glUseProgram(shaderID);
 
-	glEnable(GL_TEXTURE0);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &camera->MVP[0][0]);
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, Texture);
-	// Set our "myTextureSampler" sampler to user Texture Unit 0
-	glUniform1i(textureID, 0);
 
+	glUniform1i(textureID1, 0);
+	glUniform1i(textureID2, 1);
+
+	glActiveTexture(GL_TEXTURE0 + 0);
+	glBindTexture(GL_TEXTURE_2D, Texture1);
+	glActiveTexture(GL_TEXTURE0 + 1);
+	glBindTexture(GL_TEXTURE_2D, Texture2);
+	
 	mesh->Draw();
 
 	glutSwapBuffers();
@@ -206,6 +212,21 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		break;
 	case 'd':
 		camera->_position.z --;
+		break;
+	case '1':
+		mesh->setDrawType(GL_POINTS);
+		break;
+	case '2':
+		mesh->setDrawType(GL_LINE_LOOP);
+		break;
+	case '3':
+		mesh->setDrawType(GL_TRIANGLES);
+		break;
+	case '4':
+		mesh->setDrawType(GL_TRIANGLE_STRIP);
+		break;
+	case '5':
+		mesh->setDrawType(GL_TRIANGLE_FAN);
 		break;
 	camera->Update();
 	}
@@ -263,6 +284,7 @@ void InitGLStates()
 	glClearColor(0,0,0,0);
 	glClearDepth(1.0);
 	glClearStencil(0);
+	glEnable(GL_TEXTURE0);
 	//glDisable(GL_BLEND);
 	//glDisable(GL_ALPHA_TEST);
 	//glDisable(GL_DITHER);
@@ -273,16 +295,20 @@ void InitShaders()
 {
 	shaderID = LoadShaders("Shader1.vert", "Shader1.frag");
 	matrixID = glGetUniformLocation(shaderID, "MVP");
-	textureID  = glGetUniformLocation(shaderID, "myTextureSampler");
+	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
+	textureID2 = glGetUniformLocation(shaderID, "additinalSampler");
 }
 
 bool InitOther()
 {
 	camera = new Camera();
-	Texture = loadBMP_custom("sun_tex.bmp");
+	//Texture = loadBMP_custom("sun_tex.bmp");
+	//Texture = LoadTexture("sun_tex.bmp", 512, 512);
+	Texture1 = loadTexture("sun_tex.bmp");
+	Texture2 = loadTexture("texture01.jpg");
 
 	mesh = new Mesh();
-	bool load = mesh->Load3D("table.3DS");
+	bool load = mesh->Load3D("Torus.3ds");
 	mesh->init();
 
 	return true;
@@ -297,7 +323,6 @@ int main ( int argc, char *argv[] )
 	glutInitContextVersion(4, 0);
 	glutInitContextFlags(GLUT_CORE_PROFILE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
-
 
 	glutInitWindowSize ( 600, 600 ) ;
 

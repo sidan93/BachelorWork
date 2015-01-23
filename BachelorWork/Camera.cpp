@@ -4,7 +4,7 @@
 
 Camera::Camera(void)
 {
-	_position = vec3(0,0,1000);
+	_position = vec3(0,0,100);
 	_target = vec3(0,0,0);
 	_up = vec3(0,1,0);
 

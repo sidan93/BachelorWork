@@ -38,10 +38,10 @@ private:
 	vector<polygon_type*> _polygon;
 	vector<mapcoord_type*> _mapcoord;
 
-	GLfloat* _vertexList;
-	GLfloat* _mapcoordList;
-	int _countVertexList;
-	int _countMapcoordList;
+	vector<GLfloat*> _vertexList;
+	vector<GLfloat*> _mapcoordList;
+	vector<int> _countVertexList;
+	vector<int> _countMapcoordList;
 
 	string name;
 
@@ -51,18 +51,19 @@ private:
 	GLuint vertexbuffer;
 	GLuint vertexArrays;
 	GLuint uvbuffer;
+
+	int _drawType;
 public:
 	Mesh(void);
 
 	bool Load3D(const char * file);
 	bool LoadTexture(const char * file);
 
-	GLsizeiptr getSizePointList() const;
-	GLsizeiptr getSizeMapCoordList() const;
-
 	void init();
 	void Draw();
-	void initGeometry();
+	void initGeometry(int pos);
+
+	void setDrawType(int type);
 
 	~Mesh(void);
 };

@@ -55,13 +55,19 @@
     <None Include="apollon.3DS">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="table.3DS">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
     <None Include="firtree.3ds">
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="ruins.3ds">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="car.3ds">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="ElephantBody.3ds">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="Torus.3ds">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>
@@ -78,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="sun_tex.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="texture01.jpg">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>
