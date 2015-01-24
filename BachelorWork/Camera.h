@@ -14,10 +14,10 @@ private:
 	mat4 _view;
 	mat4 _model;
 	
-	vec3 _target;
 	vec3 _up;
 public:
 	vec3 _position;
+	vec3 _target;
 public:
 	Camera(void);
 

@@ -171,7 +171,7 @@ void DisplayCallbackFunction ( void )
 
 	glActiveTexture(GL_TEXTURE0 + 0);
 	glBindTexture(GL_TEXTURE_2D, Texture1);
-	glActiveTexture(GL_TEXTURE0 + 1);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, Texture2);
 	
 	mesh->Draw();
@@ -213,19 +213,49 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 	case 'd':
 		camera->_position.z --;
 		break;
+	case 't':
+		camera->_target.x ++;
+		break;
+	case 'g':
+		camera->_target.x --;
+		break;
+	case 'y':
+		camera->_target.y ++;
+		break;
+	case 'h':
+		camera->_target.y --;
+		break;
+	case 'u':
+		camera->_target.z ++;
+		break;
+	case 'j':
+		camera->_target.z --;
+		break;
 	case '1':
 		mesh->setDrawType(GL_POINTS);
 		break;
 	case '2':
-		mesh->setDrawType(GL_LINE_LOOP);
+		mesh->setDrawType(GL_LINES);
 		break;
 	case '3':
-		mesh->setDrawType(GL_TRIANGLES);
+		mesh->setDrawType(GL_LINE_STRIP);
 		break;
 	case '4':
-		mesh->setDrawType(GL_TRIANGLE_STRIP);
+		mesh->setDrawType(GL_LINE_LOOP);
 		break;
 	case '5':
+		mesh->setDrawType(GL_LINE_STRIP_ADJACENCY);
+		break;
+	case '6':
+		mesh->setDrawType(GL_LINES_ADJACENCY);
+		break;
+	case '7':
+		mesh->setDrawType(GL_TRIANGLES);
+		break;
+	case '8':
+		mesh->setDrawType(GL_TRIANGLE_STRIP);
+		break;
+	case '9':
 		mesh->setDrawType(GL_TRIANGLE_FAN);
 		break;
 	camera->Update();
@@ -307,9 +337,7 @@ bool InitOther()
 	Texture1 = loadTexture("sun_tex.bmp");
 	Texture2 = loadTexture("texture01.jpg");
 
-	mesh = new Mesh();
-	bool load = mesh->Load3D("Torus.3ds");
-	mesh->init();
+	mesh = new Mesh("ElephantBody.3ds", "texture01.jpg");
 
 	return true;
 }
@@ -337,8 +365,8 @@ int main ( int argc, char *argv[] )
 	/* Initialize all objects */
 	InitGLStates();
 	InitShaders();
-	bool err = InitOther();
-	if (err == true) {
+	bool init_ = InitOther();
+	if (init_  == true) {
 		CreateGeometry();
 	}
 

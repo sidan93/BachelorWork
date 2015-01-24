@@ -18,4 +18,5 @@ void main(){
 	color = texture2D(additinalSampler, UV);
 	//color.g *= 2;
 	//color = normalize(vec3(pos.x, pos.y, pos.z));
+	color.r = 1;
 }

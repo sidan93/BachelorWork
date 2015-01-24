@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(void)
+Mesh::Mesh(const char *meshFile, const char *textureFile)
 {
 	name = "                                                     ";
 
@@ -14,6 +14,11 @@ Mesh::Mesh(void)
 	_mapcoord = vector<mapcoord_type*>();
 
 	_drawType= GL_POINTS;
+	
+	Load3D(meshFile);
+	//LoadTexture(textureFile);
+	init();
+	initGeometry();
 }
 
 bool Mesh::Load3D(const char * file)
@@ -187,16 +192,20 @@ bool Mesh::LoadTexture(const char * file)
 // ¬ысчитываем массивы которые будут учавствовать в отрисовке
 void Mesh::init()
 {
-
 	_vertexList = vector<GLfloat*>();
 	_mapcoordList = vector<GLfloat*>();
+	_normalList = vector<GLfloat*>();
+
 	_countVertexList = vector<int>();
 	_countMapcoordList = vector<int>();
+	_countNormalList = vector<int>();
 
 	for (int position = 0; position < _countPolygons.size(); position++)
 	{
 		_vertexList.push_back(new GLfloat[_countPolygons[position] * 9]);
 		_mapcoordList.push_back(new GLfloat[_countPolygons[position] * 6]);
+		_normalList.push_back(new GLfloat[_countPolygons[position] *3]);
+		
 		for (int i = 0; i < _countPolygons[position]; i++)
 		{
 			// «аполн€ем вершинны массив
@@ -211,6 +220,16 @@ void Mesh::init()
 			_vertexList[position][i*9 + 6] = _vertex[position][_polygon[position][i].c].x;
 			_vertexList[position][i*9 + 7] = _vertex[position][_polygon[position][i].c].y;
 			_vertexList[position][i*9 + 8] = _vertex[position][_polygon[position][i].c].z;
+			
+			// –асчитаем нормаль к тругольнику
+			vec3 v1 = vec3(_vertexList[position][i*9 + 0], _vertexList[position][i*9 + 1], _vertexList[position][i*9 + 2]);
+			vec3 v2 = vec3(_vertexList[position][i*9 + 3], _vertexList[position][i*9 + 4], _vertexList[position][i*9 + 5]);
+			vec3 v3 = vec3(_vertexList[position][i*9 + 6], _vertexList[position][i*9 + 7], _vertexList[position][i*9 + 8]);
+
+			vec3 normal = glm::normalize(glm::cross(v2 - v1, v3 - v1));
+			_normalList[position][i*3 + 0] = normal.x;
+			_normalList[position][i*3 + 1] = normal.y;
+			_normalList[position][i*3 + 2] = normal.z;
 
 			if (_countMapcoord.size() > position && _countMapcoord[position] != 0) 
 			{
@@ -225,55 +244,40 @@ void Mesh::init()
 				_mapcoordList[position][i*6 + 5] = _mapcoord[position][_polygon[position][i].c].v;
 			}
 		}
-
-
 	}
-	/*
-	if (false)
-	{
-		delete[] *_vertexList;
-		delete[] *_mapcoordList;
-
-		*_vertexList = new GLfloat[_countVectices * 3];
-		*_mapcoordList = new GLfloat[_countMapcoord * 3];
-
-		for (int i = 0; i < _countVectices; i++)
-		{
-			_vertexList[i + 0] = _vertex[i].x;
-			_vertexList[i + 1] = _vertex[i].y;
-			_vertexList[i + 2] = _vertex[i].z;
-		}
-		for (int i = 0; i < _countMapcoord; i++)
-		{
-			_mapcoordList[i + 0] = _mapcoord[i].x;
-			_mapcoordList[i + 1] = _mapcoord[i].y;
-		}
-	}
-	*/
 }
 
-void Mesh::initGeometry(int pos)
+void Mesh::initGeometry()
 {
 	// ћаги€ без которой не рисует
 	glGenVertexArrays(1, &vertexArrays);
 	glBindVertexArray(vertexArrays);
+	vertexbuffer.resize(_countPolygons.size());
+	uvbuffer.resize(_countPolygons.size());
+	normalbuffer.resize(_countPolygons.size());
 
-	glGenBuffers(1, &vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, _countPolygons[pos] * 4 * 9, _vertexList[pos], GL_STATIC_DRAW);
+	for (int i = 0; i < _countPolygons.size(); i++)
+	{
+		glGenBuffers(1, &vertexbuffer[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[i]);
+		glBufferData(GL_ARRAY_BUFFER, _countPolygons[i] * 4 * 9, _vertexList[i], GL_STATIC_DRAW);
 
-	glGenBuffers(1, &uvbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-	glBufferData(GL_ARRAY_BUFFER, _countPolygons[pos] * 4 * 6, _mapcoordList[pos], GL_STATIC_DRAW);
+		glGenBuffers(1, &uvbuffer[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer[i]);
+		glBufferData(GL_ARRAY_BUFFER, _countPolygons[i] * 4 * 6, _mapcoordList[i], GL_STATIC_DRAW);
+
+		glGenBuffers(1, &normalbuffer[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer[i]);
+		glBufferData(GL_ARRAY_BUFFER, _countPolygons[i] * 4 * 3, _normalList[i], GL_STATIC_DRAW);
+	}
 }
 void Mesh::Draw() 
 {
 	for (int i = 0; i < _countPolygons.size(); i++)
 	{
-		initGeometry(i);
 
 		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[i]);
 		glVertexAttribPointer(
 			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
 			3,                  // size
@@ -283,12 +287,24 @@ void Mesh::Draw()
 			(void*)0            // array buffer offset
 			);
 
-		// 2nd attribute buffer : colors
+		// 2nd attribute buffer : uv
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer[i]);
 		glVertexAttribPointer(
 			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
 			2,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+			);
+
+		// 3nd attribute buffer : normal
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer[i]);
+		glVertexAttribPointer(
+			2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			3,                                // size
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
 			0,                                // stride
@@ -299,12 +315,11 @@ void Mesh::Draw()
 		// Draw the triangle !
 		//glDrawArrays(GL_TRIANGLES, 0, object.polygons_qty * 3); 
 
-		
-
 		glDrawArrays(_drawType, 0, _countPolygons[i] * 9 * 4); 
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 	}
 }
 

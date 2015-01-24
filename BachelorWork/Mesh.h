@@ -5,6 +5,7 @@
 #include "GL/glew.h"
 #include "Helpers.h"
 #include <memory>
+#include "glm/glm.hpp"
 
 using namespace std;
 using namespace glm;
@@ -40,29 +41,31 @@ private:
 
 	vector<GLfloat*> _vertexList;
 	vector<GLfloat*> _mapcoordList;
+	vector<GLfloat*> _normalList;
 	vector<int> _countVertexList;
 	vector<int> _countMapcoordList;
+	vector<int> _countNormalList;
 
 	string name;
 
 	GLuint _texture;
 	GLuint _textureID;
 
-	GLuint vertexbuffer;
 	GLuint vertexArrays;
-	GLuint uvbuffer;
+	vector<GLuint> vertexbuffer;
+	vector<GLuint> uvbuffer;
+	vector<GLuint> normalbuffer;
 
 	int _drawType;
-public:
-	Mesh(void);
-
+private:
 	bool Load3D(const char * file);
 	bool LoadTexture(const char * file);
-
 	void init();
-	void Draw();
-	void initGeometry(int pos);
+	void initGeometry();
+public:
+	Mesh(const char *meshFile, const char *textureFile);
 
+	void Draw();
 	void setDrawType(int type);
 
 	~Mesh(void);

@@ -61,9 +61,6 @@
     <None Include="ruins.3ds">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="car.3ds">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
     <None Include="ElephantBody.3ds">
       <Filter>Файлы ресурсов</Filter>
     </None>
