@@ -23,8 +23,6 @@ GLuint matrixID;
 
 GLuint textureID1;
 GLuint textureID2;
-Texture *Texture1;
-Texture *Texture2;
  
 
 Camera *camera;
@@ -47,12 +45,9 @@ void DisplayCallbackFunction ( void )
 	camera->Update();
 
 	glUseProgram(shaderID);
-
+	
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &camera->MVP[0][0]);
 
-	Texture1->BindTexture(0);
-	Texture2->BindTexture(1);
-	
 	mesh->Draw();
 
 	glutSwapBuffers();
@@ -214,10 +209,9 @@ bool InitOther()
 	//Texture = loadBMP_custom("sun_tex.bmp");
 	//Texture = LoadTexture("sun_tex.bmp", 512, 512);
 
-	Texture1 = new Texture("sun_tex.bmp", textureID1);
-	Texture2 = new Texture("texture01.jpg", textureID2);
-
-	mesh = new Mesh("ElephantBody.3ds", "texture01.jpg");
+	mesh = new Mesh("ElephantBody.3ds");
+	mesh->AddTexture("texture01.jpg", textureID1);
+	mesh->AddTexture("sun_tex.bmp", textureID1);
 
 	//skyBox = new SkyBox()
 

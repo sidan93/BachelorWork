@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(const char *meshFile, const char *textureFile)
+Mesh::Mesh(const char *meshFile)
 {
 	name = "                                                     ";
 
@@ -13,12 +13,18 @@ Mesh::Mesh(const char *meshFile, const char *textureFile)
 	_polygon = vector<polygon_type*>();
 	_mapcoord = vector<mapcoord_type*>();
 
-	_drawType= GL_POINTS;
+	_drawType = GL_POINTS;
 	
 	Load3D(meshFile);
-	//LoadTexture(textureFile);
 	init();
 	initGeometry();
+
+}
+
+void Mesh::AddTexture(const char *textureFile, GLuint shaderTextureId) {
+	auto cash = _texture.find(textureFile);
+	if (cash == _texture.end())
+		_texture[textureFile] = new Texture(textureFile, shaderTextureId);
 }
 
 bool Mesh::Load3D(const char * file)
@@ -183,11 +189,6 @@ bool Mesh::Load3D(const char * file)
 	return true;
 }
 
-bool Mesh::LoadTexture(const char * file)
-{
-	_textureID = loadBMP_custom(file);
-	return true;
-}
 
 // Высчитываем массивы которые будут учавствовать в отрисовке
 void Mesh::init()
@@ -273,6 +274,11 @@ void Mesh::initGeometry()
 }
 void Mesh::Draw() 
 {
+	int index = 0;
+	map<const char*, Texture*>::iterator item;
+	for (item = _texture.begin(), index; item != _texture.end(); item++, index++)
+		item->second->BindTexture(index);
+
 	for (int i = 0; i < _countPolygons.size(); i++)
 	{
 

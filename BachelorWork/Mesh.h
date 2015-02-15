@@ -1,6 +1,7 @@
 #pragma once
 #include "includes.h"
 #include "Helpers.h"
+#include "Texture.h"
 
 using namespace std;
 using namespace glm;
@@ -43,8 +44,7 @@ private:
 
 	string name;
 
-	GLuint _texture;
-	GLuint _textureID;
+	map<const char*, Texture*> _texture;
 
 	GLuint vertexArrays;
 	vector<GLuint> vertexbuffer;
@@ -54,11 +54,12 @@ private:
 	int _drawType;
 private:
 	bool Load3D(const char * file);
-	bool LoadTexture(const char * file);
 	void init();
 	void initGeometry();
 public:
-	Mesh(const char *meshFile, const char *textureFile);
+	Mesh(const char *meshFile);
+
+	void AddTexture(const char *textureFile, GLuint shaderTextureId);
 
 	void Draw();
 	void setDrawType(int type);

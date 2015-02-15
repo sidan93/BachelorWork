@@ -1,14 +1,19 @@
 // Стандартные библиотеки
+#include <memory>
+
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <vector>
-#include <algorithm>
-#include <memory>
-#include <io.h>
-#include <stdio.h>
 
+#include <stdio.h>
+#include <io.h>
+
+#include <algorithm>
+
+#include <string>
+
+#include <vector>
+#include <map>
 
 #include "FreeImage/FreeImage.h"
 #include "GL/glew.h"
