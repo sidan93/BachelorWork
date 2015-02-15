@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "SkyBox.h"
+#include "Texture.h"
 
 using namespace std;
 
@@ -22,12 +23,13 @@ GLuint matrixID;
 
 GLuint textureID1;
 GLuint textureID2;
-GLuint Texture1;
-GLuint Texture2;
+Texture *Texture1;
+Texture *Texture2;
+ 
 
 Camera *camera;
 Mesh *mesh;
-SkyBox skyBox;
+SkyBox *skyBox;
 
 /******************************************* Functions ******************************************/
 
@@ -48,13 +50,8 @@ void DisplayCallbackFunction ( void )
 
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &camera->MVP[0][0]);
 
-	glUniform1i(textureID1, 0);
-	glActiveTexture(GL_TEXTURE0 + 0);
-	glBindTexture(GL_TEXTURE_2D, Texture1);
-	
-	glUniform1i(textureID2, 1);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, Texture2);
+	Texture1->BindTexture(0);
+	Texture2->BindTexture(1);
 	
 	mesh->Draw();
 
@@ -216,8 +213,9 @@ bool InitOther()
 	camera = new Camera();
 	//Texture = loadBMP_custom("sun_tex.bmp");
 	//Texture = LoadTexture("sun_tex.bmp", 512, 512);
-	Texture1 = loadTexture("sun_tex.bmp");
-	Texture2 = loadTexture("texture01.jpg");
+
+	Texture1 = new Texture("sun_tex.bmp", textureID1);
+	Texture2 = new Texture("texture01.jpg", textureID2);
 
 	mesh = new Mesh("ElephantBody.3ds", "texture01.jpg");
 

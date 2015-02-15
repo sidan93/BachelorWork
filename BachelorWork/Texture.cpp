@@ -1,17 +1,33 @@
 #include "Texture.h"
 
 
-Texture::Texture()
+Texture::Texture(const char *filename) : Texture(filename, -1)
 {
 }
 
-GLuint Texture::loadTexture(const char *filename)
+Texture::Texture(const char *filename, GLuint shaderIndex) 
+	: _filename(filename), _shaderIndex(shaderIndex)
+{
+	_id = loadTexture();
+}
+
+void Texture::BindTexture(GLuint shaderIndex, int textureNumber) {
+	glUniform1i(shaderIndex, textureNumber);
+	glActiveTexture(GL_TEXTURE0 + textureNumber);
+	glBindTexture(GL_TEXTURE_2D, _id);
+}
+
+void Texture::BindTexture(int textureNumber) {
+	return BindTexture(_shaderIndex, textureNumber);
+}
+
+GLuint Texture::loadTexture()
 {
 	FIBITMAP *dib1 = NULL;
 
-	FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(filename);
+	FREE_IMAGE_FORMAT fif = FreeImage_GetFIFFromFilename(_filename);
 
-	dib1 = FreeImage_Load(fif, filename, JPEG_DEFAULT);
+	dib1 = FreeImage_Load(fif, _filename, JPEG_DEFAULT);
 	if (!dib1)
 	{
 		std::cerr << "Erreur ouverture d\'image" << std::endl;

@@ -6,9 +6,21 @@ using namespace std;
 class Texture
 {
 private:
-	GLuint Texture::loadTexture(const char *filename);
+	// Идентификатор текстуры
+	GLuint _id;
+	// Имя исходного файла
+	const char *_filename;
+	// Позиция в шейдере
+	GLuint _shaderIndex;
+
+	GLuint Texture::loadTexture();
 public:
-	Texture();
+	Texture(const char *filename);
+	Texture(const char *filename, GLuint shaderIndex);
+
+	void BindTexture(GLuint shaderIndex, int textureNumber);
+	void BindTexture(int textureNumber);
+	
 	~Texture();
 };
 
