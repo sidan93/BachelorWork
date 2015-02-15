@@ -16,6 +16,12 @@
     <Filter Include="Файлы ресурсов\GL">
       <UniqueIdentifier>{ca96e6ec-7161-4489-8714-bc3b79935d1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Заголовочные файлы\Common">
+      <UniqueIdentifier>{f0a493d1-5204-4310-8796-ab6d52b41340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Common">
+      <UniqueIdentifier>{22d2221a-8756-482d-8641-c395db3ac76a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="SkyBox.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Файлы исходного кода\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +91,12 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="SkyBox.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Заголовочные файлы\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="includes.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,5 @@
 #pragma once
-#include "GL\glew.h"
-#include "GL\freeglut.h"
+#include "includes.h"
 #include "glm\gtx\euler_angles.hpp"
 
 using namespace glm;

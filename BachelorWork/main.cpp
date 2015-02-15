@@ -1,7 +1,5 @@
-﻿#include "GL/glew.h"
-#include "GL/freeglut.h"
-#include <iostream>
-#include <stdio.h>
+﻿#include "includes.h"
+
 #include "Helpers.h"
 #include "Camera.h"
 #include "Mesh.h"

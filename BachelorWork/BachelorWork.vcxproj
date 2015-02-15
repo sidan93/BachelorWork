@@ -70,6 +70,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib" />
@@ -89,8 +90,10 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="includes.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="sun_tex.bmp" />

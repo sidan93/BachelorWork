@@ -1,11 +1,6 @@
 #pragma once
-#include <string>
-#include "glm/glm.hpp"
-#include <io.h>
-#include "GL/glew.h"
+#include "includes.h"
 #include "Helpers.h"
-#include <memory>
-#include "glm/glm.hpp"
 
 using namespace std;
 using namespace glm;
