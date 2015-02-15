@@ -279,25 +279,25 @@ void Mesh::Draw()
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer[i]);
 		glVertexAttribPointer(
-			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			0,                  // stride
-			(void*)0            // array buffer offset
-			);
+			0,                 
+			3,                 
+			GL_FLOAT,          
+			GL_FALSE,          
+			0,                 
+			(void*)0           
+		);
 
 		// 2nd attribute buffer : uv
 		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer[i]);
 		glVertexAttribPointer(
-			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			2,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
-			);
+			1,                            
+			2,                             
+			GL_FLOAT,                      
+			GL_FALSE,                      
+			0,                             
+			(void*)0                       
+		);
 
 		// 3nd attribute buffer : normal
 		glEnableVertexAttribArray(2);
@@ -309,7 +309,7 @@ void Mesh::Draw()
 			GL_FALSE,                         // normalized?
 			0,                                // stride
 			(void*)0                          // array buffer offset
-			);
+		);
 
 
 		// Draw the triangle !
