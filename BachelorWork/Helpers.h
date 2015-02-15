@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include "FreeImage/FreeImage.h"
+#include <algorithm>
 
 #pragma comment (lib, "FreeImage.lib")
 
