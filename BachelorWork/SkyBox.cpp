@@ -8,7 +8,6 @@ SkyBox::SkyBox()
 
 SkyBox::SkyBox(const char * file)
 {
-	texture = loadTexture(file);
 }
 
 

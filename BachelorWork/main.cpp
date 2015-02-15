@@ -199,6 +199,7 @@ void InitShaders()
 {
 	shaderID = LoadShaders("Shader1.vert", "Shader1.frag");
 	matrixID = glGetUniformLocation(shaderID, "MVP");
+	
 	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
 	textureID2 = glGetUniformLocation(shaderID, "additinalSampler");
 }
@@ -206,14 +207,10 @@ void InitShaders()
 bool InitOther()
 {
 	camera = new Camera();
-	//Texture = loadBMP_custom("sun_tex.bmp");
-	//Texture = LoadTexture("sun_tex.bmp", 512, 512);
-
+	
 	mesh = new Mesh("ElephantBody.3ds");
 	mesh->AddTexture("texture01.jpg", textureID1);
 	mesh->AddTexture("sun_tex.bmp", textureID1);
-
-	//skyBox = new SkyBox()
 
 	return true;
 }
