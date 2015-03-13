@@ -221,7 +221,7 @@ int main ( int argc, char *argv[] )
 	/* Initialize GLUT */
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
-	glutInitContextVersion(4, 0);
+	glutInitContextVersion(3, 3);
 	glutInitContextFlags(GLUT_CORE_PROFILE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
