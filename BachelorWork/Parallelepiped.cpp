@@ -21,7 +21,6 @@ void Parallelepiped::init()
 
 	// https://ru.wikipedia.org/wiki/%D0%9F%D0%B0%D1%80%D0%B0%D0%BB%D0%BB%D0%B5%D0%BB%D0%B5%D0%BF%D0%B8%D0%BF%D0%B5%D0%B4
 	// Z смотрит на нас 
-	// TODO Не правильно выставлена карта
 	// TODO Не правильно выставлены нормали
 
 	// Верхняя грань 
@@ -224,7 +223,7 @@ void Parallelepiped::initGeometry()
 	glBufferData(GL_ARRAY_BUFFER, 108 * sizeof(GLuint), _normalList, GL_STATIC_DRAW);
 }
 
-void Parallelepiped::Draw(float *MVP) 
+void Parallelepiped::Draw(float *MVP, int displayType) 
 {
 	glUseProgram(shaderID);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
@@ -273,16 +272,11 @@ void Parallelepiped::Draw(float *MVP)
 
 
 	// Draw the triangle !
-	glDrawArrays(_drawType, 0, 108/3);
+	glDrawArrays(displayType, 0, 108 / 3);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
-}
-
-void Parallelepiped::setDrawType(int type)
-{
-	_drawType = type;
 }
 
 void Parallelepiped::AddTexture(const char *textureFile, GLuint shaderTextureId) {

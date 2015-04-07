@@ -18,13 +18,12 @@ using namespace std;
 
 /* Bachelor variables */
 
- 
-
 Camera *camera;
 //Mesh *mesh;
 //SkyBox *skyBox;
-Parallelepiped *cube;
+vector<Parallelepiped*> cubes;
 
+int displayType = 0;
 /******************************************* Functions ******************************************/
 
 void CreateGeometry()
@@ -39,7 +38,8 @@ void DisplayCallbackFunction ( void )
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	camera->Update();
-	cube->Draw(&camera->MVP[0][0]);
+	for (auto cube : cubes)
+		cube->Draw(&camera->MVP[0][0], displayType);
 
 	glutSwapBuffers();
 }
@@ -96,40 +96,31 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		camera->_target.z --;
 		break;
 	case '1':
-		//mesh->setDrawType(GL_POINTS);
-		cube->setDrawType(GL_POINTS);
+		displayType = GL_POINTS;
 		break;
 	case '2':
-		//mesh->setDrawType(GL_LINES);
-		cube->setDrawType(GL_LINES);
+		displayType = GL_LINES;
 		break;
 	case '3':
-		//mesh->setDrawType(GL_LINE_STRIP);
-		cube->setDrawType(GL_LINE_STRIP);
+		displayType = GL_LINE_STRIP;
 		break;
 	case '4':
-		//mesh->setDrawType(GL_LINE_LOOP);
-		cube->setDrawType(GL_LINE_LOOP);
+		displayType = GL_LINE_LOOP;
 		break;
 	case '5':
-		//mesh->setDrawType(GL_LINE_STRIP_ADJACENCY);
-		cube->setDrawType(GL_LINE_STRIP_ADJACENCY);
+		displayType = GL_LINE_STRIP_ADJACENCY;
 		break;
 	case '6':
-		//mesh->setDrawType(GL_LINES_ADJACENCY);
-		cube->setDrawType(GL_LINES_ADJACENCY);
+		displayType = GL_LINES_ADJACENCY;
 		break;
 	case '7':
-		//mesh->setDrawType(GL_TRIANGLES);
-		cube->setDrawType(GL_TRIANGLES);
+		displayType = GL_TRIANGLES;
 		break;
 	case '8':
-		//mesh->setDrawType(GL_TRIANGLE_STRIP);
-		cube->setDrawType(GL_TRIANGLE_STRIP);
+		displayType = GL_TRIANGLE_STRIP;
 		break;
 	case '9':
-		//mesh->setDrawType(GL_TRIANGLE_FAN);
-		cube->setDrawType(GL_TRIANGLE_FAN);
+		displayType = GL_TRIANGLE_FAN;
 		break;
 	camera->Update();
 	}
@@ -202,7 +193,15 @@ bool InitOther()
 	//mesh->AddTexture("texture01.jpg", textureID1);
 	//mesh->AddTexture("sun_tex.bmp", textureID1);
 
-	cube = new Parallelepiped(vec3(0, 0, 0), vec3(10, 10, 10));
+	ifstream input("cubes.api");
+	int count;
+	input >> count;
+	for (int i = 0; i < count; i++)
+	{
+		vec3 position, size;
+		input >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
+		cubes.push_back(new Parallelepiped(position, size));
+	}
 
 	return true;
 }

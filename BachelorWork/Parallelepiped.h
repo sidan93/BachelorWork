@@ -3,7 +3,6 @@
 #include "Helpers.h"
 #include "Texture.h"
 
-using namespace std;
 using namespace glm;
 
 class Parallelepiped
@@ -20,8 +19,6 @@ class Parallelepiped
 	GLuint uvbuffer;
 	GLuint normalbuffer;
 	
-	int _drawType;
-
 	map<const char*, Texture*> _texture;
 
 	/* Позиционирование */
@@ -43,8 +40,7 @@ public:
 
 	void AddTexture(const char *textureFile, GLuint shaderTextureId);
 
-	void Draw(float *MVP);
-	void setDrawType(int type);
+	void Draw(float *MVP, int displayType);
 
 	~Parallelepiped();
 };

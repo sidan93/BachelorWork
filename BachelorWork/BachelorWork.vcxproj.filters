@@ -91,6 +91,9 @@
     <None Include="cube.frag">
       <Filter>Файлы ресурсов\shaders</Filter>
     </None>
+    <None Include="cubes.api">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">

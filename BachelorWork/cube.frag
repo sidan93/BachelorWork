@@ -14,8 +14,8 @@ out vec4 color;
 void main(){
 
 	// Output color = color of the texture at the specified UV
-	color = texture2D(mainSampler, UV);
 	//color.g *= 2;
 	//color = normalize(vec3(pos.x, pos.y, pos.z));
 	//color.r = 1;
+	color = texture2D(mainSampler, UV);
 }

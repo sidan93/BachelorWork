@@ -22,7 +22,7 @@ void main(){
 	size_matrix[0][0] = size.x;
 	size_matrix[1][1] = size.y;
 	size_matrix[2][2] = size.z;
-	gl_Position =  MVP * (vec4(new_position, 1) * size_matrix);
+	gl_Position =  MVP * size_matrix * vec4(new_position, 1);
 	pos = gl_Position;
 	// UV of the vertex. No special space for this one.
 	UV = vertexUV;
