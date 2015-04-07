@@ -1,13 +1,9 @@
 #include "Grid.h"
 
 
-Grid::Grid(vec3 center, vec3 size_) : size(size_)
+Grid::Grid(vec3 start_, vec3 size_, vec3 step_) : start(start_), size(size_), step(step_)
 {
 	name = "                                                     ";
-	
-	vec3 new_size = vec3(size.x / 2, size.y / 2, size.z / 2);
-	start = center - new_size;
-	step = vec3(size.x / 5, size.y / 15, size.z / 5);
 
 	init();
 	initShaders();

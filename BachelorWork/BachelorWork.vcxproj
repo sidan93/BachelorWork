@@ -109,6 +109,7 @@
   <ItemGroup>
     <Image Include="sun_tex.bmp" />
     <Image Include="texture01.jpg" />
+    <Image Include="texture02.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

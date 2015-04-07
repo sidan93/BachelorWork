@@ -24,7 +24,7 @@ Camera *camera;
 //SkyBox *skyBox;
 vector<Parallelepiped*> cubes;
 vector<Parallelepiped*> layers;
-Grid *grid;
+vector<Grid*> grids;
 
 int displayType = 0;
 /******************************************* Functions ******************************************/
@@ -45,7 +45,8 @@ void DisplayCallbackFunction ( void )
 		cube->Draw(&camera->MVP[0][0], displayType);
 	for (auto layer : layers)
 		layer->Draw(&camera->MVP[0][0], GL_LINE_STRIP_ADJACENCY);
-	grid->Draw(&camera->MVP[0][0]);
+	for (auto grid : grids)
+		grid->Draw(&camera->MVP[0][0]);
 	glutSwapBuffers();
 }
 
@@ -59,7 +60,7 @@ void TimerCallbackFunction ( int value )
 
 void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 {
-	int addSpeed = 5;
+	int addSpeed = 50;
 	switch ( key )
 	{
 	case 27 :  /* Escape key */
@@ -158,7 +159,7 @@ void ReshapeCallbackFunction ( int width, int height )
 	glMatrixMode ( GL_PROJECTION ) ;
 	glLoadIdentity () ;
 	ar = (float) width / (float) height ;
-	glFrustum ( -ar, ar, -1.0, 1.0, 10.0, 100.0 ) ;
+	glFrustum ( -ar, ar, -1.0, 1.0, 10.0, 1000.0 ) ;
 	glMatrixMode ( GL_MODELVIEW ) ;
 	glLoadIdentity () ;
 }
@@ -185,24 +186,79 @@ void InitGLStates()
 	glClearDepth(1.0);
 	glClearStencil(0);
 	glEnable(GL_TEXTURE0);
-	//glDisable(GL_BLEND);
-	//glDisable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glDisable(GL_DITHER);
-	//glActiveTexture(GL_TEXTURE0);
 }
 
 
 bool InitGrid()
 {
-	grid = new Grid(vec3(50,150,50), vec3(100, 300, 100));
+	vector<int> pointX;
+	vector<int> pointY;
+	vector<int> pointZ;
+	pointX.clear();
+	pointY.clear();
+	pointZ.clear();
+
+	vec3 sizeGrid = layers[0]->GlobalSize;
+	sizeGrid.y = 0;
+
+	for (auto layer : layers) {
+		pointX.push_back((layer->position.x - layer->size.x) * 2);
+		pointX.push_back((layer->position.x + layer->size.x) * 2);
+
+		pointY.push_back((layer->position.y - layer->size.y) * 2);
+		pointY.push_back((layer->position.y + layer->size.y) * 2);
+
+		pointZ.push_back((layer->position.z - layer->size.z) * 2);
+		pointZ.push_back((layer->position.z + layer->size.z) * 2);
+		sizeGrid.x = std::max(sizeGrid.x, layer->GlobalSize.x);
+		sizeGrid.z = std::max(sizeGrid.z, layer->GlobalSize.z);
+		sizeGrid.y += layer->GlobalSize.y;
+	}
+	for (auto cube : cubes)
+	{
+		pointX.push_back((cube->position.x - cube->size.x) * 2);
+		pointX.push_back((cube->position.x + cube->size.x) * 2);
+
+		pointY.push_back((cube->position.y - cube->size.y) * 2);
+		pointY.push_back((cube->position.y + cube->size.y) * 2);
+
+		pointZ.push_back((cube->position.z - cube->size.z) * 2);
+		pointZ.push_back((cube->position.z + cube->size.z) * 2);
+	}
+
+	int minNODX = NOD(pointX[0], pointX[1]);
+	for (int i = 0; i < pointX.size(); i++)
+		for (int j = 0; j < pointX.size(); j++)
+			if (NOD(pointX[i], pointX[j]) != 0)
+				minNODX = std::min(minNODX, NOD(pointX[i], pointX[j]));
+	
+	int minNODY = NOD(pointY[0], pointY[1]);
+	for (int i = 0; i < pointY.size(); i++)
+		for (int j = 0; j < pointY.size(); j++)
+			if (NOD(pointY[i], pointY[j]) != 0)
+				minNODY = std::min(minNODY, NOD(pointY[i], pointY[j]));
+
+	int minNODZ = NOD(pointZ[0], pointZ[1]);
+	for (int i = 0; i < pointZ.size(); i++)
+		for (int j = 0; j < pointZ.size(); j++)
+			if (NOD(pointZ[i], pointZ[j]) != 0)
+				minNODZ = std::min(minNODZ, NOD(pointZ[i], pointZ[j]));
+
+	vec3 new_sizeGrid = vec3(sizeGrid.x / 2, sizeGrid.y / 2, sizeGrid.z / 2);
+
+	grids.push_back(new Grid(layers[0]->position - layers[0]->size, sizeGrid, vec3(minNODX/2, minNODY/2, minNODZ/2)));
+	
 	return true;
 }
 
-Parallelepiped* getCube(ifstream* input, int layer)
+Parallelepiped* getCube(ifstream* input)
 {
 	vec3 position, size;
 	(*input) >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
-	return new Parallelepiped(position, size, layer);
+	return new Parallelepiped(position, size);
 }
 bool InitOther()
 {
@@ -215,13 +271,13 @@ bool InitOther()
 	ifstream input("cubes.api");
 	int countLayers, countCubes;
 	input >> countLayers;
+	
 	for (int i = 0; i < countLayers; i++)
-	{
-		layers.push_back(getCube(&input, -1));
-		input >> countCubes;
-		for (int j = 0; j < countCubes; j++)
-			cubes.push_back(getCube(&input, layers.size() - 1));
-	}
+		layers.push_back(getCube(&input));
+	
+	input >> countCubes;
+	for (int j = 0; j < countCubes; j++)
+		cubes.push_back(getCube(&input));
 
 	InitGrid();
 	
@@ -238,14 +294,16 @@ int main ( int argc, char *argv[] )
 	glutInitContextFlags(GLUT_CORE_PROFILE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
-	glutInitWindowSize ( 600, 600 ) ;
+	glutInitWindowSize ( 900, 900 ) ;
 
 	/* Create the window */
-	glutCreateWindow ( "Bachelor Work" ) ;
+	glutCreateWindow("Bachelor Work");
+
 	
 	/* Initialize GLEW */
 	glewExperimental=TRUE;
 	glewInit();
+
 	printf("OpenGL version supported by this platform (%s): \n", glGetString(GL_VERSION));
 
 	/* Initialize all objects */

@@ -27,9 +27,9 @@ public:
 	/* Позиционирование */
 	vec3 position;
 	vec3 size;
-	int layer;
+	vec3 GlobalSize;
 
-	Parallelepiped(vec3 position, vec3 size, int layer);
+	Parallelepiped(vec3 position, vec3 size);
 
 	void Draw(float *MVP, int displayType);
 

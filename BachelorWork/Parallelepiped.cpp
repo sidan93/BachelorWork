@@ -1,11 +1,12 @@
 #include "Parallelepiped.h"
 
 
-Parallelepiped::Parallelepiped(vec3 position_, vec3 size_, int layer_) : position(position_), layer(layer_)
+Parallelepiped::Parallelepiped(vec3 position_, vec3 size_) : position(position_)
 {
 	name = "                                                     ";
-	int scaleFactor = 10;
+	int scaleFactor = 50;
 	position = vec3(position.x * scaleFactor, position.y * scaleFactor, position.z * scaleFactor);
+	GlobalSize = vec3(size_.x * scaleFactor, size_.y * scaleFactor, size_.z * scaleFactor);
 	size = vec3(size_.x / 2 * scaleFactor, size_.y / 2 * scaleFactor, size_.z / 2 * scaleFactor);
 
 	init();
@@ -203,7 +204,7 @@ void Parallelepiped::initShaders()
 
 	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
 
-	AddTexture("texture01.jpg", textureID1);
+	AddTexture("texture02.jpg", textureID1);
 }
 
 void Parallelepiped::initGeometry()

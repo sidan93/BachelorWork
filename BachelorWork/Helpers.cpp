@@ -155,3 +155,25 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
 
 	return ProgramID;
 }
+
+int NOD(int m, int n)
+{
+	if (m == 0)
+		return n;
+	if (n == 0)
+		return m;
+	if (m == n)
+		return m;
+
+	if (m % 2 == 0 && n % 2 == 0)
+		return 2 * NOD(m / 2, n / 2);
+	if (m % 2 == 0 && n % 2 == 1)
+		return NOD(m / 2, n);
+	if (m % 2 == 1 && n % 2 == 0)
+		return NOD(m, n / 2);
+	if (m % 2 == 1 && n % 2 == 1 && n > m)
+		return NOD((n - m) / 2, m);
+	if (m % 2 == 1 && n % 2 == 1 && m > n)
+		return NOD((m - n) / 2, n);
+	return 1;
+}
