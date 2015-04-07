@@ -2,43 +2,34 @@
 #include "includes.h"
 #include "Helpers.h"
 #include "Texture.h"
+#include "BaseObject.h"
 
 using namespace glm;
 
-class Parallelepiped
+class Parallelepiped : public BaseObject
 {
-	string name;
-
-	GLfloat* _vertexList;
+protected:
 	GLfloat* _mapcoordList;
 	GLfloat* _normalList;
 
-	/* Индексы буферов */
-	GLuint vertexArrays;
-	GLuint vertexbuffer;
 	GLuint uvbuffer;
 	GLuint normalbuffer;
-	
-	map<const char*, Texture*> _texture;
 
+	GLuint shaderPosID;
+	GLuint shaderSizeID;
+protected:
+	virtual void init() override;
+	virtual void initShaders() override;
+	virtual void initGeometry() override;
+public:
+
+	// TODO so bad
 	/* Позиционирование */
 	vec3 position;
 	vec3 size;
+	int layer;
 
-	/* Шейдер */
-	GLuint shaderID;
-	GLuint shaderPosID;
-	GLuint shaderSizeID;
-	GLuint matrixID;
-	GLuint textureID1;
-private:
-	void init();
-	void initShaders();
-	void initGeometry();
-public:
-	Parallelepiped(vec3 position, vec3 size);
-
-	void AddTexture(const char *textureFile, GLuint shaderTextureId);
+	Parallelepiped(vec3 position, vec3 size, int layer);
 
 	void Draw(float *MVP, int displayType);
 

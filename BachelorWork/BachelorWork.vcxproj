@@ -65,7 +65,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -85,6 +87,8 @@
     <None Include="cubes.api" />
     <None Include="ElephantBody.3ds" />
     <None Include="firtree.3ds" />
+    <None Include="grid.frag" />
+    <None Include="grid.vert" />
     <None Include="ruins.3ds" />
     <None Include="Shader1.frag" />
     <None Include="Shader1.vert" />
@@ -92,7 +96,9 @@
     <None Include="Torus.3ds" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Mesh.h" />

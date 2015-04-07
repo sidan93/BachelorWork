@@ -6,6 +6,7 @@
 #include "SkyBox.h"
 #include "Texture.h"
 #include "Parallelepiped.h"
+#include "Grid.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ Camera *camera;
 //SkyBox *skyBox;
 vector<Parallelepiped*> cubes;
 vector<Parallelepiped*> layers;
+Grid *grid;
 
 int displayType = 0;
 /******************************************* Functions ******************************************/
@@ -43,7 +45,7 @@ void DisplayCallbackFunction ( void )
 		cube->Draw(&camera->MVP[0][0], displayType);
 	for (auto layer : layers)
 		layer->Draw(&camera->MVP[0][0], GL_LINE_STRIP_ADJACENCY);
-
+	grid->Draw(&camera->MVP[0][0]);
 	glutSwapBuffers();
 }
 
@@ -57,46 +59,47 @@ void TimerCallbackFunction ( int value )
 
 void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 {
+	int addSpeed = 5;
 	switch ( key )
 	{
 	case 27 :  /* Escape key */
 		glutLeaveMainLoop () ;
 		break ;
 	case 'q':
-		camera->_position.x ++;
+		camera->_position.x += addSpeed;
 		break;
 	case 'a':
-		camera->_position.x --;
+		camera->_position.x -= addSpeed;
 		break;
 	case 'w':
-		camera->_position.y ++;
+		camera->_position.y += addSpeed;
 		break;
 	case 's':
-		camera->_position.y --;
+		camera->_position.y -= addSpeed;
 		break;
 	case 'e':
-		camera->_position.z ++;
+		camera->_position.z += addSpeed;
 		break;
 	case 'd':
-		camera->_position.z --;
+		camera->_position.z -= addSpeed;
 		break;
 	case 't':
-		camera->_target.x ++;
+		camera->_target.x += addSpeed;
 		break;
 	case 'g':
-		camera->_target.x --;
+		camera->_target.x -= addSpeed;
 		break;
 	case 'y':
-		camera->_target.y ++;
+		camera->_target.y += addSpeed;
 		break;
 	case 'h':
-		camera->_target.y --;
+		camera->_target.y -= addSpeed;
 		break;
 	case 'u':
-		camera->_target.z ++;
+		camera->_target.z += addSpeed;
 		break;
 	case 'j':
-		camera->_target.z --;
+		camera->_target.z -= addSpeed;
 		break;
 	case '1':
 		displayType = GL_POINTS;
@@ -189,11 +192,17 @@ void InitGLStates()
 }
 
 
-Parallelepiped* getCube(ifstream* input)
+bool InitGrid()
+{
+	grid = new Grid(vec3(50,150,50), vec3(100, 300, 100));
+	return true;
+}
+
+Parallelepiped* getCube(ifstream* input, int layer)
 {
 	vec3 position, size;
 	(*input) >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
-	return new Parallelepiped(position, size);
+	return new Parallelepiped(position, size, layer);
 }
 bool InitOther()
 {
@@ -208,12 +217,14 @@ bool InitOther()
 	input >> countLayers;
 	for (int i = 0; i < countLayers; i++)
 	{
-		layers.push_back(getCube(&input));
+		layers.push_back(getCube(&input, -1));
 		input >> countCubes;
 		for (int j = 0; j < countCubes; j++)
-			cubes.push_back(getCube(&input));
+			cubes.push_back(getCube(&input, layers.size() - 1));
 	}
 
+	InitGrid();
+	
 	return true;
 }
 

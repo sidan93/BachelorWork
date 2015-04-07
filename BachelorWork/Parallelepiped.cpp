@@ -1,11 +1,12 @@
 #include "Parallelepiped.h"
 
 
-Parallelepiped::Parallelepiped(vec3 position_, vec3 size_) : position(position_)
+Parallelepiped::Parallelepiped(vec3 position_, vec3 size_, int layer_) : position(position_), layer(layer_)
 {
 	name = "                                                     ";
-
-	size = vec3(size_.x / 2, size_.y / 2, size_.z / 2);
+	int scaleFactor = 10;
+	position = vec3(position.x * scaleFactor, position.y * scaleFactor, position.z * scaleFactor);
+	size = vec3(size_.x / 2 * scaleFactor, size_.y / 2 * scaleFactor, size_.z / 2 * scaleFactor);
 
 	init();
 	initShaders();
@@ -278,12 +279,6 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
-}
-
-void Parallelepiped::AddTexture(const char *textureFile, GLuint shaderTextureId) {
-	auto cash = _texture.find(textureFile);
-	if (cash == _texture.end())
-		_texture[textureFile] = new Texture(textureFile, shaderTextureId);
 }
 
 Parallelepiped::~Parallelepiped()
