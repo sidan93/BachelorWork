@@ -1,17 +1,18 @@
 #include "Parallelepiped.h"
 
 
-Parallelepiped::Parallelepiped(vec3 position_, vec3 size_) : position(position_), size(size_)
+Parallelepiped::Parallelepiped(vec3 position_, vec3 size_) : position(position_)
 {
 	name = "                                                     ";
 
-	_drawType = GL_POINTS;
+	size = vec3(size_.x / 2, size_.y / 2, size_.z / 2);
 
 	init();
 	initShaders();
 	initGeometry();
 }
 
+// TODO Сделать функцию и переменные static
 void Parallelepiped::init()
 {
 	_vertexList = new GLfloat[108];

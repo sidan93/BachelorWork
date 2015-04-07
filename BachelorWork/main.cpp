@@ -22,6 +22,7 @@ Camera *camera;
 //Mesh *mesh;
 //SkyBox *skyBox;
 vector<Parallelepiped*> cubes;
+vector<Parallelepiped*> layers;
 
 int displayType = 0;
 /******************************************* Functions ******************************************/
@@ -40,6 +41,8 @@ void DisplayCallbackFunction ( void )
 	camera->Update();
 	for (auto cube : cubes)
 		cube->Draw(&camera->MVP[0][0], displayType);
+	for (auto layer : layers)
+		layer->Draw(&camera->MVP[0][0], GL_LINE_STRIP_ADJACENCY);
 
 	glutSwapBuffers();
 }
@@ -185,6 +188,13 @@ void InitGLStates()
 	//glActiveTexture(GL_TEXTURE0);
 }
 
+
+Parallelepiped* getCube(ifstream* input)
+{
+	vec3 position, size;
+	(*input) >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
+	return new Parallelepiped(position, size);
+}
 bool InitOther()
 {
 	camera = new Camera();
@@ -194,13 +204,14 @@ bool InitOther()
 	//mesh->AddTexture("sun_tex.bmp", textureID1);
 
 	ifstream input("cubes.api");
-	int count;
-	input >> count;
-	for (int i = 0; i < count; i++)
+	int countLayers, countCubes;
+	input >> countLayers;
+	for (int i = 0; i < countLayers; i++)
 	{
-		vec3 position, size;
-		input >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
-		cubes.push_back(new Parallelepiped(position, size));
+		layers.push_back(getCube(&input));
+		input >> countCubes;
+		for (int j = 0; j < countCubes; j++)
+			cubes.push_back(getCube(&input));
 	}
 
 	return true;
