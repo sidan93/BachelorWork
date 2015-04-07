@@ -26,7 +26,7 @@ vector<Parallelepiped*> cubes;
 vector<Parallelepiped*> layers;
 vector<Grid*> grids;
 
-int displayType = 0;
+int displayType = GL_TRIANGLES;
 /******************************************* Functions ******************************************/
 
 void CreateGeometry()
@@ -191,7 +191,6 @@ void InitGLStates()
 	//glDisable(GL_DITHER);
 }
 
-
 bool InitGrid()
 {
 	vector<int> pointX;
@@ -229,24 +228,60 @@ bool InitGrid()
 		pointZ.push_back((cube->position.z + cube->size.z) * 2);
 	}
 
+	int l, r;
 	int minNODX = NOD(pointX[0], pointX[1]);
 	for (int i = 0; i < pointX.size(); i++)
 		for (int j = 0; j < pointX.size(); j++)
-			if (NOD(pointX[i], pointX[j]) != 0)
-				minNODX = std::min(minNODX, NOD(pointX[i], pointX[j]));
-	
+			if (pointX[i] != 0 && pointX[j] != 0)
+			{
+				l = pointX[i];
+				r = pointX[j];
+				if (l < 0) {
+					r -= l*2;
+					l = -l;
+				}
+				if (r < 0) {
+					l -= r*2;
+					r = -r;
+				}
+				minNODX = std::min(minNODX, NOD(l, r));
+			}
+
 	int minNODY = NOD(pointY[0], pointY[1]);
 	for (int i = 0; i < pointY.size(); i++)
 		for (int j = 0; j < pointY.size(); j++)
-			if (NOD(pointY[i], pointY[j]) != 0)
-				minNODY = std::min(minNODY, NOD(pointY[i], pointY[j]));
+			if (pointY[i] != 0 && pointY[j] != 0)
+				{
+					l = pointY[i];
+					r = pointY[j];
+					if (l < 0) {
+						r -= l*2;
+						l = -l;
+					}
+					if (r < 0) {
+						l -= r*2;
+						r = -r;
+					}
+					minNODY = std::min(minNODY, NOD(l, r));
+				}
 
 	int minNODZ = NOD(pointZ[0], pointZ[1]);
 	for (int i = 0; i < pointZ.size(); i++)
 		for (int j = 0; j < pointZ.size(); j++)
-			if (NOD(pointZ[i], pointZ[j]) != 0)
-				minNODZ = std::min(minNODZ, NOD(pointZ[i], pointZ[j]));
-
+			if (pointZ[i] != 0 && pointZ[j] != 0)
+				{
+					l = pointZ[i];
+					r = pointZ[j];
+					if (l < 0) {
+						r -= l*2;
+						l = -l;
+					}
+					if (r < 0) {
+						l -= r*2;
+						r = -r;
+					}
+					minNODZ = std::min(minNODZ, NOD(l, r));
+				}
 	vec3 new_sizeGrid = vec3(sizeGrid.x / 2, sizeGrid.y / 2, sizeGrid.z / 2);
 
 	grids.push_back(new Grid(layers[0]->position - layers[0]->size, sizeGrid, vec3(minNODX/2, minNODY/2, minNODZ/2)));
@@ -260,6 +295,7 @@ Parallelepiped* getCube(ifstream* input)
 	(*input) >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
 	return new Parallelepiped(position, size);
 }
+
 bool InitOther()
 {
 	camera = new Camera();
@@ -299,7 +335,6 @@ int main ( int argc, char *argv[] )
 	/* Create the window */
 	glutCreateWindow("Bachelor Work");
 
-	
 	/* Initialize GLEW */
 	glewExperimental=TRUE;
 	glewInit();

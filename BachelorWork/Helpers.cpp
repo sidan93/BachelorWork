@@ -165,6 +165,9 @@ int NOD(int m, int n)
 	if (m == n)
 		return m;
 
+	if (m < 0 || n < 0)
+		return 1;
+
 	if (m % 2 == 0 && n % 2 == 0)
 		return 2 * NOD(m / 2, n / 2);
 	if (m % 2 == 0 && n % 2 == 1)
