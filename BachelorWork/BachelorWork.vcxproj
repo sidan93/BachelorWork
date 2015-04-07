@@ -69,6 +69,7 @@
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Parallelepiped.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
@@ -79,6 +80,8 @@
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll" />
     <None Include="apollon.3DS" />
+    <None Include="cube.frag" />
+    <None Include="cube.vert" />
     <None Include="ElephantBody.3ds" />
     <None Include="firtree.3ds" />
     <None Include="ruins.3ds" />
@@ -92,6 +95,7 @@
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Parallelepiped.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>

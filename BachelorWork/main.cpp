@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "SkyBox.h"
 #include "Texture.h"
+#include "Parallelepiped.h"
 
 using namespace std;
 
@@ -17,17 +18,12 @@ using namespace std;
 
 /* Bachelor variables */
 
-GLuint shaderID;
-
-GLuint matrixID;
-
-GLuint textureID1;
-GLuint textureID2;
  
 
 Camera *camera;
-Mesh *mesh;
-SkyBox *skyBox;
+//Mesh *mesh;
+//SkyBox *skyBox;
+Parallelepiped *cube;
 
 /******************************************* Functions ******************************************/
 
@@ -43,12 +39,7 @@ void DisplayCallbackFunction ( void )
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	camera->Update();
-
-	glUseProgram(shaderID);
-	
-	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &camera->MVP[0][0]);
-
-	mesh->Draw();
+	cube->Draw(&camera->MVP[0][0]);
 
 	glutSwapBuffers();
 }
@@ -58,7 +49,6 @@ void TimerCallbackFunction ( int value )
 	glutTimerFunc ( 30, TimerCallbackFunction, 0 ) ;
 
 	// TODO
-
 	glutPostRedisplay () ;
 }
 
@@ -106,31 +96,40 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		camera->_target.z --;
 		break;
 	case '1':
-		mesh->setDrawType(GL_POINTS);
+		//mesh->setDrawType(GL_POINTS);
+		cube->setDrawType(GL_POINTS);
 		break;
 	case '2':
-		mesh->setDrawType(GL_LINES);
+		//mesh->setDrawType(GL_LINES);
+		cube->setDrawType(GL_LINES);
 		break;
 	case '3':
-		mesh->setDrawType(GL_LINE_STRIP);
+		//mesh->setDrawType(GL_LINE_STRIP);
+		cube->setDrawType(GL_LINE_STRIP);
 		break;
 	case '4':
-		mesh->setDrawType(GL_LINE_LOOP);
+		//mesh->setDrawType(GL_LINE_LOOP);
+		cube->setDrawType(GL_LINE_LOOP);
 		break;
 	case '5':
-		mesh->setDrawType(GL_LINE_STRIP_ADJACENCY);
+		//mesh->setDrawType(GL_LINE_STRIP_ADJACENCY);
+		cube->setDrawType(GL_LINE_STRIP_ADJACENCY);
 		break;
 	case '6':
-		mesh->setDrawType(GL_LINES_ADJACENCY);
+		//mesh->setDrawType(GL_LINES_ADJACENCY);
+		cube->setDrawType(GL_LINES_ADJACENCY);
 		break;
 	case '7':
-		mesh->setDrawType(GL_TRIANGLES);
+		//mesh->setDrawType(GL_TRIANGLES);
+		cube->setDrawType(GL_TRIANGLES);
 		break;
 	case '8':
-		mesh->setDrawType(GL_TRIANGLE_STRIP);
+		//mesh->setDrawType(GL_TRIANGLE_STRIP);
+		cube->setDrawType(GL_TRIANGLE_STRIP);
 		break;
 	case '9':
-		mesh->setDrawType(GL_TRIANGLE_FAN);
+		//mesh->setDrawType(GL_TRIANGLE_FAN);
+		cube->setDrawType(GL_TRIANGLE_FAN);
 		break;
 	camera->Update();
 	}
@@ -195,22 +194,15 @@ void InitGLStates()
 	//glActiveTexture(GL_TEXTURE0);
 }
 
-void InitShaders()
-{
-	shaderID = LoadShaders("Shader1.vert", "Shader1.frag");
-	matrixID = glGetUniformLocation(shaderID, "MVP");
-	
-	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
-	textureID2 = glGetUniformLocation(shaderID, "additinalSampler");
-}
-
 bool InitOther()
 {
 	camera = new Camera();
 	
-	mesh = new Mesh("ElephantBody.3ds");
-	mesh->AddTexture("texture01.jpg", textureID1);
-	mesh->AddTexture("sun_tex.bmp", textureID1);
+	//mesh = new Mesh("ElephantBody.3ds");
+	//mesh->AddTexture("texture01.jpg", textureID1);
+	//mesh->AddTexture("sun_tex.bmp", textureID1);
+
+	cube = new Parallelepiped(vec3(0, 0, 0), vec3(10, 10, 10));
 
 	return true;
 }
@@ -237,7 +229,6 @@ int main ( int argc, char *argv[] )
 
 	/* Initialize all objects */
 	InitGLStates();
-	InitShaders();
 	bool init_ = InitOther();
 	if (init_  == true) {
 		CreateGeometry();

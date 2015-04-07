@@ -22,6 +22,9 @@
     <Filter Include="Файлы исходного кода\Common">
       <UniqueIdentifier>{22d2221a-8756-482d-8641-c395db3ac76a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы ресурсов\shaders">
+      <UniqueIdentifier>{638b0139-6a98-4dc6-89fd-cedb90937f47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Файлы исходного кода\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Parallelepiped.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib">
@@ -54,12 +60,6 @@
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll">
       <Filter>Файлы ресурсов\GL</Filter>
-    </None>
-    <None Include="Shader1.frag">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
-    <None Include="Shader1.vert">
-      <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="sun.3DS">
       <Filter>Файлы ресурсов</Filter>
@@ -79,6 +79,18 @@
     <None Include="Torus.3ds">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="Shader1.frag">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
+    <None Include="Shader1.vert">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
+    <None Include="cube.vert">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
+    <None Include="cube.frag">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
@@ -97,6 +109,9 @@
       <Filter>Заголовочные файлы\Common</Filter>
     </ClInclude>
     <ClInclude Include="includes.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Parallelepiped.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
