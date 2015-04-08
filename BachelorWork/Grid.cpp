@@ -5,9 +5,20 @@ Grid::Grid(vec3 start_, vec3 size_, vec3 step_) : start(start_), size(size_), st
 {
 	name = "                                                     ";
 
+	alpha = 0.2;
+
 	init();
 	initShaders();
 	initGeometry();
+}
+
+void Grid::setAlpha(float value)
+{
+	alpha = value;
+	if (alpha < 0)
+		alpha = 0;
+	if (alpha > 1)
+		alpha = 1;
 }
 
 // TODO Сделать функцию и переменные static
@@ -72,6 +83,7 @@ void Grid::initShaders()
 {
 	shaderID = LoadShaders("grid.vert", "grid.frag");
 	matrixID = glGetUniformLocation(shaderID, "MVP");
+	alphaID = glGetUniformLocation(shaderID, "alpha");
 
 	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
 
@@ -97,6 +109,7 @@ void Grid::Draw(float *MVP)
 
 	glUseProgram(shaderID);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
+	glUniform1f(alphaID, alpha);
 
 	int index = 0;
 	map<const char*, Texture*>::iterator item;

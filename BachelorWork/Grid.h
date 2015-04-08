@@ -10,6 +10,8 @@ class Grid : public BaseObject
 {
 private:
 	int countPoint;
+	float alpha;
+	int alphaID;
 protected:
 	vec3 step;
 	vec3 start;
@@ -20,6 +22,7 @@ protected:
 	virtual void initGeometry() override;
 public:
 	Grid(vec3 center, vec3 size, vec3 step);
+	void setAlpha(float value);
 	void Draw(float *MVP);
 	~Grid();
 };

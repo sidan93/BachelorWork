@@ -57,7 +57,19 @@ void TimerCallbackFunction ( int value )
 	// TODO
 	glutPostRedisplay () ;
 }
+void ConsoleUsage() {
+	string value;
+	cout << "Enter command:" << endl;
+	cin >> value;
 
+	if (value == "grid")
+	{
+		float alpha;
+		cout << "Enter alpha" << endl;
+		cin >> alpha;
+		grids[0]->setAlpha(alpha);
+	}
+}
 void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 {
 	int addSpeed = 50;
@@ -132,6 +144,9 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 	case 'z':
 		if (grids.size() > 0)
 			grids[0]->isEnable = !grids[0]->isEnable;
+		break;
+	case 'c':
+		ConsoleUsage();
 		break;
 	camera->Update();
 	}

@@ -5,6 +5,7 @@ in vec2 UV;
 
 in vec4 pos;
 uniform sampler2D mainSampler;
+uniform float alpha;
 
 // Ouput data
 out vec4 color;
@@ -17,5 +18,5 @@ void main(){
 	//color.g *= 2;
 	//color = normalize(vec3(pos.x, pos.y, pos.z));
 	color.r = 0.4;
-	color.a = 0.2;
+	color.a = alpha;
 }
