@@ -92,6 +92,9 @@ void Grid::initGeometry()
 
 void Grid::Draw(float *MVP)
 {
+	if (!isEnable)
+		return;
+
 	glUseProgram(shaderID);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
 

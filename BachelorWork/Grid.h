@@ -6,7 +6,7 @@
 
 using namespace glm;
 
-class Grid : BaseObject
+class Grid : public BaseObject
 {
 private:
 	int countPoint;

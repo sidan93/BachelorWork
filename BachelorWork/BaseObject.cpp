@@ -3,6 +3,7 @@
 
 BaseObject::BaseObject()
 {
+	isEnable = true;
 }
 
 void BaseObject::AddTexture(const char *textureFile, GLuint shaderTextureId) {

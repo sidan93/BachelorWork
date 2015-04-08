@@ -238,6 +238,9 @@ void Parallelepiped::initGeometry()
 
 void Parallelepiped::Draw(float *MVP, int displayType) 
 {
+	if (!isEnable)
+		return;
+
 	glUseProgram(shaderID);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
 	glUniform3f(shaderPosID, position.x, position.y, position.z);

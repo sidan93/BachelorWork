@@ -129,6 +129,10 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 	case '9':
 		displayType = GL_TRIANGLE_FAN;
 		break;
+	case 'z':
+		if (grids.size() > 0)
+			grids[0]->isEnable = !grids[0]->isEnable;
+		break;
 	camera->Update();
 	}
 }
