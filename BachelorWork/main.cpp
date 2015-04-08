@@ -289,11 +289,14 @@ bool InitGrid()
 	return true;
 }
 
-Parallelepiped* getCube(ifstream* input)
+Parallelepiped* getCube(ifstream* input, bool withMaterial=false)
 {
 	vec3 position, size;
 	(*input) >> position.x >> position.y >> position.z >> size.x >> size.y >> size.z;
-	return new Parallelepiped(position, size);
+	int material = 0;
+	if (withMaterial)
+		(*input) >> material;
+	return new Parallelepiped(position, size, material);
 }
 
 bool InitOther()
@@ -313,7 +316,7 @@ bool InitOther()
 	
 	input >> countCubes;
 	for (int j = 0; j < countCubes; j++)
-		cubes.push_back(getCube(&input));
+		cubes.push_back(getCube(&input, true));
 
 	InitGrid();
 	

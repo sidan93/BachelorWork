@@ -25,6 +25,9 @@
     <Filter Include="Файлы ресурсов\shaders">
       <UniqueIdentifier>{638b0139-6a98-4dc6-89fd-cedb90937f47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Файлы ресурсов\material">
+      <UniqueIdentifier>{9980489d-a51c-4f47-b829-3f9cdbd52c3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,10 +144,13 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="texture01.jpg">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Файлы ресурсов\material</Filter>
     </Image>
     <Image Include="texture02.jpg">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>Файлы ресурсов\material</Filter>
+    </Image>
+    <Image Include="texture03.jpg">
+      <Filter>Файлы ресурсов\material</Filter>
     </Image>
   </ItemGroup>
 </Project>

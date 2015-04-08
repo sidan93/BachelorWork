@@ -17,5 +17,5 @@ void main(){
 	//color.g *= 2;
 	//color = normalize(vec3(pos.x, pos.y, pos.z));
 	color.r = 0.4;
-	color.a = 0.3;
+	color.a = 0.2;
 }
