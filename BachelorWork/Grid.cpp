@@ -84,6 +84,7 @@ void Grid::initShaders()
 	shaderID = LoadShaders("grid.vert", "grid.frag");
 	matrixID = glGetUniformLocation(shaderID, "MVP");
 	alphaID = glGetUniformLocation(shaderID, "alpha");
+	cameraPositionID = glGetUniformLocation(shaderID, "cameraPosition");
 
 	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
 
@@ -102,7 +103,7 @@ void Grid::initGeometry()
 }
 
 
-void Grid::Draw(float *MVP)
+void Grid::Draw(float *MVP, vec3 cameraPosition)
 {
 	if (!isEnable)
 		return;
@@ -110,6 +111,7 @@ void Grid::Draw(float *MVP)
 	glUseProgram(shaderID);
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
 	glUniform1f(alphaID, alpha);
+	glUniform3f(cameraPositionID, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 	int index = 0;
 	map<const char*, Texture*>::iterator item;

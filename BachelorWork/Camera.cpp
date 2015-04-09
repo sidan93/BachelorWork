@@ -11,6 +11,8 @@ Camera::Camera(void)
 	calcProjection();
 	calcModel();
 	calcView();
+
+	
 }
 
 void Camera::calcProjection()

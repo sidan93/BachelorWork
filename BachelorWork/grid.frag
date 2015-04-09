@@ -4,8 +4,11 @@
 in vec2 UV;
 
 in vec4 pos;
+in vec3 mvp1;
 uniform sampler2D mainSampler;
 uniform float alpha;
+uniform mat4 MVP;
+uniform vec3 cameraPosition;
 
 // Ouput data
 out vec4 color;
@@ -15,8 +18,8 @@ out vec4 color;
 void main(){
 
 	// Output color = color of the texture at the specified UV
-	//color.g *= 2;
-	//color = normalize(vec3(pos.x, pos.y, pos.z));
-	color.r = 0.4;
-	color.a = alpha;
+	color = normalize(vec4(mvp1,1));
+
+	vec4 alphaBlend = normalize(pos - vec4(cameraPosition, 1));
+	color.a = sqrt(alphaBlend.x*alphaBlend.x + alphaBlend.y*alphaBlend.y + alphaBlend.z*alphaBlend.z);
 }
