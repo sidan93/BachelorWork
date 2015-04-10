@@ -197,60 +197,44 @@ bool InitGrid()
 	vector<int> pointX;
 	vector<int> pointY;
 	vector<int> pointZ;
-	pointX.clear();
-	pointY.clear();
-	pointZ.clear();
-
-	vec3 sizeGrid = layers[0]->GlobalSize;
-	sizeGrid.y = 0;
-
-	for (auto layer : layers) {
-		pointX.push_back((layer->position.x - layer->size.x) * 2);
-		pointX.push_back((layer->position.x + layer->size.x) * 2);
-
-		pointY.push_back((layer->position.y - layer->size.y) * 2);
-		pointY.push_back((layer->position.y + layer->size.y) * 2);
-
-		pointZ.push_back((layer->position.z - layer->size.z) * 2);
-		pointZ.push_back((layer->position.z + layer->size.z) * 2);
-		sizeGrid.x = std::max(sizeGrid.x, layer->GlobalSize.x);
-		sizeGrid.z = std::max(sizeGrid.z, layer->GlobalSize.z);
-		sizeGrid.y += layer->GlobalSize.y;
-	}
-	for (auto cube : cubes)
-	{
+	for (auto cube: cubes) {
+		pointX.clear();
+		pointY.clear();
+		pointZ.clear();
+	
+		vec3 sizeGrid = cube->GlobalSize;
+		
 		pointX.push_back((cube->position.x - cube->size.x) * 2);
 		pointX.push_back((cube->position.x + cube->size.x) * 2);
-
+	
 		pointY.push_back((cube->position.y - cube->size.y) * 2);
 		pointY.push_back((cube->position.y + cube->size.y) * 2);
-
+	
 		pointZ.push_back((cube->position.z - cube->size.z) * 2);
 		pointZ.push_back((cube->position.z + cube->size.z) * 2);
+		
+		int minNODX = NOD(pointX[0], pointX[1]);
+		for (int i = 0; i < pointX.size(); i++)
+			for (int j = 0; j < pointX.size(); j++)
+				if (NOD(pointX[i], pointX[j]) != 0)
+					minNODX = std::min(minNODX, NOD(pointX[i], pointX[j]));
+		
+		int minNODY = NOD(pointY[0], pointY[1]);
+		for (int i = 0; i < pointY.size(); i++)
+			for (int j = 0; j < pointY.size(); j++)
+				if (NOD(pointY[i], pointY[j]) != 0)
+					minNODY = std::min(minNODY, NOD(pointY[i], pointY[j]));
+	
+		int minNODZ = NOD(pointZ[0], pointZ[1]);
+		for (int i = 0; i < pointZ.size(); i++)
+			for (int j = 0; j < pointZ.size(); j++)
+				if (NOD(pointZ[i], pointZ[j]) != 0)
+					minNODZ = std::min(minNODZ, NOD(pointZ[i], pointZ[j]));
+	
+		vec3 new_sizeGrid = vec3(sizeGrid.x / 2, sizeGrid.y / 2, sizeGrid.z / 2);
+	
+		grids.push_back(new Grid(cube->position - cube->size, sizeGrid, vec3(minNODX/2, minNODY/2, minNODZ/2)));
 	}
-
-	int minNODX = NOD(pointX[0], pointX[1]);
-	for (int i = 0; i < pointX.size(); i++)
-		for (int j = 0; j < pointX.size(); j++)
-			if (NOD(pointX[i], pointX[j]) != 0)
-				minNODX = std::min(minNODX, NOD(pointX[i], pointX[j]));
-	
-	int minNODY = NOD(pointY[0], pointY[1]);
-	for (int i = 0; i < pointY.size(); i++)
-		for (int j = 0; j < pointY.size(); j++)
-			if (NOD(pointY[i], pointY[j]) != 0)
-				minNODY = std::min(minNODY, NOD(pointY[i], pointY[j]));
-
-	int minNODZ = NOD(pointZ[0], pointZ[1]);
-	for (int i = 0; i < pointZ.size(); i++)
-		for (int j = 0; j < pointZ.size(); j++)
-			if (NOD(pointZ[i], pointZ[j]) != 0)
-				minNODZ = std::min(minNODZ, NOD(pointZ[i], pointZ[j]));
-
-	vec3 new_sizeGrid = vec3(sizeGrid.x / 2, sizeGrid.y / 2, sizeGrid.z / 2);
-
-	grids.push_back(new Grid(layers[0]->position - layers[0]->size, sizeGrid, vec3(minNODX/2, minNODY/2, minNODZ/2)));
-	
 	return true;
 }
 
