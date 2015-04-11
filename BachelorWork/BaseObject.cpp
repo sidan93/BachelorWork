@@ -12,7 +12,6 @@ void BaseObject::AddTexture(const char *textureFile, GLuint shaderTextureId) {
 		_texture[textureFile] = new Texture(textureFile, shaderTextureId);
 }
 
-
 BaseObject::~BaseObject()
 {
 }

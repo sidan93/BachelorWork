@@ -12,6 +12,11 @@ Grid::Grid(vec3 start_, vec3 size_, vec3 step_) : start(start_), size(size_), st
 	initGeometry();
 }
 
+vec3 Grid::getCenter() const
+{
+	return vec3(start.x + size.x / 2, start.y + size.y / 2, start.z + size.z / 2);
+}
+
 void Grid::setAlpha(float value)
 {
 	alpha = value;

@@ -3,6 +3,8 @@
 #include "Helpers.h"
 #include "Texture.h"
 
+using namespace glm;
+
 class BaseObject
 {
 protected:

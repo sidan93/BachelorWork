@@ -25,6 +25,7 @@ public:
 	Grid(vec3 center, vec3 size, vec3 step);
 	void setAlpha(float value);
 	void Draw(float *MVP, vec3 cameraPosition);
+	vec3 getCenter() const;
 	~Grid();
 };
 
