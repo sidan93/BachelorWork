@@ -12,7 +12,7 @@ protected:
 
 	/* Массив вершин */
 	GLfloat* _vertexList;
-	GLfloat* _vertexListForСircuit;
+	GLfloat* _vertexListForCircuit;
 
 	/* Индексы буферов */
 	GLuint vertexArrays;

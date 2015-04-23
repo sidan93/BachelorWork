@@ -44,7 +44,7 @@ void DisplayCallbackFunction ( void )
 	for (auto cube : cubes)
 		cube->Draw(&camera->MVP[0][0], displayType);
 	for (auto layer : layers)
-		layer->Draw(&camera->MVP[0][0], GL_LINE_STRIP_ADJACENCY);
+		layer->Draw(&camera->MVP[0][0], GL_LINES);
 	for (auto grid : grids)
 		grid->Draw(&camera->MVP[0][0], vec3(grids[0]->getCenter()));
 	glutSwapBuffers();

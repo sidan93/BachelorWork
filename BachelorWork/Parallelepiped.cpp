@@ -195,82 +195,83 @@ void Parallelepiped::init()
 	_mapcoordList[i * 2] = -1; _mapcoordList[i * 2 + 1] = 0;
 	_normalList[i * 3] = 0; _normalList[i * 3 + 1] = 0; _normalList[i * 3 + 2] = -1;
 }
+
 void Parallelepiped::initCircuit() {
-	_vertexListFor—ircuit = new GLfloat[24*3];
+	_vertexListForCircuit = new GLfloat[24 * 3];
 
 	int i = 0;
 	// ¬Âı
 	// A1 D1
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = 1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1;  _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = 1;  _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = 1;
 	// D1 C1
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1;  _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = 1;  _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = 1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = -1;
 
 	// C1 B1
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = -1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = -1;
 	
 	// B1 A1
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = -1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = 1;
 
 	// ÕËÁ
 	// A D
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = 1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = 1;
 
 	// D C
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = 1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = -1;
 	
 	// C B
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = -1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = -1;
 
 	// B A
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = -1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = 1;
 
 	// ¡ÓÍ‡
 	// A A1
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = 1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = 1;
 	
 	// D D1
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = 1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1;  _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = 1;
+	_vertexListForCircuit[i * 3] = 1;  _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = 1;
 	
 	// C C1
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = -1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = 1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = 1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = -1;
 
 	// B B1
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = -1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = -1; _vertexListForCircuit[i * 3 + 2] = -1;
 	i++;
-	_vertexListFor—ircuit[i * 3] = -1; _vertexListFor—ircuit[i * 3 + 1] = 1; _vertexListFor—ircuit[i * 3 + 2] = -1;
+	_vertexListForCircuit[i * 3] = -1; _vertexListForCircuit[i * 3 + 1] = 1; _vertexListForCircuit[i * 3 + 2] = -1;
 	
 }
 
@@ -316,7 +317,7 @@ void Parallelepiped::initGeometry()
 
 	glGenBuffers(1, &vertexbufferForCircuit);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
-	glBufferData(GL_ARRAY_BUFFER, 24*3 * sizeof(GLuint), _vertexListFor—ircuit, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 24*3 * sizeof(GLuint), _vertexListForCircuit, GL_STATIC_DRAW);
 }
 
 void Parallelepiped::Draw(float *MVP, int displayType) 

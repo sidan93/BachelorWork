@@ -21,5 +21,6 @@ void main(){
 	color = normalize(normalize(vec4(mvp1,1)) - normalize(vec4(cameraPosition, 1)));
 
 	vec4 alphaBlend = normalize(pos - vec4(cameraPosition, 1));
-	color.a = sqrt(alphaBlend.x*alphaBlend.x + alphaBlend.y*alphaBlend.y + alphaBlend.z*alphaBlend.z);
+	//color.a = sqrt(alphaBlend.x*alphaBlend.x + alphaBlend.y*alphaBlend.y + alphaBlend.z*alphaBlend.z);
+	color.a = 0.2;
 }
