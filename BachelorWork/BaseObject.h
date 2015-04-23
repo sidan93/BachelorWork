@@ -12,10 +12,12 @@ protected:
 
 	/* Массив вершин */
 	GLfloat* _vertexList;
+	GLfloat* _vertexListForСircuit;
 
 	/* Индексы буферов */
 	GLuint vertexArrays;
 	GLuint vertexbuffer;
+	GLuint vertexbufferForCircuit;
 
 	/* Текстуры */
 	map<const char*, Texture*> _texture;
@@ -26,6 +28,7 @@ protected:
 	GLuint textureID1;
 protected:
 	virtual void init()=0;
+	virtual void initCircuit()=0;
 	virtual void initShaders()=0;
 	virtual void initGeometry()=0;
 public:

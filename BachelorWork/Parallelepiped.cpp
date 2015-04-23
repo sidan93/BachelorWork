@@ -10,6 +10,7 @@ Parallelepiped::Parallelepiped(vec3 position_, vec3 size_, int material_) : posi
 	size = vec3(size_.x / 2 * scaleFactor, size_.y / 2 * scaleFactor, size_.z / 2 * scaleFactor);
 
 	init();
+	initCircuit();
 	initShaders();
 	initGeometry();
 }
@@ -194,6 +195,84 @@ void Parallelepiped::init()
 	_mapcoordList[i * 2] = -1; _mapcoordList[i * 2 + 1] = 0;
 	_normalList[i * 3] = 0; _normalList[i * 3 + 1] = 0; _normalList[i * 3 + 2] = -1;
 }
+void Parallelepiped::initCircuit() {
+	_vertexListForÑircuit = new GLfloat[24*3];
+
+	int i = 0;
+	// Âåðõ
+	// A1 D1
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	i++;
+	_vertexListForÑircuit[i * 3] = 1;  _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	// D1 C1
+	i++;
+	_vertexListForÑircuit[i * 3] = 1;  _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = -1;
+
+	// C1 B1
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	
+	// B1 A1
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = 1;
+
+	// Íèç
+	// A D
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = 1;
+
+	// D C
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	
+	// C B
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = -1;
+
+	// B A
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = 1;
+
+	// Áîêà
+	// A A1
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	
+	// D D1
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	i++;
+	_vertexListForÑircuit[i * 3] = 1;  _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = 1;
+	
+	// C C1
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	i++;
+	_vertexListForÑircuit[i * 3] = 1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = -1;
+
+	// B B1
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = -1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	i++;
+	_vertexListForÑircuit[i * 3] = -1; _vertexListForÑircuit[i * 3 + 1] = 1; _vertexListForÑircuit[i * 3 + 2] = -1;
+	
+}
 
 void Parallelepiped::initShaders()
 {
@@ -234,6 +313,10 @@ void Parallelepiped::initGeometry()
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, 108 * sizeof(GLuint), _normalList, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &vertexbufferForCircuit);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
+	glBufferData(GL_ARRAY_BUFFER, 24*3 * sizeof(GLuint), _vertexListForÑircuit, GL_STATIC_DRAW);
 }
 
 void Parallelepiped::Draw(float *MVP, int displayType) 
@@ -252,15 +335,30 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 		item->second->BindTexture(index);
 
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		0,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		(void*)0
-		);
+	if (displayType == GL_LINES)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
+		glVertexAttribPointer(
+			0,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+			);
+	}
+	else
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+			);
+	}
 
 	// 2nd attribute buffer : uv
 	glEnableVertexAttribArray(1);
@@ -288,7 +386,9 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 
 
 	// Draw the triangle !
-	glDrawArrays(displayType, 0, 108 / 3);
+	if (displayType == GL_LINES)
+		glDrawArrays(displayType, 0, 24*3 / 3);
+	else glDrawArrays(displayType, 0, 108 / 3);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

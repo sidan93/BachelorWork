@@ -121,25 +121,7 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		displayType = GL_LINES;
 		break;
 	case '3':
-		displayType = GL_LINE_STRIP;
-		break;
-	case '4':
-		displayType = GL_LINE_LOOP;
-		break;
-	case '5':
-		displayType = GL_LINE_STRIP_ADJACENCY;
-		break;
-	case '6':
-		displayType = GL_LINES_ADJACENCY;
-		break;
-	case '7':
 		displayType = GL_TRIANGLES;
-		break;
-	case '8':
-		displayType = GL_TRIANGLE_STRIP;
-		break;
-	case '9':
-		displayType = GL_TRIANGLE_FAN;
 		break;
 	case 'z':
 		if (grids.size() > 0)

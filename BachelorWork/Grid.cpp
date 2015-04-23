@@ -16,6 +16,9 @@ vec3 Grid::getCenter() const
 {
 	return vec3(start.x + size.x / 2, start.y + size.y / 2, start.z + size.z / 2);
 }
+void Grid::initCircuit() {
+
+}
 
 void Grid::setAlpha(float value)
 {

@@ -21,6 +21,7 @@ protected:
 	int _material;
 protected:
 	virtual void init() override;
+	virtual void initCircuit() override;
 	virtual void initShaders() override;
 	virtual void initGeometry() override;
 public:
