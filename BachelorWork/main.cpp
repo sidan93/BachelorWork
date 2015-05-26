@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Parallelepiped.h"
 #include "Grid.h"
+#include "Section.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ Camera *camera;
 vector<Parallelepiped*> cubes;
 vector<Parallelepiped*> layers;
 vector<Grid*> grids;
+Section *section;
 
 int displayType = GL_TRIANGLES;
 /******************************************* Functions ******************************************/
@@ -47,6 +49,7 @@ void DisplayCallbackFunction ( void )
 		layer->Draw(&camera->MVP[0][0], GL_LINES);
 	for (auto grid : grids)
 		grid->Draw(&camera->MVP[0][0], vec3(grids[0]->getCenter()));
+	section->Draw(&camera->MVP[0][0]);
 	glutSwapBuffers();
 }
 
@@ -290,6 +293,10 @@ bool InitGrid()
 	return true;
 }
 
+void InitSection() {
+	section = new Section();
+}
+
 Parallelepiped* getCube(ifstream* input, bool withMaterial=false)
 {
 	vec3 position, size;
@@ -320,6 +327,7 @@ bool InitOther()
 		cubes.push_back(getCube(&input, true));
 
 	InitGrid();
+	InitSection();
 	
 	return true;
 }
