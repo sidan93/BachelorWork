@@ -2,8 +2,9 @@
 
 // Interpolated values from the vertex shaders
 in vec2 UV;
-
+in vec4 section;
 in vec4 pos;
+
 uniform sampler2D mainSampler;
 
 // Ouput data
@@ -14,8 +15,8 @@ out vec4 color;
 void main(){
 
 	// Output color = color of the texture at the specified UV
-	//color.g *= 2;
-	//color = normalize(vec3(pos.x, pos.y, pos.z));
-	//color.r = 1;
 	color = texture2D(mainSampler, UV);
+
+	if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
+		discard;
 }

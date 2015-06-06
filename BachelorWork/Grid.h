@@ -3,6 +3,7 @@
 #include "Helpers.h"
 #include "Texture.h"
 #include "BaseObject.h"
+#include "Section.h"
 
 using namespace glm;
 
@@ -13,6 +14,8 @@ private:
 	float alpha;
 	int alphaID;
 	int cameraPositionID;
+
+	Section *section;
 protected:
 	vec3 step;
 	vec3 start;
@@ -27,6 +30,9 @@ public:
 	void setAlpha(float value);
 	void Draw(float *MVP, vec3 cameraPosition);
 	vec3 getCenter() const;
+
+	void setSectionLink(Section *section);
+
 	~Grid();
 };
 

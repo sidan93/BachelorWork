@@ -8,6 +8,10 @@ Section::Section()
 	init();
 	initShaders();
 	initGeometry();
+
+	position.x = 50;
+	position.y = 50;
+	position.z = 50;
 }
 
 void Section::initCircuit() {
@@ -39,7 +43,6 @@ void Section::initGeometry()
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glBufferData(GL_ARRAY_BUFFER, 0 * sizeof(GLuint), _vertexList, GL_STATIC_DRAW);
 }
-
 
 void Section::Draw(float *MVP)
 {
@@ -74,7 +77,13 @@ void Section::Draw(float *MVP)
 	glDisableVertexAttribArray(2);
 }
 
+void Section::Update() {
 
+}
+
+vec3 Section::getPosition() const {
+	return position;
+}
 
 Section::~Section()
 {

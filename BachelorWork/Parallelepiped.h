@@ -3,6 +3,7 @@
 #include "Helpers.h"
 #include "Texture.h"
 #include "BaseObject.h"
+#include "Section.h"
 
 using namespace glm;
 
@@ -17,8 +18,11 @@ protected:
 
 	GLuint shaderPosID;
 	GLuint shaderSizeID;
+	GLuint shaderSectionID;
 
 	int _material;
+
+	Section *section;
 protected:
 	virtual void init() override;
 	virtual void initCircuit() override;
@@ -35,6 +39,8 @@ public:
 	Parallelepiped(vec3 position, vec3 size, int material);
 
 	void Draw(float *MVP, int displayType);
+
+	void setSectionLink(Section *section_);
 
 	~Parallelepiped();
 };

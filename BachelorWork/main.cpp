@@ -60,6 +60,7 @@ void TimerCallbackFunction ( int value )
 	// TODO
 	glutPostRedisplay () ;
 }
+
 void ConsoleUsage() {
 	string value;
 	cout << "Enter command:" << endl;
@@ -73,6 +74,7 @@ void ConsoleUsage() {
 		grids[0]->setAlpha(alpha);
 	}
 }
+
 void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 {
 	int addSpeed = 50;
@@ -286,9 +288,12 @@ bool InitGrid()
 					}
 					minNODZ = std::min(minNODZ, NOD(l, r));
 				}
+
 	vec3 new_sizeGrid = vec3(sizeGrid.x / 2, sizeGrid.y / 2, sizeGrid.z / 2);
 
-	grids.push_back(new Grid(layers[0]->position - layers[0]->size, sizeGrid, vec3(minNODX/2, minNODY/2, minNODZ/2)));
+	Grid *tempGrip = new Grid(layers[0]->position - layers[0]->size, sizeGrid, vec3(minNODX / 2, minNODY / 2, minNODZ / 2));
+	tempGrip->setSectionLink(section);
+	grids.push_back(tempGrip);
 	
 	return true;
 }
@@ -304,13 +309,16 @@ Parallelepiped* getCube(ifstream* input, bool withMaterial=false)
 	int material = 0;
 	if (withMaterial)
 		(*input) >> material;
-	return new Parallelepiped(position, size, material);
+	Parallelepiped *tempParallelepiped = new Parallelepiped(position, size, material);
+	tempParallelepiped->setSectionLink(section);
+	return tempParallelepiped;
 }
 
 bool InitOther()
 {
 	camera = new Camera();
-	
+	InitSection();
+
 	//mesh = new Mesh("ElephantBody.3ds");
 	//mesh->AddTexture("texture01.jpg", textureID1);
 	//mesh->AddTexture("sun_tex.bmp", textureID1);
@@ -327,7 +335,6 @@ bool InitOther()
 		cubes.push_back(getCube(&input, true));
 
 	InitGrid();
-	InitSection();
 	
 	return true;
 }

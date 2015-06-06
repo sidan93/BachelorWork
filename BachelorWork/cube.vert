@@ -8,11 +8,13 @@ layout(location = 2) in vec3 normalPoints;
 // Output data ; will be interpolated for each fragment.
 out vec2 UV;
 out vec4 pos;
+out vec4 section;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
 uniform vec3 position;
 uniform vec3 size;
+uniform vec3 sectionStart;
 
 void main(){
 
@@ -27,9 +29,12 @@ void main(){
 	pos_matrix[1][3] = position.y;
 	pos_matrix[2][3] = position.z;
 	mat4 res = size_matrix*pos_matrix;
-	gl_Position =  MVP * (vec4(mvp, 1)*res);
-	pos = gl_Position;
+	pos = vec4(mvp, 1) * res;
+	gl_Position =  MVP * pos;
 	// UV of the vertex. No special space for this one.
 	UV = vertexUV;
+
+	// Высчитываем сечение
+	section = vec4(sectionStart, 1);
 }
 

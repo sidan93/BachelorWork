@@ -17,6 +17,9 @@ public:
 	Section();
 
 	void Draw(float *MVP);
+	void Update();
+
+	vec3 getPosition() const;
 
 	~Section();
 };

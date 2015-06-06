@@ -146,6 +146,11 @@ void Grid::Draw(float *MVP, vec3 cameraPosition)
 	glDisableVertexAttribArray(2);
 }
 
+void Grid::setSectionLink(Section *section_)
+{
+	section = section_;
+}
+
 
 Grid::~Grid()
 {
