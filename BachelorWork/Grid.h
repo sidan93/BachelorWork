@@ -15,6 +15,8 @@ private:
 	int alphaID;
 	int cameraPositionID;
 
+	GLuint shaderSectionID;
+
 	Section *section;
 protected:
 	vec3 step;

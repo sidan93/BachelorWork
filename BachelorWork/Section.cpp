@@ -77,7 +77,8 @@ void Section::Draw(float *MVP)
 	glDisableVertexAttribArray(2);
 }
 
-void Section::Update() {
+void Section::Update() 
+{
 
 }
 

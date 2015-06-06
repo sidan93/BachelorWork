@@ -1,9 +1,8 @@
 #version 330 core
 
 // Interpolated values from the vertex shaders
-in vec2 UV;
+in vec4 section;
 in vec4 pos;
-in vec3 mvp1;
 
 uniform sampler2D mainSampler;
 uniform float alpha;
@@ -18,9 +17,12 @@ out vec4 color;
 void main(){
 
 	// Output color = color of the texture at the specified UV
-	color = normalize(normalize(vec4(mvp1,1)) - normalize(vec4(cameraPosition, 1)));
-
-	vec4 alphaBlend = normalize(pos - vec4(cameraPosition, 1));
+	//color = normalize(normalize(vec4(mvp1,1)) - normalize(vec4(cameraPosition, 1)));
+	//vec4 alphaBlend = normalize(pos - vec4(cameraPosition, 1));
 	//color.a = sqrt(alphaBlend.x*alphaBlend.x + alphaBlend.y*alphaBlend.y + alphaBlend.z*alphaBlend.z);
-	color.a = 0.2;
+	//color.a = 0.2;
+	color = vec4(0.5,0,0,0.2);
+	
+	if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
+		discard;
 }
