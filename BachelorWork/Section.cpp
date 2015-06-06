@@ -13,6 +13,7 @@ Section::Section()
 
 	//init();
 	initShaders();
+	initShadersSection();
 	//initGeometry();
 
 }
@@ -91,6 +92,12 @@ void Section::initShaders()
 	matrixID = glGetUniformLocation(shaderID, "MVP");
 }
 
+void Section::initShadersSection()
+{
+	shaderCubeID = LoadShaders("sectionCube.vert", "sectionCube.frag");
+	matrixCubeID = glGetUniformLocation(shaderID, "MVP");
+}
+
 void Section::initGeometry()
 {
 	// Магия без которой не рисует
@@ -99,7 +106,18 @@ void Section::initGeometry()
 
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, countPoint * sizeof(GLuint), _vertexList, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, countPoint * 2 * sizeof(GLuint), _vertexList, GL_STATIC_DRAW);
+}
+
+void Section::initSectionGeomentry()
+{
+	// Магия без которой не рисует
+	glGenVertexArrays(1, &vertexArrays);
+	glBindVertexArray(vertexArrays);
+
+	glGenBuffers(1, &vertexSectionbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
+	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSection, GL_STATIC_DRAW);
 }
 
 void Section::Draw(float *MVP)
@@ -126,11 +144,108 @@ void Section::Draw(float *MVP)
 	glDrawArrays(GL_LINES, 0, countPoint / 2);
 
 	glDisableVertexAttribArray(0);
+
+	if (countPointSection != 0)
+	{
+		glUseProgram(shaderCubeID);
+		glUniformMatrix4fv(matrixCubeID, 1, GL_FALSE, MVP);
+
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
+		glVertexAttribPointer(
+			0,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+			);
+
+
+		// Draw the triangle !
+		glDrawArrays(GL_TRIANGLES, 0, countPointSection);
+
+		glDisableVertexAttribArray(0);
+	}
 }
 
-void Section::Update() 
+void Section::Update(vector<Parallelepiped*> lists)
 {
+	countPointSection = 0;
+	_vertexListSection = new GLfloat[lists.size() * 2000];
+	for (auto cube : lists)
+	{
+		// Верхняя грань 
+		// Если по y мы пересикаемся с сеченеим
+		if (true)/* //cube->position.y + cube->size.y >= position.y /*&& 
+			// По другим осям входит в нашу область
+			(cube->position.x - cube->size.x > position.x || cube->position.x + cube->size.x > position.x ||
+   			 cube->position.z - cube->size.z > position.z || cube->position.z + cube->size.z > position.z)*/
+			//)
+		{
+			int i = countPointSection;
+			float leftX = cube->position.x - cube->size.x;
+			float rightX = cube->position.x + cube->size.x;
+			float leftZ = cube->position.z - cube->size.z;
+			float rightZ = cube->position.z + cube->size.z;
+			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
+			i++;
+			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
+			i++;
+			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
+			i++;
+			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
+			i++;
+			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
+			i++;
+			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
+			countPointSection += 18;
+		}
 
+		// Левая грань
+		if (true)//cube->position.x + cube->size.x >= position.x) 
+		{
+			int i = countPointSection;
+			float leftY = cube->position.y - cube->size.y;
+			float rightY = cube->position.y + cube->size.y;
+			float leftZ = cube->position.z - cube->size.z;
+			float rightZ = cube->position.z + cube->size.z;			
+			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
+			i++;
+			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = rightZ;
+			i++;
+			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
+			i++;
+			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
+			i++;
+			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
+			i++;
+			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = leftZ;
+			countPointSection += 18;
+		}
+		// Задняя грань
+		if (true)
+		{
+			int i = countPointSection;
+			float leftX = cube->position.x - cube->size.x;
+			float rightX = cube->position.x + cube->size.x;
+			float leftY = cube->position.y - cube->size.y;
+			float rightY = cube->position.y + cube->size.y;
+			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
+			i++;
+			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
+			i++;
+			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
+			i++;
+			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
+			i++;
+			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
+			i++;
+			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
+			countPointSection += 18;
+		}
+	}
+	initSectionGeomentry();
 }
 
 vec3 Section::getPosition() const {

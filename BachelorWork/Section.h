@@ -1,8 +1,11 @@
 #pragma once
 #include "BaseObject.h"
 #include "includes.h"
+#include "Parallelepiped.h"
 
 using namespace glm;
+
+class Parallelepiped;
 
 class Section : public BaseObject
 {
@@ -15,15 +18,26 @@ class Section : public BaseObject
 protected:
 	virtual void init() override;
 	virtual void initShaders() override;
+	void initShadersSection();
 	virtual void initGeometry() override;
+	void initSectionGeomentry();
 	virtual void initCircuit() override;
+
+	// Для фигур получившихся от сечения
+	GLfloat* _vertexListSection;
+	int countPointSection;
+	GLuint vertexSectionbuffer;
+
+	GLuint vertexCubeArrays;
+	GLuint shaderCubeID;
+	GLuint matrixCubeID;
 public:
 	Section();
 	
 	void Init();
 
 	void Draw(float *MVP);
-	void Update();
+	void Update(vector<Parallelepiped*> lists);
 
 	vec3 getPosition() const;
 	void setMaxSize(vec3 size_);

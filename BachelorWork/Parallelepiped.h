@@ -7,6 +7,8 @@
 
 using namespace glm;
 
+class Section;
+
 class Parallelepiped : public BaseObject
 {
 protected:

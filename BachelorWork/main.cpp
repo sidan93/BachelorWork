@@ -339,6 +339,7 @@ bool InitOther()
 
 	InitGrid();
 	section->Init();
+	section->Update(cubes);
 	
 	return true;
 }

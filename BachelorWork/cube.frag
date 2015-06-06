@@ -16,7 +16,7 @@ void main(){
 
 	// Output color = color of the texture at the specified UV
 	color = texture2D(mainSampler, UV);
-
+	
 	if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
 		discard;
 }

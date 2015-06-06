@@ -121,6 +121,12 @@
     <None Include="section.vert">
       <Filter>Файлы ресурсов\shaders</Filter>
     </None>
+    <None Include="sectionCube.frag">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
+    <None Include="sectionCube.vert">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
