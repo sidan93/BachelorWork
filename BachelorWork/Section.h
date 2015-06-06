@@ -8,6 +8,10 @@ class Section : public BaseObject
 {
 	vec3 position;
 	vec3 direction;
+	vec3 maxSize;
+	int step;
+
+	int countPoint;
 protected:
 	virtual void init() override;
 	virtual void initShaders() override;
@@ -15,11 +19,14 @@ protected:
 	virtual void initCircuit() override;
 public:
 	Section();
+	
+	void Init();
 
 	void Draw(float *MVP);
 	void Update();
 
 	vec3 getPosition() const;
+	void setMaxSize(vec3 size_);
 
 	~Section();
 };

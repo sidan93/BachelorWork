@@ -294,6 +294,9 @@ bool InitGrid()
 	Grid *tempGrip = new Grid(layers[0]->position - layers[0]->size, sizeGrid, vec3(minNODX / 2, minNODY / 2, minNODZ / 2));
 	tempGrip->setSectionLink(section);
 	grids.push_back(tempGrip);
+
+	// Установим максимальный размер сечения по размеру сетки
+	section->setMaxSize(sizeGrid);
 	
 	return true;
 }
@@ -335,6 +338,7 @@ bool InitOther()
 		cubes.push_back(getCube(&input, true));
 
 	InitGrid();
+	section->Init();
 	
 	return true;
 }
