@@ -178,11 +178,12 @@ void Section::Update(vector<Parallelepiped*> lists)
 	{
 		// Верхняя грань 
 		// Если по y мы пересикаемся с сеченеим
-		if (true)/* //cube->position.y + cube->size.y >= position.y /*&& 
+		//if (true)/* //cube->position.y + cube->size.y >= position.y /*&& 
 			// По другим осям входит в нашу область
-			(cube->position.x - cube->size.x > position.x || cube->position.x + cube->size.x > position.x ||
-   			 cube->position.z - cube->size.z > position.z || cube->position.z + cube->size.z > position.z)*/
+		//	(cube->position.x - cube->size.x > position.x || cube->position.x + cube->size.x > position.x ||
+   		//	 cube->position.z - cube->size.z > position.z || cube->position.z + cube->size.z > position.z)*/
 			//)
+		if (cube->position.y + cube->size.y >= position.y)
 		{
 			int i = countPointSection;
 			float leftX = cube->position.x - cube->size.x;
@@ -204,7 +205,7 @@ void Section::Update(vector<Parallelepiped*> lists)
 		}
 
 		// Левая грань
-		if (true)//cube->position.x + cube->size.x >= position.x) 
+		if (cube->position.x + cube->size.x >= position.x)
 		{
 			int i = countPointSection;
 			float leftY = cube->position.y - cube->size.y;
@@ -225,7 +226,7 @@ void Section::Update(vector<Parallelepiped*> lists)
 			countPointSection += 18;
 		}
 		// Задняя грань
-		if (true)
+		if (cube->position.z + cube->size.z >= position.z)
 		{
 			int i = countPointSection;
 			float leftX = cube->position.x - cube->size.x;

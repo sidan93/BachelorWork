@@ -134,26 +134,32 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		break;
 	case '7':
 		section->position.x += addSpeed;
+		section->Init();
 		section->Update(cubes);
 		break;
 	case '4':
 		section->position.x -= addSpeed;
+		section->Init();
 		section->Update(cubes);
 		break;
 	case '8':
 		section->position.y += addSpeed;
+		section->Init();
 		section->Update(cubes);
 		break;
 	case '5':
 		section->position.y -= addSpeed;
+		section->Init();
 		section->Update(cubes);
 		break;
 	case '9':
 		section->position.z += addSpeed;
+		section->Init();
 		section->Update(cubes);
 		break;
 	case '6':
 		section->position.z -= addSpeed;
+		section->Init();
 		section->Update(cubes);
 		break;
 	case 'c':
