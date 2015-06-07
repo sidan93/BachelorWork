@@ -27,6 +27,7 @@ void Section::Init()
 	init();
 	initGeometry();
 }
+
 // TODO Сделать функцию и переменные static
 void Section::init()
 {
