@@ -177,18 +177,12 @@ void Section::Update(vector<Parallelepiped*> lists)
 	for (auto cube : lists)
 	{
 		// Верхняя грань 
-		// Если по y мы пересикаемся с сеченеим
-		//if (true)/* //cube->position.y + cube->size.y >= position.y /*&& 
-			// По другим осям входит в нашу область
-		//	(cube->position.x - cube->size.x > position.x || cube->position.x + cube->size.x > position.x ||
-   		//	 cube->position.z - cube->size.z > position.z || cube->position.z + cube->size.z > position.z)*/
-			//)
 		if (cube->position.y + cube->size.y >= position.y)
 		{
 			int i = countPointSection;
-			float leftX = cube->position.x - cube->size.x;
+			float leftX = cube->position.x - cube->size.x < position.x ? position.x : cube->position.x - cube->size.x;
 			float rightX = cube->position.x + cube->size.x;
-			float leftZ = cube->position.z - cube->size.z;
+			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
 			i++;
@@ -208,9 +202,9 @@ void Section::Update(vector<Parallelepiped*> lists)
 		if (cube->position.x + cube->size.x >= position.x)
 		{
 			int i = countPointSection;
-			float leftY = cube->position.y - cube->size.y;
+			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
-			float leftZ = cube->position.z - cube->size.z;
+			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;			
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
 			i++;
@@ -229,9 +223,9 @@ void Section::Update(vector<Parallelepiped*> lists)
 		if (cube->position.z + cube->size.z >= position.z)
 		{
 			int i = countPointSection;
-			float leftX = cube->position.x - cube->size.x;
+			float leftX = cube->position.x - cube->size.x < position.x ? position.x : cube->position.x - cube->size.x;
 			float rightX = cube->position.x + cube->size.x;
-			float leftY = cube->position.y - cube->size.y;
+			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
 			i++;
