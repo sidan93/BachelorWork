@@ -11,6 +11,7 @@ Section::Section()
 	step = 25;
 	maxSize = vec3(2000, 2000, 2000);
 	_vertexListSection = new GLfloat[10000];
+	_vertexListSectionCenter = new GLfloat[10000];
 
 	//init();
 	initShaders();
@@ -120,6 +121,10 @@ void Section::initSectionGeomentry()
 	glGenBuffers(1, &vertexSectionbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
 	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSection, GL_STATIC_DRAW);
+
+	glGenBuffers(2, &vertexSectionCenterbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionCenterbuffer);
+	glBufferData(GL_ARRAY_BUFFER, countPointSection * 4 * sizeof(GLuint), _vertexListSectionCenter, GL_STATIC_DRAW);
 }
 
 void Section::Draw(float *MVP)
@@ -153,10 +158,21 @@ void Section::Draw(float *MVP)
 		glUniformMatrix4fv(matrixCubeID, 1, GL_FALSE, MVP);
 
 		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
 		glVertexAttribPointer(
 			0,
 			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+			);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionCenterbuffer);
+		glVertexAttribPointer(
+			1,
+			4,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
@@ -168,9 +184,16 @@ void Section::Draw(float *MVP)
 		glDrawArrays(GL_TRIANGLES, 0, countPointSection);
 
 		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
 	}
 }
 
+float Section::_getCubeSizeForShaders(vec3 size) {
+	// Алгоритм с расчетом по кажой стороне
+	return (size.x + size.y * 1000 + size.z * 1000 * 1000);
+	// Алгоритм со средней длинной
+	//return (size.x + size.y + size.z) / 3;
+};
 void Section::Update(vector<Parallelepiped*> lists)
 {
 	countPointSection = 0;
@@ -185,16 +208,28 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			countPointSection += 18;
 		}
 
@@ -207,16 +242,28 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;			
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = rightZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = leftZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			countPointSection += 18;
 		}
 		// Задняя грань
@@ -228,16 +275,28 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
+			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
+			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
 			countPointSection += 18;
 		}
 	}

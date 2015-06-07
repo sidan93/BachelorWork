@@ -17,6 +17,8 @@ private:
 	int step;
 
 	int countPoint;
+
+	float _getCubeSizeForShaders(vec3);
 protected:
 	virtual void init() override;
 	virtual void initShaders() override;
@@ -29,6 +31,9 @@ protected:
 	GLfloat* _vertexListSection;
 	int countPointSection;
 	GLuint vertexSectionbuffer;
+
+	GLfloat* _vertexListSectionCenter;
+	GLuint vertexSectionCenterbuffer;
 
 	GLuint vertexCubeArrays;
 	GLuint shaderCubeID;
