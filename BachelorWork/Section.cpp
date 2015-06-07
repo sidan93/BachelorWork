@@ -10,6 +10,7 @@ Section::Section()
 	position.z = 400;
 	step = 25;
 	maxSize = vec3(2000, 2000, 2000);
+	_vertexListSection = new GLfloat[10000];
 
 	//init();
 	initShaders();
@@ -173,7 +174,6 @@ void Section::Draw(float *MVP)
 void Section::Update(vector<Parallelepiped*> lists)
 {
 	countPointSection = 0;
-	_vertexListSection = new GLfloat[lists.size() * 2000];
 	for (auto cube : lists)
 	{
 		// Верхняя грань 
