@@ -177,7 +177,7 @@ void Section::Update(vector<Parallelepiped*> lists)
 	for (auto cube : lists)
 	{
 		// Верхняя грань 
-		if (cube->position.y + cube->size.y >= position.y)
+		if (cube->position.y + cube->size.y >= position.y && cube->position.y - cube->size.y < position.y)
 		{
 			int i = countPointSection;
 			float leftX = cube->position.x - cube->size.x < position.x ? position.x : cube->position.x - cube->size.x;
@@ -199,7 +199,7 @@ void Section::Update(vector<Parallelepiped*> lists)
 		}
 
 		// Левая грань
-		if (cube->position.x + cube->size.x >= position.x)
+		if (cube->position.x + cube->size.x >= position.x && cube->position.x - cube->size.x < position.x)
 		{
 			int i = countPointSection;
 			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
@@ -220,7 +220,7 @@ void Section::Update(vector<Parallelepiped*> lists)
 			countPointSection += 18;
 		}
 		// Задняя грань
-		if (cube->position.z + cube->size.z >= position.z)
+		if (cube->position.z + cube->size.z >= position.z && cube->position.z - cube->size.z < position.z)
 		{
 			int i = countPointSection;
 			float leftX = cube->position.x - cube->size.x < position.x ? position.x : cube->position.x - cube->size.x;
