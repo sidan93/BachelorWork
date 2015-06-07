@@ -9,7 +9,9 @@ class Parallelepiped;
 
 class Section : public BaseObject
 {
+public:
 	vec3 position;
+private:
 	vec3 direction;
 	vec3 maxSize;
 	int step;

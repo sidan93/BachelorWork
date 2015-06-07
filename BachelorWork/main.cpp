@@ -132,6 +132,30 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		if (grids.size() > 0)
 			grids[0]->isEnable = !grids[0]->isEnable;
 		break;
+	case '7':
+		section->position.x += addSpeed;
+		section->Init();
+		break;
+	case '4':
+		section->position.x -= addSpeed;
+		section->Init();
+		break;
+	case '8':
+		section->position.y += addSpeed;
+		section->Init();
+		break;
+	case '5':
+		section->position.y -= addSpeed;
+		section->Init();
+		break;
+	case '9':
+		section->position.z += addSpeed;
+		section->Init();
+		break;
+	case '6':
+		section->position.z -= addSpeed;
+		section->Init();
+		break;
 	case 'c':
 		ConsoleUsage();
 		break;
