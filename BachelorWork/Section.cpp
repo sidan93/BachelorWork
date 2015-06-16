@@ -197,7 +197,7 @@ float Section::_getCubeSizeForShaders(vec3 size) {
 	// Алгоритм с расчетом по кажой стороне
 	return (size.x + size.y * 1000 + size.z * 1000 * 1000);
 	// Алгоритм со средней длинной
-	//return (size.x + size.y + size.z) / 3;
+	return (size.x + size.y + size.z) / 3;
 };
 void Section::Update(vector<Parallelepiped*> lists)
 {

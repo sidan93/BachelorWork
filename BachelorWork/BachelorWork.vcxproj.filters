@@ -176,5 +176,8 @@
     <Image Include="texture03.jpg">
       <Filter>Файлы ресурсов\material</Filter>
     </Image>
+    <Image Include="texture04.jpg">
+      <Filter>Файлы ресурсов\material</Filter>
+    </Image>
   </ItemGroup>
 </Project>

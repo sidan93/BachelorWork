@@ -288,10 +288,16 @@ void Parallelepiped::initShaders()
 
 	switch (_material) {
 	case 1:
-		AddTexture("texture02.jpg", textureID1);
+		AddTexture("texture01.jpg", textureID1);
 		break;
 	case 2:
+		AddTexture("texture02.jpg", textureID1);
+		break;
+	case 3:
 		AddTexture("texture03.jpg", textureID1);
+		break;
+	case 4:
+		AddTexture("texture04.jpg", textureID1);
 		break;
 	default:
 		AddTexture("texture01.jpg", textureID1);
