@@ -21,6 +21,7 @@ protected:
 	GLuint shaderPosID;
 	GLuint shaderSizeID;
 	GLuint shaderSectionID;
+	GLuint shaderSectionEnableID;
 
 	int _material;
 

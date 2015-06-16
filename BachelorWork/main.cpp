@@ -133,8 +133,11 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 			grids[0]->isEnable = !grids[0]->isEnable;
 		break;
 	case 'x':
+		section->isEnableGridSection = !section->isEnableGridSection;
+		break; 
+	case 'c':
 		section->isEnable = !section->isEnable;
-		break;
+			break;
 	case '7':
 		section->position.x += addSpeed;
 		section->Init();
@@ -165,7 +168,7 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		section->Init();
 		section->Update(cubes);
 		break;
-	case 'c':
+	case 'p':
 		ConsoleUsage();
 		break;
 	camera->Update();
@@ -221,7 +224,7 @@ void InitGLStates()
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
 	glEnable(GL_CULL_FACE);
-	glClearColor(0,0,0,0);
+	glClearColor(1,1,1,0);
 	glClearDepth(1.0);
 	glClearStencil(0);
 	glEnable(GL_TEXTURE0);

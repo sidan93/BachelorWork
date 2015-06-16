@@ -282,6 +282,7 @@ void Parallelepiped::initShaders()
 	shaderPosID = glGetUniformLocation(shaderID, "position");
 	shaderSizeID = glGetUniformLocation(shaderID, "size");
 	shaderSectionID = glGetUniformLocation(shaderID, "sectionStart");
+	shaderSectionEnableID = glGetUniformLocation(shaderID, "sectionIsEnable");
 
 	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
 
@@ -331,8 +332,10 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 	glUniform3f(shaderPosID, position.x, position.y, position.z);
 	glUniform3f(shaderSizeID, size.x, size.y, size.z);
 
-	if (section)
+	if (section) {
+		glUniform1i(shaderSectionEnableID, int(section->isEnable));
 		glUniform3f(shaderSectionID, section->getPosition().x, section->getPosition().y, section->getPosition().z);
+	}
 
 	int index = 0;
 	map<const char*, Texture*>::iterator item;

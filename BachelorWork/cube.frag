@@ -6,6 +6,7 @@ in vec4 section;
 in vec4 pos;
 
 uniform sampler2D mainSampler;
+uniform int sectionIsEnable;
 
 // Ouput data
 out vec4 color;
@@ -17,6 +18,7 @@ void main(){
 	// Output color = color of the texture at the specified UV
 	color = texture2D(mainSampler, UV);
 	
-	if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
-		discard;
+	if (sectionIsEnable == 1)
+		if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
+			discard;
 }

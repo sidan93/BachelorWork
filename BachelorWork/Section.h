@@ -11,6 +11,7 @@ class Section : public BaseObject
 {
 public:
 	vec3 position;
+	bool isEnableGridSection;
 private:
 	vec3 direction;
 	vec3 maxSize;

@@ -9,6 +9,7 @@ Section::Section()
 	position.y = 170;
 	position.z = 400;
 	step = 25;
+	isEnableGridSection = true;
 	isEnable = true;
 	maxSize = vec3(2000, 2000, 2000);
 	_vertexListSection = new GLfloat[10000];
@@ -130,7 +131,10 @@ void Section::initSectionGeomentry()
 
 void Section::Draw(float *MVP)
 {
-	if (isEnable)
+	if (!isEnable)
+		return;
+
+	if (isEnableGridSection)
 	{
 		glUseProgram(shaderID);
 		glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
