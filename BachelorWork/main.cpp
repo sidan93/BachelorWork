@@ -177,6 +177,16 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		break;
 	case 'p':
 		ConsoleUsage();
+		break; 
+	case 'n':
+		sectionSphere->radius += 50;
+		section->Init();
+		section->Update(cubes);
+		break;
+	case 'm':
+		sectionSphere->radius -= 50;
+		section->Init();
+		section->Update(cubes);
 		break;
 	camera->Update();
 	}
@@ -297,7 +307,7 @@ void InitGLStates()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(TRUE);
-	//glDisable(GL_STENCIL_TEST);
+	glDisable(GL_STENCIL_TEST);
 	glStencilMask(0xFFFFFFFF);
 	glStencilFunc(GL_EQUAL, 0x00000000, 0x00000001);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
@@ -419,8 +429,8 @@ bool InitGrid()
 
 void InitSection() {
 	sectionSphere = new SectionSphere();
-	sectionSphere->center = vec3(10, 10, 10);
-	sectionSphere->radius = 10;
+	sectionSphere->center = vec3(25*50,5*50,25*50);
+	sectionSphere->radius = 40*50;
 
 	section = new Section(sectionSphere);
 }

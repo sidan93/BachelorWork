@@ -37,8 +37,8 @@ protected:
 	int countPointSection;
 	GLuint vertexSectionbuffer;
 
-	GLfloat* _vertexListSectionCenter;
-	GLuint vertexSectionCenterbuffer;
+	GLfloat* _vertexListSectionColor;
+	GLuint vertexSectionColorbuffer;
 
 	GLuint vertexCubeArrays;
 	GLuint shaderCubeID;

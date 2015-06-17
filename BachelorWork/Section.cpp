@@ -13,7 +13,7 @@ Section::Section(SectionSphere *sectionSphere_)
 	isEnable = true;
 	maxSize = vec3(2000, 2000, 2000);
 	_vertexListSection = new GLfloat[10000];
-	_vertexListSectionCenter = new GLfloat[10000];
+	_vertexListSectionColor = new GLfloat[10000];
 
 	sectionSphere = sectionSphere_;
 
@@ -126,9 +126,9 @@ void Section::initSectionGeomentry()
 	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
 	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSection, GL_STATIC_DRAW);
 
-	glGenBuffers(2, &vertexSectionCenterbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionCenterbuffer);
-	glBufferData(GL_ARRAY_BUFFER, countPointSection * 4 * sizeof(GLuint), _vertexListSectionCenter, GL_STATIC_DRAW);
+	glGenBuffers(1, &vertexSectionColorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionColorbuffer);
+	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSectionColor, GL_STATIC_DRAW);
 }
 
 void Section::Draw(float *MVP)
@@ -176,10 +176,10 @@ void Section::Draw(float *MVP)
 			(void*)0
 			);
 
-		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionCenterbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionColorbuffer);
 		glVertexAttribPointer(
 			1,
-			4,
+			3,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
@@ -203,6 +203,7 @@ float Section::_getCubeSizeForShaders(vec3 size) {
 };
 void Section::Update(vector<Parallelepiped*> lists)
 {
+	float color__;
 	countPointSection = 0;
 	for (auto cube : lists)
 	{
@@ -215,28 +216,28 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(leftX, position.y, leftZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(leftX, position.y, rightZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(rightX, position.y, rightZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(rightX, position.y, rightZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(rightX, position.y, leftZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(leftX, position.y, leftZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			countPointSection += 18;
 		}
 
@@ -249,28 +250,28 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;			
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(position.x, rightY, rightZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = rightZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(position.x, leftY, rightZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(position.x, leftY, leftZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = leftZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(position.x, rightY, leftZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(position.x, rightY, rightZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(position.x, leftY, leftZ));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			countPointSection += 18;
 		}
 		// Задняя грань
@@ -282,28 +283,28 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(leftX, rightY, position.z));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(leftX, leftY, position.z));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(rightX, leftY, position.z));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(rightX, leftY, position.z));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(rightX, rightY, position.z));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
-			_vertexListSectionCenter[i * 4] = cube->position.x; _vertexListSectionCenter[i * 4 + 1] = cube->position.y; _vertexListSectionCenter[i * 4 + 2] = cube->position.z;
-			_vertexListSectionCenter[i * 4 + 3] = _getCubeSizeForShaders(cube->GlobalSize);
+			color__ = sectionSphere->getColor(vec3(leftX, rightY, position.z));
+			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
 			countPointSection += 18;
 		}
 	}

@@ -10,6 +10,7 @@ public:
 	float radius;
 public:
 	SectionSphere();
+	float getColor(vec3 target);
 	~SectionSphere();
 };
 
