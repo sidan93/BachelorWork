@@ -8,6 +8,8 @@
 #include "Parallelepiped.h"
 #include "Grid.h"
 #include "Section.h"
+#include "SectionSphere.h"
+#include "Interface.h"
 
 using namespace std;
 
@@ -27,6 +29,10 @@ vector<Parallelepiped*> cubes;
 vector<Parallelepiped*> layers;
 vector<Grid*> grids;
 Section *section;
+SectionSphere *sectionSphere;
+Interface *interf;
+
+int addSpeed = 50;
 
 int displayType = GL_TRIANGLES;
 /******************************************* Functions ******************************************/
@@ -36,7 +42,6 @@ void CreateGeometry()
 }
 
 /* GLUT callbacks */
-
 void DisplayCallbackFunction ( void )
 {
 	//Clear all the buffers
@@ -50,6 +55,9 @@ void DisplayCallbackFunction ( void )
 	for (auto grid : grids)
 		grid->Draw(&camera->MVP[0][0], vec3(grids[0]->getCenter()));
 	section->Draw(&camera->MVP[0][0]);
+
+	interf->Draw();
+
 	glutSwapBuffers();
 }
 
@@ -77,7 +85,6 @@ void ConsoleUsage() {
 
 void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 {
-	int addSpeed = 50;
 	switch ( key )
 	{
 	case 27 :  /* Escape key */
@@ -186,11 +193,84 @@ void SpecialKeyboardCallbackFunction ( int key, int x, int y )
 	glutPostRedisplay () ;
 }
 
+bool inRectangle(float positionX, float positionY, float x, float y, float width, float height)
+{
+	if (positionX >= x && positionX <= x + width && positionY >= y && positionY <= y + height)
+		return true;
+	return false;
+}
+
 void MouseCallbackFunction ( int button, int updown, int x, int y )
 {
 	if ( updown == GLUT_UP )
 	{
+		if (button == GLUT_LEFT_BUTTON)
+		{
+			float newX = x / 900.0 * 2 - 1;
+			float newY = y / 900.0 * 2 - 1;
 
+			// Обработаем кнопки камеры
+			// Вверх по Х
+			if (inRectangle(newX, newY, -0.973, -0.953, 0.056, 0.056))
+				camera->_position.x += addSpeed;
+			// Вниз по Х
+			if (inRectangle(newX, newY, -0.973, -0.897, 0.056, 0.056))
+				camera->_position.x -= addSpeed;
+
+			// Вверх по Y
+			if (inRectangle(newX, newY, -0.913, -0.953, 0.056, 0.056))
+				camera->_position.y += addSpeed;
+			// Вниз по Y
+			if (inRectangle(newX, newY, -0.913, -0.897, 0.056, 0.056))
+				camera->_position.y -= addSpeed;
+
+			// Вверх по Z
+			if (inRectangle(newX, newY, -0.848, -0.953, 0.056, 0.056))
+				camera->_position.z += addSpeed;
+			// Вниз по Z
+			if (inRectangle(newX, newY, -0.848, -0.897, 0.056, 0.056))
+				camera->_position.z -= addSpeed;
+
+			// Обрабатываем кнопки сечения
+			// Вверх по Х
+			if (inRectangle(newX, newY, 0.78, -0.953, 0.056, 0.056)){
+				section->position.x += addSpeed;
+				section->Init();
+				section->Update(cubes);
+			}
+			// Вниз по Х
+			if (inRectangle(newX, newY, 0.78, -0.897, 0.056, 0.056)){
+				section->position.x -= addSpeed;
+				section->Init();
+				section->Update(cubes);
+			}
+
+			// Вверх по Y
+			if (inRectangle(newX, newY, 0.846, -0.953, 0.056, 0.056)){
+				section->position.y += addSpeed;
+				section->Init();
+				section->Update(cubes);
+			}
+			// Вниз по Y
+			if (inRectangle(newX, newY, 0.846, -0.897, 0.056, 0.056)){
+				section->position.y -= addSpeed;
+				section->Init();
+				section->Update(cubes);
+			}
+
+			// Вверх по Z
+			if (inRectangle(newX, newY, 0.913, -0.953, 0.056, 0.056)){
+				section->position.z += addSpeed;
+				section->Init();
+				section->Update(cubes);
+			}
+			// Вниз по Z
+			if (inRectangle(newX, newY, 0.913, -0.897, 0.056, 0.056)) {
+				section->position.z -= addSpeed;
+				section->Init();
+				section->Update(cubes);
+			}
+		}
 	}
 }
 
@@ -217,7 +297,7 @@ void InitGLStates()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(TRUE);
-	glDisable(GL_STENCIL_TEST);
+	//glDisable(GL_STENCIL_TEST);
 	glStencilMask(0xFFFFFFFF);
 	glStencilFunc(GL_EQUAL, 0x00000000, 0x00000001);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
@@ -338,7 +418,11 @@ bool InitGrid()
 }
 
 void InitSection() {
-	section = new Section();
+	sectionSphere = new SectionSphere();
+	sectionSphere->center = vec3(10, 10, 10);
+	sectionSphere->radius = 10;
+
+	section = new Section(sectionSphere);
 }
 
 Parallelepiped* getCube(ifstream* input, bool withMaterial=false)
@@ -376,6 +460,8 @@ bool InitOther()
 	InitGrid();
 	section->Init();
 	section->Update(cubes);
+
+	interf = new Interface();
 	
 	return true;
 }

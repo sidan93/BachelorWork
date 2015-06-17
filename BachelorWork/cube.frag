@@ -19,6 +19,6 @@ void main(){
 	color = texture2D(mainSampler, UV);
 	
 	if (sectionIsEnable == 1)
-		if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
+		if (pos.x > section.x - 10 && pos.y > section.y - 10 && pos.z > section.z - 10)
 			discard;
 }

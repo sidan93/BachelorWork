@@ -349,31 +349,16 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 		item->second->BindTexture(index);
 
 	glEnableVertexAttribArray(0);
-	if (displayType == GL_LINES)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
-		glVertexAttribPointer(
-			0,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)0
-			);
-	}
-	else
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glVertexAttribPointer(
-			0,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)0
-			);
-	}
-
+	glBindBuffer(GL_ARRAY_BUFFER, displayType == GL_LINES ? vertexbufferForCircuit : vertexbuffer);
+	glVertexAttribPointer(
+		0,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		0,
+		(void*)0
+		);
+	
 	// 2nd attribute buffer : uv
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
@@ -400,9 +385,7 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 
 
 	// Draw the triangle !
-	if (displayType == GL_LINES)
-		glDrawArrays(displayType, 0, 24*3 / 3);
-	else glDrawArrays(displayType, 0, 108 / 3);
+	glDrawArrays(displayType, 0, displayType == GL_LINES ? 24 : 108 / 3);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

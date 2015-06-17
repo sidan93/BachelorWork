@@ -2,6 +2,7 @@
 #include "BaseObject.h"
 #include "includes.h"
 #include "Parallelepiped.h"
+#include "SectionSphere.h"
 
 using namespace glm;
 
@@ -18,6 +19,9 @@ private:
 	int step;
 
 	int countPoint;
+
+	// —фера по которой проиходит распределение
+	SectionSphere *sectionSphere;
 
 	float _getCubeSizeForShaders(vec3);
 protected:
@@ -40,7 +44,7 @@ protected:
 	GLuint shaderCubeID;
 	GLuint matrixCubeID;
 public:
-	Section();
+	Section(SectionSphere *sectionSphere_);
 	
 	void Init();
 

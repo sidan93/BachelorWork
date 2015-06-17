@@ -69,11 +69,13 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Helpers.cpp" />
+    <ClCompile Include="Interface.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Parallelepiped.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Section.cpp" />
+    <ClCompile Include="SectionSphere.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
@@ -91,6 +93,8 @@
     <None Include="firtree.3ds" />
     <None Include="grid.frag" />
     <None Include="grid.vert" />
+    <None Include="interface.frag" />
+    <None Include="interface.vert" />
     <None Include="ruins.3ds" />
     <None Include="section.frag" />
     <None Include="section.vert" />
@@ -107,14 +111,18 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="Interface.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Parallelepiped.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Section.h" />
+    <ClInclude Include="SectionSphere.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="button01.jpg" />
+    <Image Include="button02.jpg" />
     <Image Include="sun_tex.bmp" />
     <Image Include="texture01.jpg" />
     <Image Include="texture02.jpg" />

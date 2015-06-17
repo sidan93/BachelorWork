@@ -1,7 +1,7 @@
 #include "Section.h"
 
 
-Section::Section()
+Section::Section(SectionSphere *sectionSphere_)
 {
 	name = "                                                     ";
 
@@ -14,6 +14,8 @@ Section::Section()
 	maxSize = vec3(2000, 2000, 2000);
 	_vertexListSection = new GLfloat[10000];
 	_vertexListSectionCenter = new GLfloat[10000];
+
+	sectionSphere = sectionSphere_;
 
 	//init();
 	initShaders();

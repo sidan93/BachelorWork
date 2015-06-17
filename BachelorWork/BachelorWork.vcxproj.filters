@@ -63,6 +63,12 @@
     <ClCompile Include="Section.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="SectionSphere.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\include\GL\freeglut.lib">
@@ -127,6 +133,12 @@
     <None Include="sectionCube.vert">
       <Filter>Файлы ресурсов\shaders</Filter>
     </None>
+    <None Include="interface.vert">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
+    <None Include="interface.frag">
+      <Filter>Файлы ресурсов\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helpers.h">
@@ -162,6 +174,12 @@
     <ClInclude Include="Section.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="SectionSphere.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="sun_tex.bmp">
@@ -177,6 +195,12 @@
       <Filter>Файлы ресурсов\material</Filter>
     </Image>
     <Image Include="texture04.jpg">
+      <Filter>Файлы ресурсов\material</Filter>
+    </Image>
+    <Image Include="button01.jpg">
+      <Filter>Файлы ресурсов\material</Filter>
+    </Image>
+    <Image Include="button02.jpg">
       <Filter>Файлы ресурсов\material</Filter>
     </Image>
   </ItemGroup>
