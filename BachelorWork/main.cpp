@@ -431,6 +431,9 @@ void InitSection() {
 	sectionSphere = new SectionSphere();
 	sectionSphere->center = vec3(25*50,5*50,25*50);
 	sectionSphere->radius = 40*50;
+	sectionSphere->minPower = 0;
+	sectionSphere->maxPower = 1;
+	sectionSphere->readColoring();
 
 	section = new Section(sectionSphere);
 }

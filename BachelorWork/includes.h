@@ -13,6 +13,7 @@
 #include <string>
 
 #include <vector>
+#include <list>
 #include <map>
 
 #include "FreeImage/FreeImage.h"

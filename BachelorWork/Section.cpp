@@ -203,7 +203,7 @@ float Section::_getCubeSizeForShaders(vec3 size) {
 };
 void Section::Update(vector<Parallelepiped*> lists)
 {
-	float color__;
+	vec3 color__;
 	countPointSection = 0;
 	for (auto cube : lists)
 	{
@@ -217,27 +217,27 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float rightZ = cube->position.z + cube->size.z;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
 			color__ = sectionSphere->getColor(vec3(leftX, position.y, leftZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
 			color__ = sectionSphere->getColor(vec3(leftX, position.y, rightZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
 			color__ = sectionSphere->getColor(vec3(rightX, position.y, rightZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = rightZ;
 			color__ = sectionSphere->getColor(vec3(rightX, position.y, rightZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
 			color__ = sectionSphere->getColor(vec3(rightX, position.y, leftZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = position.y; _vertexListSection[i * 3 + 2] = leftZ;
 			color__ = sectionSphere->getColor(vec3(leftX, position.y, leftZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			countPointSection += 18;
 		}
 
@@ -251,27 +251,27 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float rightZ = cube->position.z + cube->size.z;			
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
 			color__ = sectionSphere->getColor(vec3(position.x, rightY, rightZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = rightZ;
 			color__ = sectionSphere->getColor(vec3(position.x, leftY, rightZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
 			color__ = sectionSphere->getColor(vec3(position.x, leftY, leftZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = leftZ;
 			color__ = sectionSphere->getColor(vec3(position.x, rightY, leftZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = rightZ;
 			color__ = sectionSphere->getColor(vec3(position.x, rightY, rightZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = position.x; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = leftZ;
 			color__ = sectionSphere->getColor(vec3(position.x, leftY, leftZ));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			countPointSection += 18;
 		}
 		// Задняя грань
@@ -284,27 +284,27 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float rightY = cube->position.y + cube->size.y;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
 			color__ = sectionSphere->getColor(vec3(leftX, rightY, position.z));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
 			color__ = sectionSphere->getColor(vec3(leftX, leftY, position.z));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
 			color__ = sectionSphere->getColor(vec3(rightX, leftY, position.z));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = leftY; _vertexListSection[i * 3 + 2] = position.z;
 			color__ = sectionSphere->getColor(vec3(rightX, leftY, position.z));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = rightX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
 			color__ = sectionSphere->getColor(vec3(rightX, rightY, position.z));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
 			_vertexListSection[i * 3] = leftX; _vertexListSection[i * 3 + 1] = rightY; _vertexListSection[i * 3 + 2] = position.z;
 			color__ = sectionSphere->getColor(vec3(leftX, rightY, position.z));
-			_vertexListSectionColor[i * 3 + 0] = color__; _vertexListSectionColor[i * 3 + 1] = color__; _vertexListSectionColor[i * 3 + 2] = color__;
+			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			countPointSection += 18;
 		}
 	}

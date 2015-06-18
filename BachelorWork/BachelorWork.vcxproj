@@ -86,6 +86,7 @@
   <ItemGroup>
     <None Include="..\include\GL\glew32.dll" />
     <None Include="apollon.3DS" />
+    <None Include="coloring.api" />
     <None Include="cube.frag" />
     <None Include="cube.vert" />
     <None Include="cubes.api" />
