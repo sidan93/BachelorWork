@@ -28,7 +28,12 @@ vec3 SectionSphere::getColor(vec3 target)
 	float lengthWeight = coloring[index + 1].first - coloring[index].first;
 	float leftWeight = (power - coloring[index].first) / lengthWeight;
 	float rightWeight = (coloring[index + 1].first - power) / lengthWeight;
-	
+	/*
+	if (leftWeight < rightWeight)
+		return vec3(coloring[index].second.r * leftWeight, coloring[index].second.g * leftWeight, coloring[index].second.b * leftWeight);
+	else 
+		return vec3(coloring[index + 1].second.r * rightWeight, coloring[index + 1].second.g * rightWeight, coloring[index + 1].second.b * rightWeight);
+		*/
 	float r = coloring[index].second.r * leftWeight + coloring[index + 1].second.r + rightWeight;
 	float g = coloring[index].second.g * leftWeight + coloring[index + 1].second.g + rightWeight;
 	float b = coloring[index].second.b * leftWeight + coloring[index + 1].second.b + rightWeight;

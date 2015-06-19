@@ -305,6 +305,7 @@ void InitGLStates()
 	glReadBuffer(GL_BACK);
 	glDrawBuffer(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glDepthMask(TRUE);
 	glDisable(GL_STENCIL_TEST);
@@ -430,7 +431,7 @@ bool InitGrid()
 void InitSection() {
 	sectionSphere = new SectionSphere();
 	sectionSphere->center = vec3(25*50,5*50,25*50);
-	sectionSphere->radius = 40*50;
+	sectionSphere->radius = 10*50;
 	sectionSphere->minPower = 0;
 	sectionSphere->maxPower = 1;
 	sectionSphere->readColoring();
