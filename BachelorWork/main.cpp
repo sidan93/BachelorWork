@@ -55,6 +55,7 @@ void DisplayCallbackFunction ( void )
 	for (auto grid : grids)
 		grid->Draw(&camera->MVP[0][0], vec3(grids[0]->getCenter()));
 	section->Draw(&camera->MVP[0][0]);
+	sectionSphere->Draw(&camera->MVP[0][0]);
 
 	interf->Draw();
 
@@ -108,24 +109,44 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 	case 'd':
 		camera->_position.z -= addSpeed;
 		break;
+
 	case 't':
-		camera->_target.x += addSpeed;
+		sectionSphere->center.x += addSpeed;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	case 'g':
-		camera->_target.x -= addSpeed;
+		sectionSphere->center.x -= addSpeed;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	case 'y':
-		camera->_target.y += addSpeed;
+		sectionSphere->center.y += addSpeed;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	case 'h':
-		camera->_target.y -= addSpeed;
+		sectionSphere->center.y -= addSpeed;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	case 'u':
-		camera->_target.z += addSpeed;
+		sectionSphere->center.z += addSpeed;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	case 'j':
-		camera->_target.z -= addSpeed;
+		sectionSphere->center.z -= addSpeed;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
 		break;
+
 	case '1':
 		displayType = GL_POINTS;
 		break;
@@ -182,11 +203,13 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		sectionSphere->radius += 50;
 		section->Init();
 		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	case 'm':
 		sectionSphere->radius -= 50;
 		section->Init();
 		section->Update(cubes);
+		sectionSphere->Update();
 		break;
 	camera->Update();
 	}
@@ -291,7 +314,8 @@ void ReshapeCallbackFunction ( int width, int height )
 	glMatrixMode ( GL_PROJECTION ) ;
 	glLoadIdentity () ;
 	ar = (float) width / (float) height ;
-	glFrustum ( -ar, ar, -1.0, 1.0, 10.0, 1000.0 ) ;
+//	glFrustum ( -ar, ar, -1.0, 1.0, 10.0, 1000.0 ) ;
+	gluPerspective(45.0f, ar, 0.01, 1000.0);
 	glMatrixMode ( GL_MODELVIEW ) ;
 	glLoadIdentity () ;
 }
@@ -435,6 +459,7 @@ void InitSection() {
 	sectionSphere->minPower = 0;
 	sectionSphere->maxPower = 1;
 	sectionSphere->readColoring();
+	sectionSphere->Update();
 
 	section = new Section(sectionSphere);
 }

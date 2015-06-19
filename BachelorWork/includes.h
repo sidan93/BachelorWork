@@ -24,3 +24,6 @@
 #pragma comment (lib, "FreeImage.lib")
 
 using namespace std;
+
+#define MATH_PI 3.1415926535
+#define MATH_PI_ANGLE MATH_PI / 180

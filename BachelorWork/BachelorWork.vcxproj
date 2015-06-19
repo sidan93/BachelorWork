@@ -101,6 +101,8 @@
     <None Include="section.vert" />
     <None Include="sectionCube.frag" />
     <None Include="sectionCube.vert" />
+    <None Include="sectionSphere.frag" />
+    <None Include="sectionSphere.vert" />
     <None Include="Shader1.frag" />
     <None Include="Shader1.vert" />
     <None Include="sun.3DS" />

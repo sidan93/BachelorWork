@@ -3,6 +3,10 @@
 
 SectionSphere::SectionSphere()
 {
+	isEnable = true;
+	_vertexList = new GLfloat[500000];
+
+	initShaders();
 }
 
 vec3 SectionSphere::getColor(vec3 target)
@@ -47,6 +51,77 @@ bool SortColoring(Coloring first, Coloring second)
 	return false;
 }
 
+void SectionSphere::Update()
+{
+	init();
+	initGeometry();
+}
+
+void SectionSphere::init()
+{
+	int step = 10;
+	int i = 0;
+	double cosAngle1, cosAngle2, sinAngle1, sinAngle2;
+
+	for (int V = 0; V < 360; V += step)
+	{
+		for (int U = 0; U < 360; U += step)
+		{
+			_vertexList[i + 0] = center.x + radius * cos(U * MATH_PI_ANGLE) * cos(V * MATH_PI_ANGLE);
+			_vertexList[i + 1] = center.y + radius * sin(U * MATH_PI_ANGLE) * cos(V * MATH_PI_ANGLE);
+			_vertexList[i + 2] = center.z + radius * sin(V * MATH_PI_ANGLE);
+			//_vertexList[i + 3] = center.x + radius * cos(U * MATH_PI_ANGLE) * cos(V * MATH_PI_ANGLE);
+			//_vertexList[i + 4] = center.y + newRadius * sinAngle2;
+			//_vertexList[i + 5] = center.z + shift;
+			i += 3;
+		}
+	}
+	pointCount = i;
+}
+void SectionSphere::initCircuit()
+{
+
+}
+void SectionSphere::initShaders()
+{
+	shaderID = LoadShaders("sectionSphere.vert", "sectionSphere.frag");
+	matrixID = glGetUniformLocation(shaderID, "MVP");
+}
+void SectionSphere::initGeometry()
+{
+	// Магия без которой не рисует
+	glGenVertexArrays(1, &vertexArrays);
+	glBindVertexArray(vertexArrays);
+
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, pointCount  * sizeof(GLuint), _vertexList, GL_STATIC_DRAW);
+}
+
+void SectionSphere::Draw(float *MVP)
+{
+	if (!isEnable)
+		return;
+
+	glUseProgram(shaderID);
+	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(
+		0,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		0,
+		(void*)0
+		);
+
+	// Draw the triangle !
+	glDrawArrays(GL_LINE_STRIP_ADJACENCY, 0, pointCount / 2);
+
+	glDisableVertexAttribArray(0);
+}
 
 void SectionSphere::readColoring()
 {
