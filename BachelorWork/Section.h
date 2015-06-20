@@ -19,6 +19,7 @@ private:
 	int step;
 
 	int countPoint;
+	int MAX_ITERATION_REC;
 
 	// —фера по которой проиходит распределение
 	SectionSphere *sectionSphere;
@@ -64,5 +65,6 @@ private:
 	void _UpdateTopRec(float leftX, float rightX, float leftZ, float rightZ, float centerX, float centerZ);
 	void _UpdateLeftRec(float leftX, float rightX, float leftZ, float rightZ, float centerX, float centerZ);
 	void _UpdateDepRec(float leftX, float rightX, float leftY, float rightZ, float centerX, float centerY);
+	void _recursive(float leftU, float rightU, float leftV, float rightV, int type, int n);
 };
 

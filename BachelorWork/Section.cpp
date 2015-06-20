@@ -19,10 +19,13 @@ Section::Section(SectionSphere *sectionSphere_)
 
 	sectionSphere = sectionSphere_;
 
+	MAX_ITERATION_REC = 1;
+
 	//init();
 	initShaders();
 	initShadersSection();
 	//initGeometry();
+
 
 }
 
@@ -584,6 +587,28 @@ void Section::_UpdateDepRec(float leftX, float rightX, float leftY, float rightY
 	countPointSection = i;
 }
 
+void Section::_recursive(float leftU, float rightU, float leftV, float rightV, int type, int n=1)
+{
+	if (n >= MAX_ITERATION_REC)
+	{
+		switch (type)
+		{
+		case 1:
+			_UpdateTopRec(leftU, rightU, leftV, rightV, (rightU - leftU) / 2, (rightV - leftV) / 2);
+			break;
+		case 2:
+			_UpdateLeftRec(leftU, rightU, leftV, rightV, (rightU - leftU) / 2, (rightV - leftV) / 2);
+			break;
+		case 3:
+			_UpdateDepRec(leftU, rightU, leftV, rightV, (rightU - leftU) / 2, (rightV - leftV) / 2);
+			break;
+		default:
+			break;
+		}
+		return;
+	}
+}
+
 void Section::Update(vector<Parallelepiped*> lists)
 {
 	vec3 color__;
@@ -602,13 +627,11 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float rightX = cube->position.x + cube->size.x;
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;
-			float centerX = leftX + (rightX - leftX) / 2;
-			float centerZ = leftZ + (rightZ - leftZ) / 2;
 
 			maxRightX = std::max(maxRightX, rightX);
 			maxRightZ = std::max(maxRightZ, rightZ);
-
-			_UpdateTopRec(leftX, rightX, leftZ, rightZ, centerX, centerZ);
+			
+			_recursive(leftX, rightX, leftZ, rightZ, 1);
 		}
 
 		// Левая грань
@@ -625,7 +648,8 @@ void Section::Update(vector<Parallelepiped*> lists)
 			maxRightZ = std::max(maxRightZ, rightZ);
 
 			_UpdateLeftRec(leftY, rightY, leftZ, rightZ, centerY, centerZ);
-			
+
+			_recursive(leftY, rightY, leftZ, rightZ, 2);
 		}
 		// Задняя грань
 		if (cube->position.z + cube->size.z >= position.z && cube->position.z - cube->size.z < position.z)
@@ -634,15 +658,11 @@ void Section::Update(vector<Parallelepiped*> lists)
 			float rightX = cube->position.x + cube->size.x;
 			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
-			float centerX = leftX + (rightX - leftX) / 2;
-			float centerY = leftY + (rightY - leftY) / 2;
 
 			maxRightX = std::max(maxRightX, rightX);
 			maxRightY = std::max(maxRightY, rightY);
 
-			_UpdateDepRec(leftX, rightX, leftY, rightY, centerX, centerY);
-
-			
+			_recursive(leftX, rightX, leftY, rightY, 3);
 		}
 	}
 	
