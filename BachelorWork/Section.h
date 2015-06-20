@@ -59,5 +59,10 @@ public:
 	void setMaxSize(vec3 size_);
 
 	~Section();
+
+private:
+	void _UpdateTopRec(float leftX, float rightX, float leftZ, float rightZ, float centerX, float centerZ);
+	void _UpdateLeftRec(float leftX, float rightX, float leftZ, float rightZ, float centerX, float centerZ);
+	void _UpdateDepRec(float leftX, float rightX, float leftY, float rightZ, float centerX, float centerY);
 };
 
