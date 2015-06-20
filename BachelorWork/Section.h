@@ -40,6 +40,10 @@ protected:
 	GLfloat* _vertexListSectionColor;
 	GLuint vertexSectionColorbuffer;
 
+	GLfloat* _vertexListCurcuitColor;
+	int countPointForCurcuit;
+	GLuint vertexCurcuitColorbuffer;
+
 	GLuint vertexCubeArrays;
 	GLuint shaderCubeID;
 	GLuint matrixCubeID;

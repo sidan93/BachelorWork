@@ -14,6 +14,8 @@ Section::Section(SectionSphere *sectionSphere_)
 	maxSize = vec3(2000, 2000, 2000);
 	_vertexListSection = new GLfloat[10000];
 	_vertexListSectionColor = new GLfloat[10000];
+	_vertexListForCircuit = new GLfloat[10000];
+	_vertexListCurcuitColor = new GLfloat[10000];
 
 	sectionSphere = sectionSphere_;
 
@@ -129,6 +131,14 @@ void Section::initSectionGeomentry()
 	glGenBuffers(1, &vertexSectionColorbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionColorbuffer);
 	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSectionColor, GL_STATIC_DRAW);
+
+	glGenBuffers(2, &vertexbufferForCircuit);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
+	glBufferData(GL_ARRAY_BUFFER, countPointForCurcuit * 3 * sizeof(GLuint), _vertexListForCircuit, GL_STATIC_DRAW);
+
+	glGenBuffers(2, &vertexCurcuitColorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexCurcuitColorbuffer);
+	glBufferData(GL_ARRAY_BUFFER, countPointForCurcuit * 3 * sizeof(GLuint), _vertexListCurcuitColor, GL_STATIC_DRAW);
 }
 
 void Section::Draw(float *MVP)
@@ -186,9 +196,42 @@ void Section::Draw(float *MVP)
 			(void*)0
 			);
 
-
 		// Draw the triangle !
 		glDrawArrays(GL_TRIANGLES, 0, countPointSection);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+	}
+
+	if (countPointForCurcuit != 0)
+	{
+		glUseProgram(shaderCubeID);
+		glUniformMatrix4fv(matrixCubeID, 1, GL_FALSE, MVP);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
+		glVertexAttribPointer(
+			0,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+			);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vertexCurcuitColorbuffer);
+		glVertexAttribPointer(
+			1,
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			0,
+			(void*)0
+			);
+
+		// Draw the triangle !
+		glDrawArrays(GL_LINES, 0, countPointForCurcuit);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
@@ -204,19 +247,26 @@ float Section::_getCubeSizeForShaders(vec3 size) {
 void Section::Update(vector<Parallelepiped*> lists)
 {
 	vec3 color__;
-	countPointSection = 0;
+	int i = 0;
+
+	float maxRightX = 0;
+	float maxRightY = 0;
+	float maxRightZ = 0;
+
 	for (auto cube : lists)
 	{
 		// Верхняя грань 
 		if (cube->position.y + cube->size.y >= position.y && cube->position.y - cube->size.y < position.y)
 		{
-			int i = countPointSection;
 			float leftX = cube->position.x - cube->size.x < position.x ? position.x : cube->position.x - cube->size.x;
 			float rightX = cube->position.x + cube->size.x;
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;
 			float centerX = leftX + (rightX - leftX) / 2;
 			float centerZ = leftZ + (rightZ - leftZ) / 2;
+
+			maxRightX = std::max(maxRightX, rightX);
+			maxRightZ = std::max(maxRightZ, rightZ);
 
 			// Против часов
 			// Треугольник 1
@@ -323,19 +373,20 @@ void Section::Update(vector<Parallelepiped*> lists)
 			color__ = sectionSphere->getColor(vec3(leftX, position.y, rightZ));
 			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
-			countPointSection += 24;
 		}
 
 		// Левая грань
 		if (cube->position.x + cube->size.x >= position.x && cube->position.x - cube->size.x < position.x)
 		{
-			int i = countPointSection;
 			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
 			float leftZ = cube->position.z - cube->size.z < position.z ? position.z : cube->position.z - cube->size.z;
 			float rightZ = cube->position.z + cube->size.z;	
 			float centerY = leftY + (rightY - leftY) / 2;
 			float centerZ = leftZ + (rightZ - leftZ) / 2;
+
+			maxRightY = std::max(maxRightY, rightY);
+			maxRightZ = std::max(maxRightZ, rightZ);
 
 			// ПО часам
 			// Треугольник 1
@@ -442,18 +493,19 @@ void Section::Update(vector<Parallelepiped*> lists)
 			color__ = sectionSphere->getColor(vec3(position.x, leftY, centerZ));
 			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
-			countPointSection += 24;
 		}
 		// Задняя грань
 		if (cube->position.z + cube->size.z >= position.z && cube->position.z - cube->size.z < position.z)
 		{
-			int i = countPointSection;
 			float leftX = cube->position.x - cube->size.x < position.x ? position.x : cube->position.x - cube->size.x;
 			float rightX = cube->position.x + cube->size.x;
 			float leftY = cube->position.y - cube->size.y < position.y ? position.y : cube->position.y - cube->size.y;
 			float rightY = cube->position.y + cube->size.y;
 			float centerX = leftX + (rightX - leftX) / 2;
 			float centerY = leftY + (rightY - leftY) / 2;
+
+			maxRightX = std::max(maxRightX, rightX);
+			maxRightY = std::max(maxRightY, rightY);
 
 			// Треугольник 1
 			_vertexListSection[i * 3] = centerX; _vertexListSection[i * 3 + 1] = centerY; _vertexListSection[i * 3 + 2] = position.z;
@@ -559,9 +611,35 @@ void Section::Update(vector<Parallelepiped*> lists)
 			color__ = sectionSphere->getColor(vec3(leftX, centerY, position.z));
 			_vertexListSectionColor[i * 3 + 0] = color__.x; _vertexListSectionColor[i * 3 + 1] = color__.y; _vertexListSectionColor[i * 3 + 2] = color__.z;
 			i++;
-			countPointSection += 24;
 		}
 	}
+	countPointSection = i;
+
+	i = 0;
+	vec3 colorC = vec3(0, 1, 0);
+	_vertexListForCircuit[i * 3 + 0] = position.x + 5; _vertexListForCircuit[i * 3 + 1] = position.y + 5; _vertexListForCircuit[i * 3 + 2] = position.z + 5;
+	_vertexListCurcuitColor[i * 3 + 0] = colorC.x; _vertexListCurcuitColor[i * 3 + 1] = colorC.y; _vertexListCurcuitColor[i * 3 + 2] = colorC.z;
+	i++;
+	_vertexListForCircuit[i * 3 + 0] = position.x + maxRightX; _vertexListForCircuit[i * 3 + 1] = position.y + 5; _vertexListForCircuit[i * 3 + 2] = position.z + 5;
+	_vertexListCurcuitColor[i * 3 + 0] = colorC.x; _vertexListCurcuitColor[i * 3 + 1] = colorC.y; _vertexListCurcuitColor[i * 3 + 2] = colorC.z;
+	i++;
+
+	_vertexListForCircuit[i * 3 + 0] = position.x + 5; _vertexListForCircuit[i * 3 + 1] = position.y + 5; _vertexListForCircuit[i * 3 + 2] = position.z + 5;
+	_vertexListCurcuitColor[i * 3 + 0] = colorC.x; _vertexListCurcuitColor[i * 3 + 1] = colorC.y; _vertexListCurcuitColor[i * 3 + 2] = colorC.z;
+	i++;
+	_vertexListForCircuit[i * 3 + 0] = position.x + 5; _vertexListForCircuit[i * 3 + 1] = position.y + maxRightY; _vertexListForCircuit[i * 3 + 2] = position.z + 5;
+	_vertexListCurcuitColor[i * 3 + 0] = colorC.x; _vertexListCurcuitColor[i * 3 + 1] = colorC.y; _vertexListCurcuitColor[i * 3 + 2] = colorC.z;
+	i++;
+
+	_vertexListForCircuit[i * 3 + 0] = position.x + 5; _vertexListForCircuit[i * 3 + 1] = position.y + 5; _vertexListForCircuit[i * 3 + 2] = position.z + 5;
+	_vertexListCurcuitColor[i * 3 + 0] = colorC.x; _vertexListCurcuitColor[i * 3 + 1] = colorC.y; _vertexListCurcuitColor[i * 3 + 2] = colorC.z;
+	i++;
+	_vertexListForCircuit[i * 3 + 0] = position.x + 5; _vertexListForCircuit[i * 3 + 1] = position.y + 5; _vertexListForCircuit[i * 3 + 2] = position.z + maxRightZ;
+	_vertexListCurcuitColor[i * 3 + 0] = colorC.x; _vertexListCurcuitColor[i * 3 + 1] = colorC.y; _vertexListCurcuitColor[i * 3 + 2] = colorC.z;
+	i++;
+
+	countPointForCurcuit = i;
+
 	initSectionGeomentry();
 }
 
