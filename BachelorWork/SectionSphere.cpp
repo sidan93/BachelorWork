@@ -12,7 +12,7 @@ SectionSphere::SectionSphere()
 vec3 SectionSphere::getColor(vec3 target)
 {
 	float range = glm::distance(target, center);
-	float power = (maxPower - minPower) * (range / radius);
+	float power = (maxPower - minPower) * (range / radius) + minPower;
 
 	if (power < coloring[0].first)
 		return coloring[0].second;
@@ -29,15 +29,17 @@ vec3 SectionSphere::getColor(vec3 target)
 		}
 	}
 
+	return coloring[index].second;
+
 	float lengthWeight = coloring[index + 1].first - coloring[index].first;
 	float leftWeight = (power - coloring[index].first) / lengthWeight;
 	float rightWeight = (coloring[index + 1].first - power) / lengthWeight;
-	/*
+	
 	if (leftWeight < rightWeight)
 		return vec3(coloring[index].second.r * leftWeight, coloring[index].second.g * leftWeight, coloring[index].second.b * leftWeight);
 	else 
 		return vec3(coloring[index + 1].second.r * rightWeight, coloring[index + 1].second.g * rightWeight, coloring[index + 1].second.b * rightWeight);
-		*/
+		
 	float r = coloring[index].second.r * leftWeight + coloring[index + 1].second.r + rightWeight;
 	float g = coloring[index].second.g * leftWeight + coloring[index + 1].second.g + rightWeight;
 	float b = coloring[index].second.b * leftWeight + coloring[index + 1].second.b + rightWeight;
@@ -131,7 +133,7 @@ void SectionSphere::readColoring()
 
 	do {
 		file >> power >> r >> g >> b;
-		coloring.push_back(Coloring(power, vec3(r, b, g)));
+		coloring.push_back(Coloring(power, vec3(r / 255.0, b / 255.0, g / 255.0)));
 	} while (!file.eof());
 	
 	sort(coloring.begin(), coloring.end(), SortColoring);
