@@ -5,7 +5,7 @@
 Camera::Camera(void)
 {
 	_position = vec3(0,0,5000);
-	_target = vec3(0,0,0);
+	_target = vec3(25*50,25*50,25*50);
 	_up = vec3(0,1,0);
 
 	calcProjection();
@@ -17,7 +17,7 @@ Camera::Camera(void)
 
 void Camera::calcProjection()
 {
-	_projection = perspective(45.0f, 1.0f, 10.0f, 10000.0f);	
+	_projection = perspective(45.0f, 1.0f, 10.0f, 12000.0f);	
 }
 void Camera::calcModel()
 {
