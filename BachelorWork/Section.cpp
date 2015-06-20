@@ -12,14 +12,14 @@ Section::Section(SectionSphere *sectionSphere_)
 	isEnableGridSection = true;
 	isEnable = true;
 	maxSize = vec3(2000, 2000, 2000);
-	_vertexListSection = new GLfloat[10000];
-	_vertexListSectionColor = new GLfloat[10000];
-	_vertexListForCircuit = new GLfloat[10000];
-	_vertexListCurcuitColor = new GLfloat[10000];
+	_vertexListSection = new GLfloat[1000000];
+	_vertexListSectionColor = new GLfloat[1000000];
+	_vertexListForCircuit = new GLfloat[1000000];
+	_vertexListCurcuitColor = new GLfloat[1000000];
 
 	sectionSphere = sectionSphere_;
 
-	MAX_ITERATION_REC = 1;
+	MAX_ITERATION_REC = 5;
 
 	//init();
 	initShaders();
@@ -589,24 +589,31 @@ void Section::_UpdateDepRec(float leftX, float rightX, float leftY, float rightY
 
 void Section::_recursive(float leftU, float rightU, float leftV, float rightV, int type, int n=1)
 {
+	float centerU = leftU + (rightU - leftU) / 2;
+	float centerV = leftV + (rightV - leftV) / 2;
 	if (n >= MAX_ITERATION_REC)
 	{
 		switch (type)
 		{
 		case 1:
-			_UpdateTopRec(leftU, rightU, leftV, rightV, (rightU - leftU) / 2, (rightV - leftV) / 2);
+			_UpdateTopRec(leftU, rightU, leftV, rightV, centerU, centerV);
 			break;
 		case 2:
-			_UpdateLeftRec(leftU, rightU, leftV, rightV, (rightU - leftU) / 2, (rightV - leftV) / 2);
+			_UpdateLeftRec(leftU, rightU, leftV, rightV, centerU, centerV);
 			break;
 		case 3:
-			_UpdateDepRec(leftU, rightU, leftV, rightV, (rightU - leftU) / 2, (rightV - leftV) / 2);
+			_UpdateDepRec(leftU, rightU, leftV, rightV, centerU, centerV);
 			break;
 		default:
 			break;
 		}
 		return;
 	}
+
+	_recursive(leftU, centerU, leftV, centerV, type, n+1);
+	_recursive(centerU, rightU, leftV, centerV, type, n + 1);
+	_recursive(leftU, centerU, centerV, rightV, type, n + 1);
+	_recursive(centerU, rightU, centerV, rightV, type, n + 1);
 }
 
 void Section::Update(vector<Parallelepiped*> lists)
@@ -646,8 +653,6 @@ void Section::Update(vector<Parallelepiped*> lists)
 
 			maxRightY = std::max(maxRightY, rightY);
 			maxRightZ = std::max(maxRightZ, rightZ);
-
-			_UpdateLeftRec(leftY, rightY, leftZ, rightZ, centerY, centerZ);
 
 			_recursive(leftY, rightY, leftZ, rightZ, 2);
 		}
