@@ -8,7 +8,7 @@ Section::Section(SectionSphere *sectionSphere_)
 	position.x = 50;
 	position.y = 170;
 	position.z = 400;
-	step = 25;
+	step = 200;
 	isEnableGridSection = true;
 	isEnable = true;
 	maxSize = vec3(2000, 2000, 2000);
@@ -124,8 +124,8 @@ void Section::initGeometry()
 void Section::initSectionGeomentry()
 {
 	// Магия без которой не рисует
-	glGenVertexArrays(1, &vertexArrays);
-	glBindVertexArray(vertexArrays);
+	glGenVertexArrays(1, &vertexArrays1);
+	glBindVertexArray(vertexArrays1);
 
 	glGenBuffers(1, &vertexSectionbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
@@ -135,11 +135,11 @@ void Section::initSectionGeomentry()
 	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionColorbuffer);
 	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSectionColor, GL_STATIC_DRAW);
 
-	glGenBuffers(2, &vertexbufferForCircuit);
+	glGenBuffers(1, &vertexbufferForCircuit);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
 	glBufferData(GL_ARRAY_BUFFER, countPointForCurcuit * 3 * sizeof(GLuint), _vertexListForCircuit, GL_STATIC_DRAW);
 
-	glGenBuffers(2, &vertexCurcuitColorbuffer);
+	glGenBuffers(1, &vertexCurcuitColorbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexCurcuitColorbuffer);
 	glBufferData(GL_ARRAY_BUFFER, countPointForCurcuit * 3 * sizeof(GLuint), _vertexListCurcuitColor, GL_STATIC_DRAW);
 }
@@ -697,6 +697,7 @@ void Section::Update(vector<Parallelepiped*> lists)
 
 	countPointForCurcuit = i;
 
+	initGeometry();
 	initSectionGeomentry();
 }
 

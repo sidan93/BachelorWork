@@ -18,6 +18,8 @@ private:
 	vec3 maxSize;
 	int step;
 
+	GLuint vertexArrays1;
+
 	int countPoint;
 	int MAX_ITERATION_REC;
 
