@@ -35,6 +35,7 @@ Interface *interf;
 int addSpeed = 50;
 
 int displayType = GL_TRIANGLES;
+int displayType1 = GL_TRIANGLES;
 /******************************************* Functions ******************************************/
 
 void CreateGeometry()
@@ -51,7 +52,7 @@ void DisplayCallbackFunction ( void )
 	for (auto cube : cubes)
 		cube->Draw(&camera->MVP[0][0], displayType);
 	for (auto layer : layers)
-		layer->Draw(&camera->MVP[0][0], GL_LINES);
+		layer->Draw(&camera->MVP[0][0], displayType1);
 	for (auto grid : grids)
 		grid->Draw(&camera->MVP[0][0], vec3(grids[0]->getCenter()));
 	section->Draw(&camera->MVP[0][0]);
@@ -182,6 +183,11 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		if (grids.size() > 0)
 			grids[0]->isEnable = !grids[0]->isEnable;
 		break;
+	case '-':
+		if (displayType1 == GL_LINES)
+			displayType1 = GL_TRIANGLES;
+		else displayType1 = GL_LINES;
+		break;
 	case '+':
 		sectionSphere->isEnable = !sectionSphere->isEnable;
 		section->Init();
@@ -193,7 +199,7 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		break; 
 	case 'c':
 		section->isEnable = !section->isEnable;
-			break;
+		break;
 	case '7':
 		section->position.x += addSpeed;
 		section->Init();
@@ -518,7 +524,7 @@ bool InitOther()
 	input >> countLayers;
 	
 	for (int i = 0; i < countLayers; i++)
-		layers.push_back(getCube(&input));
+		layers.push_back(getCube(&input, true));
 	
 	input >> countCubes;
 	for (int j = 0; j < countCubes; j++)
