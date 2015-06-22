@@ -16,6 +16,7 @@ private:
 	int cameraPositionID;
 
 	GLuint shaderSectionID;
+	GLuint shaderSectionEnableID;
 
 	Section *section;
 protected:

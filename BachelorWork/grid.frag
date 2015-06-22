@@ -8,6 +8,7 @@ uniform sampler2D mainSampler;
 uniform float alpha;
 uniform mat4 MVP;
 uniform vec3 cameraPosition;
+uniform int sectionIsEnable;
 
 // Ouput data
 out vec4 color;
@@ -23,6 +24,7 @@ void main(){
 	//color.a = 0.2;
 	color = vec4(0.5,0,0,0.2);
 	
-	if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
-		discard;
+	if (sectionIsEnable == 1)
+		if (pos.x > section.x && pos.y > section.y && pos.z > section.z)
+			discard;
 }

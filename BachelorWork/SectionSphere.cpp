@@ -11,6 +11,9 @@ SectionSphere::SectionSphere()
 
 vec3 SectionSphere::getColor(vec3 target)
 {
+	if (!isEnable)
+		return vec3(0.5, 0.5, 0.5);
+
 	float range = glm::distance(target, center);
 	float power = (maxPower - minPower) * (range / radius) + minPower;
 

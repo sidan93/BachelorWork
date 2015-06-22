@@ -6,7 +6,7 @@ using namespace glm;
 
 typedef pair<float, vec3> Coloring;
 
-class SectionSphere : BaseObject
+class SectionSphere : public BaseObject
 {
 public:
 	vec3 center;

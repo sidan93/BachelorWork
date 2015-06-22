@@ -160,6 +160,12 @@ void KeyboardCallbackFunction ( unsigned char key, int x, int y )
 		if (grids.size() > 0)
 			grids[0]->isEnable = !grids[0]->isEnable;
 		break;
+	case '+':
+		sectionSphere->isEnable = !sectionSphere->isEnable;
+		section->Init();
+		section->Update(cubes);
+		sectionSphere->Update();
+		break;
 	case 'x':
 		section->isEnableGridSection = !section->isEnableGridSection;
 		break; 
