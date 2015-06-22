@@ -82,6 +82,28 @@ void ConsoleUsage() {
 		cin >> alpha;
 		grids[0]->setAlpha(alpha);
 	}
+	else if (value == "set") {
+		cin >> value;
+		if (value == "layer") {
+			cin >> value;
+			if (value == "alpha") {
+				float alpha;
+				cin >> alpha;
+				for (auto layer : layers)
+					layer->alpha = alpha;
+			}
+		}
+	}
+	else if (value == "get") {
+		cin >> value;
+		if (value == "field") {
+			cin >> value;
+			if (value == "position")
+				cout << "Coords: " << sectionSphere->center.x / 50 << " " << sectionSphere->center.y / 50 << " " << sectionSphere->center.z / 50 << endl;
+			if (value == "size")
+				cout << "Field radius: " << sectionSphere->radius / 50 << endl;
+		}
+	}
 }
 
 void KeyboardCallbackFunction ( unsigned char key, int x, int y )

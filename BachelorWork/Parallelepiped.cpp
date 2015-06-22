@@ -9,6 +9,8 @@ Parallelepiped::Parallelepiped(vec3 position_, vec3 size_, int material_) : posi
 	GlobalSize = vec3(size_.x * scaleFactor, size_.y * scaleFactor, size_.z * scaleFactor);
 	size = vec3(size_.x / 2 * scaleFactor, size_.y / 2 * scaleFactor, size_.z / 2 * scaleFactor);
 
+	alpha = 1;
+
 	init();
 	initCircuit();
 	initShaders();
@@ -283,6 +285,7 @@ void Parallelepiped::initShaders()
 	shaderSizeID = glGetUniformLocation(shaderID, "size");
 	shaderSectionID = glGetUniformLocation(shaderID, "sectionStart");
 	shaderSectionEnableID = glGetUniformLocation(shaderID, "sectionIsEnable");
+	shaderAlphaID = glGetUniformLocation(shaderID, "alpha");
 
 	textureID1 = glGetUniformLocation(shaderID, "mainSampler");
 
@@ -337,6 +340,7 @@ void Parallelepiped::Draw(float *MVP, int displayType)
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, MVP);
 	glUniform3f(shaderPosID, position.x, position.y, position.z);
 	glUniform3f(shaderSizeID, size.x, size.y, size.z);
+	glUniform1f(shaderAlphaID, alpha);
 
 	if (section) {
 		glUniform1i(shaderSectionEnableID, int(section->isEnable));

@@ -22,6 +22,7 @@ protected:
 	GLuint shaderSizeID;
 	GLuint shaderSectionID;
 	GLuint shaderSectionEnableID;
+	GLuint shaderAlphaID;
 
 	int _material;
 
@@ -38,6 +39,7 @@ public:
 	vec3 position;
 	vec3 size;
 	vec3 GlobalSize;
+	float alpha;
 
 	Parallelepiped(vec3 position, vec3 size, int material);
 
