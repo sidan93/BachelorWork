@@ -25,7 +25,7 @@
     <Filter Include="Файлы ресурсов\shaders">
       <UniqueIdentifier>{638b0139-6a98-4dc6-89fd-cedb90937f47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов\material">
+    <Filter Include="Файлы исходного кода\material">
       <UniqueIdentifier>{9980489d-a51c-4f47-b829-3f9cdbd52c3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -195,22 +195,22 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="texture01.jpg">
-      <Filter>Файлы ресурсов\material</Filter>
+      <Filter>Файлы исходного кода\material</Filter>
     </Image>
     <Image Include="texture02.jpg">
-      <Filter>Файлы ресурсов\material</Filter>
+      <Filter>Файлы исходного кода\material</Filter>
     </Image>
     <Image Include="texture03.jpg">
-      <Filter>Файлы ресурсов\material</Filter>
+      <Filter>Файлы исходного кода\material</Filter>
     </Image>
     <Image Include="texture04.jpg">
-      <Filter>Файлы ресурсов\material</Filter>
+      <Filter>Файлы исходного кода\material</Filter>
     </Image>
     <Image Include="button01.jpg">
-      <Filter>Файлы ресурсов\material</Filter>
+      <Filter>Файлы исходного кода\material</Filter>
     </Image>
     <Image Include="button02.jpg">
-      <Filter>Файлы ресурсов\material</Filter>
+      <Filter>Файлы исходного кода\material</Filter>
     </Image>
   </ItemGroup>
 </Project>

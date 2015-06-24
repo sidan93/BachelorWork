@@ -521,8 +521,8 @@ bool InitOther()
 
 	ifstream input("cubes.api");
 	int countLayers, countCubes;
+
 	input >> countLayers;
-	
 	for (int i = 0; i < countLayers; i++)
 		layers.push_back(getCube(&input, true));
 	

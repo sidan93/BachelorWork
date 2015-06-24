@@ -15,7 +15,31 @@ vec3 SectionSphere::getColor(vec3 target)
 		return vec3(0.5, 0.5, 0.5);
 
 	float range = glm::distance(target, center);
-	float power = (maxPower - minPower) * (range / radius) + minPower;
+
+	double efi = 0;
+	double Mu = 4 * MATH_PI;
+	double Ep = 8.8*1e-12;
+	double GenRadius = radius;
+	double GenRadSplit = 100;
+	double ResDist = range;
+
+	double Koe = Mu / (4 * MATH_PI);
+	double dFi = 2 * MATH_PI / GenRadSplit;
+	double dL = dFi * GenRadius;
+	
+	for (int i = 0; i < GenRadSplit; i++)
+	{
+		double fi = i*dFi;
+		double xi = GenRadius * cos(fi);
+		double yi = GenRadius * sin(fi);
+		double ri = sqrt((ResDist - xi)*(ResDist - xi) + (ResDist - yi)*(ResDist - yi));
+		efi += Koe * dL * cos(fi) / ri;
+	}
+	
+
+	//cout << efi << endl;
+	//float power = (maxPower - minPower) * (range / radius) + minPower;
+	float power = efi;
 
 	if (power < coloring[0].first)
 		return coloring[0].second;
@@ -136,7 +160,7 @@ void SectionSphere::readColoring()
 
 	do {
 		file >> power >> r >> g >> b;
-		coloring.push_back(Coloring(power, vec3(r / 255.0, b / 255.0, g / 255.0)));
+		coloring.push_back(Coloring(power, vec3(r / 255.0, g / 255.0, b / 255.0)));
 	} while (!file.eof());
 	
 	sort(coloring.begin(), coloring.end(), SortColoring);
