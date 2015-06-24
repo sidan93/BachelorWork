@@ -19,7 +19,7 @@ Section::Section(SectionSphere *sectionSphere_)
 
 	sectionSphere = sectionSphere_;
 
-	MAX_ITERATION_REC = 2;
+	MAX_ITERATION_REC = 5;
 
 	//init();
 	initShaders();
@@ -108,6 +108,10 @@ void Section::initShadersSection()
 {
 	shaderCubeID = LoadShaders("sectionCube.vert", "sectionCube.frag");
 	matrixCubeID = glGetUniformLocation(shaderID, "MVP");
+	sphereCenterCubeID = glGetUniformLocation(shaderID, "sphereCenter");
+	sphereRadiusCubeID = glGetUniformLocation(shaderID, "sphereRadius");
+	sphereColoringCubeID = glGetUniformLocation(shaderID, "q");
+	sphereColoringCountCubeID = glGetUniformLocation(shaderID, "sphereColoringCount");
 }
 
 void Section::initGeometry()
@@ -129,11 +133,7 @@ void Section::initSectionGeomentry()
 
 	glGenBuffers(1, &vertexSectionbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
-	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSection, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &vertexSectionColorbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexSectionColorbuffer);
-	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLuint), _vertexListSectionColor, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, countPointSection * 3 * sizeof(GLfloat), _vertexListSection, GL_STATIC_DRAW);
 
 	glGenBuffers(1, &vertexbufferForCircuit);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbufferForCircuit);
@@ -177,21 +177,19 @@ void Section::Draw(float *MVP)
 		glUseProgram(shaderCubeID);
 		glUniformMatrix4fv(matrixCubeID, 1, GL_FALSE, MVP);
 
+		glUniform3f(glGetUniformLocation(shaderCubeID, "sphereCenter"), sectionSphere->center.x, sectionSphere->center.y, sectionSphere->center.z);
+		glUniform1f(glGetUniformLocation(shaderCubeID, "sphereRadius"), sectionSphere->radius);
+		auto x = sectionSphere->getColoring();
+		GLfloat y[2] = { 1 , 0.5 };
+		glUniform1fv(glGetUniformLocation(shaderCubeID, "sphereColoring"), sectionSphere->getColoringCount(), x);
+		//glUniform1f(glGetUniformLocation(shaderCubeID, "q[0]"), 1);
+
+		glUniform1i(glGetUniformLocation(shaderCubeID, "sphereColoringCount"), sectionSphere->getColoringCount());
+
 		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionbuffer);
 		glVertexAttribPointer(
 			0,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			(void*)0
-			);
-
-		glBindBuffer(GL_ARRAY_BUFFER, vertexSectionColorbuffer);
-		glVertexAttribPointer(
-			1,
 			3,
 			GL_FLOAT,
 			GL_FALSE,
@@ -203,10 +201,9 @@ void Section::Draw(float *MVP)
 		glDrawArrays(GL_TRIANGLES, 0, countPointSection);
 
 		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
 	}
 
-	if (countPointForCurcuit != 0)
+	if (false)
 	{
 		glUseProgram(shaderCubeID);
 		glUniformMatrix4fv(matrixCubeID, 1, GL_FALSE, MVP);

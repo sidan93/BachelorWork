@@ -9,9 +9,27 @@ SectionSphere::SectionSphere()
 	initShaders();
 }
 
+int SectionSphere::getColoringCount() const {
+	return coloring.size();
+}
+
+float* SectionSphere::getColoring() 
+{
+	float* ar = new float[100];
+	int i = 0;
+	for (auto color : coloring)
+	{
+		ar[i++] = color.first;
+		ar[i++] = color.second.x;
+		ar[i++] = color.second.y;
+		ar[i++] = color.second.z;
+	}
+	return ar;
+}
+
 vec3 SectionSphere::getColor(vec3 target)
 {
-	if (!isEnable)
+	//if (!isEnable)
 		return vec3(0.5, 0.5, 0.5);
 
 	float range = glm::distance(target, center);

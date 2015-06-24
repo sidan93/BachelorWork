@@ -55,8 +55,8 @@ void DisplayCallbackFunction ( void )
 		layer->Draw(&camera->MVP[0][0], displayType1);
 	for (auto grid : grids)
 		grid->Draw(&camera->MVP[0][0], vec3(grids[0]->getCenter()));
-	section->Draw(&camera->MVP[0][0]);
 	sectionSphere->Draw(&camera->MVP[0][0]);
+	section->Draw(&camera->MVP[0][0]);
 
 	interf->Draw();
 

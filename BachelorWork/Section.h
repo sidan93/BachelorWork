@@ -50,6 +50,10 @@ protected:
 	GLuint vertexCubeArrays;
 	GLuint shaderCubeID;
 	GLuint matrixCubeID;
+	GLuint sphereCenterCubeID;
+	GLuint sphereRadiusCubeID;
+	GLuint sphereColoringCubeID;
+	GLuint sphereColoringCountCubeID;
 public:
 	Section(SectionSphere *sectionSphere_);
 	

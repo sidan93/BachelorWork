@@ -30,6 +30,9 @@ public:
 	void readColoring();
 	void Draw(float *MVP);
 	void Update();
+
+	int getColoringCount() const;
+	float* getColoring();
 	~SectionSphere();
 };
 

@@ -6,6 +6,7 @@ out vec4 color;
 in vec3 pos;
 in vec3 fragmentColor;
 
+
 // Values that stay constant for the whole mesh.
 
 void main()
