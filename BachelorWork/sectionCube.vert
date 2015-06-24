@@ -44,15 +44,15 @@ vec3 getColor(float power)
 {
 	int i = 0;
 
-	if (power == 0)
-		return vec3(1,0,0);
-
+	
+	if (sphereColoringCount == 0)
+		return vec3(0,1,0);
 	if (power < 0.15)
 		return vec3(0/255.0,0/255.0,145/255.0);
 	if (power < 0.3)
-		return vec3(45/255.0,45/255.0,45/255.0);
+		return vec3(0/255.0,0/255.0,85/255.0);
 	if (power < 0.45)
-		return vec3(85/255.0,85/255.0,85/255.0);
+		return vec3(85/255.0,85/255.0,255/255.0);
 	if (power < 0.6)
 		return vec3(120/255.0,200/255.0,255/255.0);
 	if (power < 0.8)

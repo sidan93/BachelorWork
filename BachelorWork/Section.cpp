@@ -203,10 +203,11 @@ void Section::Draw(float *MVP)
 		glDisableVertexAttribArray(0);
 	}
 
-	if (false)
+	if (countPointForCurcuit != 0)
 	{
 		glUseProgram(shaderCubeID);
 		glUniformMatrix4fv(matrixCubeID, 1, GL_FALSE, MVP);
+		glUniform1i(glGetUniformLocation(shaderCubeID, "sphereColoringCount"), 0);
 
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
