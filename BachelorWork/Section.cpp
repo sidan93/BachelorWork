@@ -19,7 +19,7 @@ Section::Section(SectionSphere *sectionSphere_)
 
 	sectionSphere = sectionSphere_;
 
-	MAX_ITERATION_REC = 2;
+	MAX_ITERATION_REC = 5;
 
 	//init();
 	initShaders();
